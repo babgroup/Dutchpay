@@ -1,25 +1,35 @@
-🍚 DutchPay
+### 🍚 DutchPay
 Next.js(프론트) + NestJS(백엔드) + MySQL을 사용한 글로벌캠퍼스 더치페이 웹
 
-🚀 실행 방법
-# 1) 레포 클론
+---
+
+### 🚀 실행 방법
+1) 레포 클론
+```bash
 git clone https://github.com/babgroup/Dutchpay
 cd babgroup-dutchPay
+.env 생성 후 작성
 
-# 2) .env 생성 후 작성
+컨테이너 실행
 
-# 3) 컨테이너 실행
+bash
+코드 복사
 docker compose up -d
+더미데이터 삽입 (선택)
 
-접속 경로
-
+bash
+코드 복사
+docker exec -i mysql-db mysql -u root -p1234 mydb < seed.sql
+📌 접속 경로
 프론트엔드(Next): http://localhost:3000
 
 백엔드(Nest API): http://localhost:3001
 
 MySQL(호스트 접속): 127.0.0.1:3301
 
-mysql -h 127.0.0.1 -P 3301 -u user -p1234 db
+Swagger UI: http://localhost:3001/api
+
+서버 실행 후 위 주소로 접속하면 API 문서를 확인할 수 있습니다.
 
 🧭 Git 규칙
 커밋 규칙
@@ -53,3 +63,8 @@ bugfix/issue-#<번호> — 버그 수정
 그 외는 커밋 타입 + 이슈번호 조합
 
 예) remove/issue-#123
+
+yaml
+코드 복사
+
+---

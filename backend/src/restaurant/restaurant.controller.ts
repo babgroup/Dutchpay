@@ -1,34 +1,32 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param } from '@nestjs/common';
 import { RestaurantService } from './restaurant.service';
-import { CreateRestaurantDto } from './dto/create-restaurant.dto';
-import { UpdateRestaurantDto } from './dto/update-restaurant.dto';
+import { FoodFareRoomDto } from './dto/create-food-fare-room.dto';
 
 @Controller('restaurant')
 export class RestaurantController {
   constructor(private readonly restaurantService: RestaurantService) {}
 
-  @Post()
-  create(@Body() createRestaurantDto: CreateRestaurantDto) {
-    return this.restaurantService.create(createRestaurantDto);
+  @Post('food-fare-room')
+  async createFoodFareRoom(@Body() dto: FoodFareRoomDto) {
+    // 자기 자신의 id를 세션으로 처리하면 body에 자기자신의 id는 안보내도됨. 현재는 body에 넣어서 설계.
+    return await this.restaurantService.createFoodFareRoom(dto);
   }
 
-  @Get()
-  findAll() {
-    return this.restaurantService.findAll();
+  @Get('current-rooms')
+  async getCurrentRooms() {
+    const result = await this.restaurantService.getCurrentRooms();
+    return { message: '현재 생성된 방 전체', data: result };
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.restaurantService.findOne(+id);
+  @Get('list')
+  async getRestaurantList() {
+    const result = await this.restaurantService.getRestaurantList();
+    return { message: '레스토랑 목록 전체', data: result };
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateRestaurantDto: UpdateRestaurantDto) {
-    return this.restaurantService.update(+id, updateRestaurantDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.restaurantService.remove(+id);
+  @Get('user-list/:id')
+  async getUserInRoom(@Param('id') id: string) {
+    const result = await this.restaurantService.getUserInRoom(id);
+    return { message: `${id}방에 참여한 유저 목록`, data: result };
   }
 }
