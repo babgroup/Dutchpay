@@ -1,98 +1,55 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+🍚 DutchPay
+Next.js(프론트) + NestJS(백엔드) + MySQL을 사용한 글로벌캠퍼스 더치페이 웹
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+🚀 실행 방법
+# 1) 레포 클론
+git clone https://github.com/babgroup/Dutchpay
+cd babgroup-dutchPay
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+# 2) .env 생성 후 작성
 
-## Description
+# 3) 컨테이너 실행
+docker compose up -d
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+접속 경로
 
-## Project setup
+프론트엔드(Next): http://localhost:3000
 
-```bash
-$ npm install
-```
+백엔드(Nest API): http://localhost:3001
 
-## Compile and run the project
+MySQL(호스트 접속): 127.0.0.1:3301
 
-```bash
-# development
-$ npm run start
+mysql -h 127.0.0.1 -P 3301 -u user -p1234 db
 
-# watch mode
-$ npm run start:dev
+🧭 Git 규칙
+커밋 규칙
 
-# production mode
-$ npm run start:prod
-```
+🎉 begin — 프로젝트 시작
 
-## Run tests
+✨ feat — 기능 추가/변경
 
-```bash
-# unit tests
-$ npm run test
+🐛 fix — 버그 수정
 
-# e2e tests
-$ npm run test:e2e
+✏️ chore — 패키지/빌드/기타 변경(예: .gitignore)
 
-# test coverage
-$ npm run test:cov
-```
+📖 docs — 문서/주석 변경
 
-## Deployment
+🔥 remove — 코드/파일 삭제
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+🎨 style — 포맷/스타일(동작 변화 없음)
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+🔨 refactor — 리팩터링(동작 변화 없음)
 
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
-```
+✅ test — 테스트 추가/수정
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+예) feat(restaurant): add list endpoint
 
-## Resources
+브랜치 규칙
 
-Check out a few resources that may come in handy when working with NestJS:
+feature/<기능요약> — 기능 개발/개선
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+bugfix/issue-#<번호> — 버그 수정
 
-## Support
+그 외는 커밋 타입 + 이슈번호 조합
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+예) remove/issue-#123
