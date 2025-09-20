@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get} from '@nestjs/common';
+import { Controller, Post, Body, Get, Param } from '@nestjs/common';
 import { RestaurantService } from './restaurant.service';
 import { FoodFareRoomDto } from './dto/create-food-fare-room.dto';
 
@@ -8,7 +8,7 @@ export class RestaurantController {
 
   @Post('food-fare-room')
   async createFoodFareRoom(@Body() dto: FoodFareRoomDto) {
-    //자기 자신의 id를 세션으로 처리하면 body에 자기자신의 id는 안보내도됨. 현재는 body에 넣어서 설계.
+    // 자기 자신의 id를 세션으로 처리하면 body에 자기자신의 id는 안보내도됨. 현재는 body에 넣어서 설계.
     return await this.restaurantService.createFoodFareRoom(dto);
   }
 
@@ -22,5 +22,11 @@ export class RestaurantController {
   async getRestaurantList() {
     const result = await this.restaurantService.getRestaurantList();
     return { message: '레스토랑 목록 전체', data: result };
-}
+  }
+
+  @Get('user-list/:id')
+  async getUserInRoom(@Param('id') id: string) {
+    const result = await this.restaurantService.getUserInRoom(id);
+    return { message: `${id}방에 참여한 유저 목록`, data: result };
+  }
 }

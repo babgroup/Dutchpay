@@ -8,14 +8,15 @@ import { Restaurant } from './entities/restaurant.entity';
 import { FoodFareRoomDto } from './dto/create-food-fare-room.dto';
 import { CurrentFoodRoomsResponseType } from './Type/current-food-rooms-response.type';
 import { ListResponseType } from './Type/list-response.type';
+import { UserResponseType } from './Type/user-list-response.type';
 
 @Injectable()
 export class RestaurantService {
   constructor(
     @InjectRepository(FoodFareRoom) private readonly foodFareRoomRepo: Repository<FoodFareRoom>,
-    @InjectRepository(FoodResult)   private readonly foodResultRepo: Repository<FoodResult>,
+    @InjectRepository(FoodResult) private readonly foodResultRepo: Repository<FoodResult>,
     @InjectRepository(FoodJoinUser) private readonly foodJoinUserRepo: Repository<FoodJoinUser>,
-    @InjectRepository(Restaurant)   private readonly restaurantRepo: Repository<Restaurant>,
+    @InjectRepository(Restaurant) private readonly restaurantRepo: Repository<Restaurant>,
   ) {}
 
   async createFoodFareRoom(dto: FoodFareRoomDto) {
@@ -67,13 +68,27 @@ export class RestaurantService {
 
   async getRestaurantList(): Promise<ListResponseType[]> {
     const list = await this.restaurantRepo.find();
+
     return list.map(r => ({
       id: r.id,
       restaurantName: r.restaurantName,
       deliveryFee: r.deliveryFee,
       imageUrl: r.imageUrl,
       businessHours: r.businessHours,
-    }
-  ));
-}
+    }));
+  }
+
+  async getUserInRoom(id: string): Promise<UserResponseType[]> {
+    const rows = await this.foodJoinUserRepo.find({
+      where: { foodFareRoom: { id: +id } },
+      relations: ['user', 'foodFareRoom', 'foodFareRoom.creatorUser'],
+    });
+
+    return rows.map(j => ({
+      user_id: j.user.studentNumber,
+      name: j.user.name,
+      student_number: j.user.studentNumber,
+      is_creator: j.user.id === j.foodFareRoom.creatorUser.id,
+    }));
+  }
 }
