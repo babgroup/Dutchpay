@@ -1,4 +1,4 @@
-import { Controller, Post, Body} from '@nestjs/common';
+import { Controller, Post, Body, Get} from '@nestjs/common';
 import { RestaurantService } from './restaurant.service';
 import { FoodFareRoomDto } from './dto/create-food-fare-room.dto';
 
@@ -10,5 +10,11 @@ export class RestaurantController {
   async createFoodFareRoom(@Body() dto: FoodFareRoomDto) {
     //자기 자신의 id를 세션으로 처리하면 body에 자기자신의 id는 안보내도됨. 현재는 body에 넣어서 설계.
     return await this.restaurantService.createFoodFareRoom(dto);
+  }
+
+  @Get('current-rooms')
+  async getCurrentRooms() {
+    const result = await this.restaurantService.getCurrentRooms();
+    return { message: '현재 생성된 방 전체', data: result };
   }
 }
