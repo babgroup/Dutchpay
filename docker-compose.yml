@@ -1,0 +1,64 @@
+services:
+  db:
+    image: mysql:8.1.0
+    container_name: mysql_db
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      TZ: Asia/Seoul
+    ports:
+      - "3301:3306"
+    command: [
+      "mysqld",
+      "--character-set-server=utf8mb4",
+      "--collation-server=utf8mb4_unicode_ci",
+      "--default-time-zone=+09:00"
+    ]
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./mysql-init:/docker-entrypoint-initdb.d
+    networks:
+      - backend
+
+  backend:
+    image: node:20-buster
+    container_name: nest_backend
+    working_dir: /app
+    depends_on:
+      - db
+    environment:
+      DB_TYPE: ${DB_TYPE}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_DATABASE: ${DB_DATABASE}
+    volumes:
+      - ./backend:/app
+    command: bash -c "npm ci || npm install && npm run start:dev"
+    ports:
+      - "3001:3001"
+    networks:
+      - backend
+
+  frontend:
+    image: node:20-buster
+    container_name: next_frontend
+    working_dir: /app
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend:/app
+    command: bash -c "npm ci || npm install && npm run dev"
+    ports:
+      - "3000:3000"
+    networks:
+      - backend
+
+networks:
+  backend:
+
+volumes:
+  db_data:
