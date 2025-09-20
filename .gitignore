@@ -1,7 +1,11 @@
 # compiled output
-/dist
-/node_modules
-/build
+/front/dist
+/front/build
+/front/node_modules
+
+/back/dist
+/back/build
+/back/node_modules
 
 # Logs
 logs
@@ -16,7 +20,8 @@ lerna-debug.log*
 .DS_Store
 
 # Tests
-/coverage
+/front/coverage
+/back/coverage
 /.nyc_output
 
 # IDEs and editors
@@ -36,11 +41,17 @@ lerna-debug.log*
 !.vscode/extensions.json
 
 # dotenv environment variable files
-.env
-.env.development.local
-.env.test.local
-.env.production.local
-.env.local
+/front/.env
+/front/.env.development.local
+/front/.env.test.local
+/front/.env.production.local
+/front/.env.local
+
+/back/.env
+/back/.env.development.local
+/back/.env.test.local
+/back/.env.production.local
+/back/.env.local
 
 # temp directory
 .temp
