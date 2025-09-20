@@ -7,6 +7,7 @@ import { FoodJoinUser } from './entities/food-join-user.entity';
 import { Restaurant } from './entities/restaurant.entity';
 import { FoodFareRoomDto } from './dto/create-food-fare-room.dto';
 import { CurrentFoodRoomsResponseType } from './Type/current-food-rooms-response.type';
+import { ListResponseType } from './Type/list-response.type';
 
 @Injectable()
 export class RestaurantService {
@@ -63,4 +64,16 @@ export class RestaurantService {
       };
     });
   }
+
+  async getRestaurantList(): Promise<ListResponseType[]> {
+    const list = await this.restaurantRepo.find();
+    return list.map(r => ({
+      id: r.id,
+      restaurantName: r.restaurantName,
+      deliveryFee: r.deliveryFee,
+      imageUrl: r.imageUrl,
+      businessHours: r.businessHours,
+    }
+  ));
+}
 }
