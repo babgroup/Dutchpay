@@ -1,67 +1,67 @@
-# compiled output
-/front/dist
-/front/build
-/front/node_modules
 
-/back/dist
-/back/build
-/back/node_modules
-
-# Logs
+**/dist/
+**/build/
+**/coverage/
+**/.cache/
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+lerna-debug.log*
 logs
 *.log
-npm-debug.log*
-pnpm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-lerna-debug.log*
+pids
+*.pid
+*.pid.lock
+*.seed
+.report-*.json
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
-# OS
+/frontend/.next/
+/frontend/out/
+/frontend/.turbo/
+/frontend/next-env.d.ts
+
+/backend/dist/
+/backend/.turbo/
+
+/frontend/.env
+/frontend/.env.local
+/frontend/.env.*.local
+
+/backend/.env
+/backend/.env.local
+/backend/.env.*.local
+
+.env
+.env.local
+.env.*.local
+
 .DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
 
-# Tests
-/front/coverage
-/back/coverage
-/.nyc_output
-
-# IDEs and editors
-/.idea
-.project
-.classpath
-.c9/
-*.launch
-.settings/
-*.sublime-workspace
-
-# IDE - VSCode
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
 
-# dotenv environment variable files
-/front/.env
-/front/.env.development.local
-/front/.env.test.local
-/front/.env.production.local
-/front/.env.local
+.idea/
+*.iml
+*.sublime-workspace
+.history/
+.c9/
+.settings/
+.project
+.classpath
 
-/back/.env
-/back/.env.development.local
-/back/.env.test.local
-/back/.env.production.local
-/back/.env.local
-
-# temp directory
-.temp
-.tmp
-
-# Runtime data
-pids
-*.pid
-*.seed
-*.pid.lock
-
-# Diagnostic reports (https://nodejs.org/api/report.html)
-report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+/frontend/coverage/
+/backend/coverage/
+.nyc_output/
+.tmp/
+.temp/
