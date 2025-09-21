@@ -8,10 +8,12 @@ import { FoodResult } from './entities/food-result.entity';
 import { FoodJoinUser } from './entities/food-join-user.entity';
 import { LeaderController } from './leader/leader.controller';
 import { LeaderService } from './leader/leader.service';
+import { MemberController } from './member/member.controller';
+import { MemberService } from './member/member.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Restaurant, FoodFareRoom, FoodResult, FoodJoinUser,])],
-  controllers: [RestaurantController, LeaderController],
-  providers: [RestaurantService, LeaderService],
+  controllers: [RestaurantController, LeaderController, MemberController],
+  providers: [RestaurantService, LeaderService, MemberService],
 })
 export class RestaurantModule {}
