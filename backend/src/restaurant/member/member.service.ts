@@ -38,4 +38,17 @@ export class MemberService {
         }
     }
 
+    async patch2Delivery(id: string): Promise<void> {
+        const foodJoinUser = await this.foodJoinUserRepo.findOne({
+            where: {id: +id},
+        })
+
+        if(!foodJoinUser) {
+            throw new NotFoundException(`foodJoinUser에 ${id}번 방이 존재하지 않음`)
+        }
+
+        foodJoinUser.deliveryConfirmation = 1;
+
+        await this.foodJoinUserRepo.save(foodJoinUser)
+    }
 }
