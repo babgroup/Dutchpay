@@ -23,4 +23,13 @@ export class LeaderController {
       message: `foodFareRoom ID ${id}번 방에서 progress 3으로 변경`,
     };
   }
+
+  @Patch('break-up/:id')
+  async patch4progress(@Param('id') id: string) {
+    await this.leaderService.patch4Progress(id)
+
+    return {
+      message: `foodFareRoom ID ${id}방에서 progress 4로 변경`,
+    };
+  }
 }

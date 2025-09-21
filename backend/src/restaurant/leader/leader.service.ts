@@ -55,4 +55,17 @@ export class LeaderService {
     await this.foodResultRepo.save(roomProgress)
   }
 
+  async patch4Progress(id: string): Promise<void> {
+    const roomProgress = await this.foodResultRepo.findOne({
+      where: {foodFareRoom: {id: +id}},
+    })
+
+    if(!roomProgress) {
+      throw new NotFoundException(`foodResult에 ${id}번 방이 존재하지 않음`)
+    }
+
+    roomProgress.progress = 4;
+
+    await this.foodResultRepo.save(roomProgress)
+  }
 }
