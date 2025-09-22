@@ -23,7 +23,7 @@ services:
       - backend
 
   backend:
-    image: node:20-buster
+    image: node:20-alpine
     container_name: nest_backend
     working_dir: /app
     depends_on:
@@ -37,21 +37,21 @@ services:
       DB_DATABASE: ${DB_DATABASE}
     volumes:
       - ./backend:/app
-    command: bash -c "npm ci || npm install && npm run start:dev"
+    command: sh -c "npm ci || npm install && npm run start:dev"
     ports:
       - "3001:3001"
     networks:
       - backend
 
   frontend:
-    image: node:20-buster
+    image: node:20-alpine
     container_name: next_frontend
     working_dir: /app
     depends_on:
       - backend
     volumes:
       - ./frontend:/app
-    command: bash -c "npm ci || npm install && npm run dev"
+    command: sh -c "npm ci || npm install && npm run dev"
     ports:
       - "3000:3000"
     networks:

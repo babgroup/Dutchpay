@@ -11,13 +11,13 @@ cd babgroup-dutchPay
 .env 생성 후 작성
 
 컨테이너 실행
-
-bash
+```
+```bash
 코드 복사
 docker compose up -d
 더미데이터 삽입 (선택)
-
-bash
+```
+```bash
 코드 복사
 docker exec -i mysql-db mysql -u root -p1234 mydb < seed.sql
 📌 접속 경로
