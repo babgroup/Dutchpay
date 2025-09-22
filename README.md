@@ -9,17 +9,16 @@ Next.js(프론트) + NestJS(백엔드) + MySQL을 사용한 글로벌캠퍼스 �
 git clone https://github.com/babgroup/Dutchpay
 cd babgroup-dutchPay
 .env 생성 후 작성
-
-컨테이너 실행
 ```
+2) 컨테이너 실행
 ```bash
-코드 복사
 docker compose up -d
-더미데이터 삽입 (선택)
 ```
+더미데이터 삽입 (선택)
 ```bash
-코드 복사
 docker exec -i mysql-db mysql -u root -p1234 mydb < seed.sql
+```
+
 📌 접속 경로
 프론트엔드(Next): http://localhost:3000
 
@@ -63,8 +62,4 @@ bugfix/issue-#<번호> — 버그 수정
 그 외는 커밋 타입 + 이슈번호 조합
 
 예) remove/issue-#123
-
-yaml
-코드 복사
-
 ---
