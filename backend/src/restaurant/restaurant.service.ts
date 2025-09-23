@@ -19,10 +19,10 @@ export class RestaurantService {
     @InjectRepository(Restaurant) private readonly restaurantRepo: Repository<Restaurant>,
   ) {}
 
-  async createFoodFareRoom(dto: FoodFareRoomDto) {
+  async createFoodFareRoom(dto: FoodFareRoomDto, userId: number): Promise<FoodFareRoom> {
     const room = this.foodFareRoomRepo.create({
       restaurant: { id: dto.restaurantId },
-      creatorUser: { id: dto.userId },
+      creatorUser: { id: userId },
       deadline: new Date(dto.deadline),
       minMember: dto.minMember,
     });
@@ -36,7 +36,7 @@ export class RestaurantService {
     await this.foodResultRepo.save(foodResult);
 
     const foodJoinUser = this.foodJoinUserRepo.create({
-      user: { id: dto.userId },
+      user: { id: userId },
       foodFareRoom: savedRoom,
       deliveryConfirmation: 0,
       foodOrders: [],

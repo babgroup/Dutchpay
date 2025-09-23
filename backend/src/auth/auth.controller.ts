@@ -20,5 +20,5 @@ export class AuthController {
   @ApiBearerAuth('access-token')
   getMe(@Req() req) {
   return req.user; // DB 조회 필요 없으면 이 정도로 충분
-}
+  }
 }

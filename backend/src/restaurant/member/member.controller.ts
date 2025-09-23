@@ -5,6 +5,7 @@ import { MemberService } from './member.service';
 export class MemberController {
   constructor(private readonly memberService: MemberService) {}
 
+  
   @Get('/:roomId/:userId')
   async getMemberMenu(@Param('userId') userId: string, @Param('roomId') roomId: string) {
     const result = await this.memberService.getMemberMenu(+userId, +roomId)

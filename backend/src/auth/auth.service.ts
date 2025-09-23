@@ -19,18 +19,13 @@ export class AuthService {
   async userAuth(dto: LoginDto) {
   const user = await this.userRepo
     .createQueryBuilder('u')
-    .addSelect('u.password') // select:false여도 강제 포함
+    .addSelect('u.password')
     .where('u.email = :email', { email: dto.email })
     .getOne();
 
-  console.log('DBG user.password =>', user?.password);
-  console.log('DBG user.password length =>', user?.password?.length);
-
   if (!user) throw new UnauthorizedException('Invalid credentials');
 
-  console.log('DBG dto.password =>', JSON.stringify(dto.password));
   const cmp = await bcrypt.compare(dto.password, user.password);
-  console.log('DBG compare(dto vs hash) =>', cmp);
 
   if (!cmp) throw new UnauthorizedException('Invalid credentials');
   return user;
@@ -38,7 +33,11 @@ export class AuthService {
 
   
   async login(user: User){
-    const payload = { sub: user.email, userStuNum: user.studentNumber }
+    const payload = { 
+      sub: user.id, 
+      email: user.email, 
+      userStuNum: user.studentNumber 
+    };
 
     const accessToken = this.jwtService.sign(payload);
 

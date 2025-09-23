@@ -1,7 +1,8 @@
-import { Controller, Post, Body, Get, Param, UseGuards } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, UseGuards, Req } from '@nestjs/common';
 import { RestaurantService } from './restaurant.service';
 import { FoodFareRoomDto } from './dto/create-food-fare-room.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { Request } from 'express';
 
 @Controller('restaurant')
 export class RestaurantController {
@@ -9,9 +10,8 @@ export class RestaurantController {
 
   @UseGuards(JwtAuthGuard)
   @Post('food-fare-room')
-  async createFoodFareRoom(@Body() dto: FoodFareRoomDto) {
-    // 자기 자신의 id를 세션으로 처리하면 body에 자기자신의 id는 안보내도됨. 현재는 body에 넣어서 설계.
-    return await this.restaurantService.createFoodFareRoom(dto);
+  async createFoodFareRoom(@Body() dto: FoodFareRoomDto, @Req() req: Request) {
+    return await this.restaurantService.createFoodFareRoom(dto, req.user.id);
   }
 
   @Get('current-rooms')
