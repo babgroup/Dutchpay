@@ -66,7 +66,7 @@ export default function RoomListDiv() {
             key={room.id}
             id={room.id}
             restaurantName={room.restaurantName}
-            deliveryFee={room.deliveryFee}
+            deliveryFee={Math.ceil(room.deliveryFee / room.minUser)} //1인 당 배달비 계산, 소숫점 올림
             minUser={room.minUser}
             currentUsers={room.currentUsers}
             imageUrl={room.imageUrl}
