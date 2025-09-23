@@ -3,9 +3,9 @@ USE `db`;
 -- User 더미데이터
 INSERT INTO `user` (id, email, name, student_number, password, total_discount)
 VALUES
-  (1, 'alice@example.com',   'Alice',   20231234, 'abc123', 0),
-  (2, 'bob@example.com',     'Bob',     20235678, 'cdf456', 0),
-  (3, 'charlie@example.com', 'Charlie', 20239876, 'cdf123', 0);
+  (1, 'alice@example.com',   'Alice',   20231234, '$2b$10$TB50LABUw2LOQFJTndZUz.zOEeibf2sH/d9pKJF/Yuy4Qg2aOZhoq', 0), -- abc123
+  (2, 'bob@example.com',     'Bob',     20235678, '$2b$10$/IazOXbqK7yl4g56uVGvFuoGV6syQ9hf8/mND/QImRTlPHTRzwDKa', 0), -- cdf456
+  (3, 'charlie@example.com', 'Charlie', 20239876, '$2b$10$gX5b9py8OAQDoq2pUOioiu2oHmFv00OZ0xYHbntkL4Tt6518M2.xO', 0); -- cdf123
 
 -- Restaurant 더미데이터
 INSERT INTO restaurant (id, restaurant_name, address, phone_number, business_hours, delivery_fee, image_url)
