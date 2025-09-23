@@ -14,6 +14,7 @@ import { UserModule } from './user/user.module';
       envFilePath: ['../.env'],
     }),
     RestaurantModule,
+    AppModule,
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
