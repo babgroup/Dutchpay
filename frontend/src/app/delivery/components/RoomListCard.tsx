@@ -15,10 +15,10 @@ export default function RoomListCard({
 
   return (
     <Link href="" className="w-3/4">
-    <div key={id} className={`w-full bg-white rounded-2xl shadow-md flex justify-center items-center p-4 mb-4 hover:border hover:border-amber-500 hover:border-2`}>
+    <div key={id} className={`w-full bg-white rounded-2xl shadow-md flex justify-center items-center p-3 mb-4 hover:border hover:border-amber-500 hover:border-2`}>
       <div className="flex flex-col">
-        <h2 className="font-medium text-lg">{restaurantName}땅땅치킨 여기점</h2>
-        <p className="text-gray-600 text-sm">배달비 {deliveryFee}</p>
+        <h2 className="font-medium text-lg">{restaurantName}</h2>
+        <p className="text-gray-600 text-sm">🏍️ {deliveryFee}원</p>
         <div className="flex items-center text-gray-500 text-sm mt-1">
           {minUser == 0 ? 
             (<p className="mr-1">👤 {currentUsers}/∞ </p>)
@@ -30,12 +30,12 @@ export default function RoomListCard({
       </div>
 
       {/* 오른쪽 음식 썸네일, 디스카운트 뱃지 */}
-      <div className="relative ml-8">
+      <div className="relative ml-16">
         <Image
           src={imageUrl}
           alt="thumbnail"
-          width={80}
-          height={80}
+          width={90}
+          height={90}
           className="rounded-xl object-cover"
         />
 
