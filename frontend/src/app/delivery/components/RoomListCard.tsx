@@ -1,8 +1,7 @@
 import Image from "next/image";
 import { RoomListProps } from "@/types/restaurant";
 
-
-export default function RoomList({
+export default function RoomListCard({
   id,
 	restaurantName,
 	deliveryFee,
@@ -15,7 +14,6 @@ export default function RoomList({
 
   return (
     <div key={id} className="w-4/5 bg-white rounded-2xl shadow-md flex justify-center items-center p-4 mb-4 hover:border-amber-500">
-
       <div className="flex flex-col">
         <h2 className="font-bold text-lg">{restaurantName}</h2>
         <p className="text-gray-600 text-sm">배달비 {deliveryFee}</p>
