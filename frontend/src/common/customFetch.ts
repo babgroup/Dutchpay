@@ -3,7 +3,7 @@ const useFetch = () => {
   const customFetch = async (endpoint: string, options = {}) => {
     console.log("BASE_URL:", process.env.NEXT_PUBLIC_API_URL);
     
-    const BASE_URL = process.env.NEXT_PUBLIC_API_URL; //.env 파일의 변수 값 사용
+    const BASE_URL = process.env.NEXT_PUBLIC_API_URL as string; //.env 파일의 변수 값 사용
 
     const defaultOptions: RequestInit = {
       headers: {

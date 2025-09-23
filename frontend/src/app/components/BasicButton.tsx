@@ -1,18 +1,26 @@
 import Link from "next/link";
 import { ButtonProps } from "@/types/ButtonProps";
 
+interface ModeButtonProps extends ButtonProps {
+  isDisable?: boolean;  
+} // isDisable = disable 을 표현하는 색(그레이)를 true로 할겅지 false로 할건지
+
 export default function BasicButton({
   text,
-  size = "w-3/4 h-12 text-[4vw] sm:text-base", // 부모 대비 너비 2/3, 높이 3rem, vw 단위 폰트
+  size = "w-3/4 h-12 text-[4vw] sm:text-base",
   onClick,
   href,
-}: ButtonProps) {
+  isDisable = false,
+}: ModeButtonProps) {
+
+  // 색상 결정 
+  const bgClass = isDisable ? "bg-gray-400 text-white" : "bg-amber-500 text-white";
 
   if (href) {
     return (
       <Link
         href={href}
-        className={`bg-amber-500 text-white rounded-xl hover:opacity-90 transition flex items-center justify-center ${size}`}
+        className={`${bgClass} rounded-xl hover:opacity-90 transition flex items-center justify-center ${size}`}
       >
         {text}
       </Link>
@@ -22,7 +30,7 @@ export default function BasicButton({
   return (
     <button
       onClick={onClick}
-      className={`bg-amber-500 text-white rounded-xl hover:opacity-90 transition flex items-center justify-center ${size}`}
+      className={`${bgClass} rounded-xl hover:opacity-90 transition flex items-center justify-center ${size}`}
     >
       {text}
     </button>
