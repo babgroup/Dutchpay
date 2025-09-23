@@ -1,17 +1,11 @@
 import BottomNav from "./BottomNav";
 
-export default function BottomNavLayout({ children }: { children: React.ReactNode }) {
+export default function BottomNavLayout({ children }: { children?: React.ReactNode }) {
   return (
-    <div className="font-sans grid grid-rows-[auto_1fr_auto] min-h-screen p-8 gap-16">
-      <header className="w-full flex justify-center">
-        {/* 헤더 영역 필요 시 추가 */}
-      </header>
-
-      <main className="w-full flex justify-center items-center">{children}</main>
-
-      <footer className="w-full flex justify-center items-center">
-        <BottomNav />
-      </footer>
+    <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 w-1/4 h-12 bg-white rounded-3xl shadow-md flex items-center justify-around p-2">
+      <BottomNav href="/" iconSrc="/home.svg" alt="home icon" />
+      <BottomNav href="/delivery" iconSrc="/delivery.svg" alt="delivery icon" />
+      <BottomNav href="/user" iconSrc="/user.svg" alt="user icon" />
     </div>
   );
 }

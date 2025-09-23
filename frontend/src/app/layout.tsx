@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Title from "./components/Title";
+import BottomNavLayout from "./components/BottomNavLayout";
 
 export const metadata: Metadata = {
   title: "글로벌캠퍼스 더치페이",
@@ -26,6 +26,7 @@ export default function RootLayout({
           {children}
         </div>
       </body>
+      <BottomNavLayout />
     </html>
   );
 }
