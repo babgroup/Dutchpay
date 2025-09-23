@@ -8,9 +8,10 @@ const useFetch = () => {
     const defaultOptions: RequestInit = {
       headers: {
         "Content-Type": "application/json",
-      },
-      credentials: "include", // 쿠키 전송
-      cache: "no-cache",      // 항상 최신 데이터
+      }
+      // ,
+      // credentials: "include", // 쿠키 전송
+      // cache: "no-cache",      // 항상 최신 데이터 CORS오류 때문에 주석
     };
     const mergedOptions = { ...defaultOptions, ...options }; //기본 옵션과 선언한 옵션 합치기
 
