@@ -1,10 +1,10 @@
 import { FoodFareRoom } from "src/restaurant/entities/food-fare-room.entity";
 import { FoodJoinUser } from "src/restaurant/entities/food-join-user.entity";
-import { Column, CreateDateColumn, Entity, OneToMany, PrimaryColumn } from "typeorm";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class User {
-    @PrimaryColumn()
+    @PrimaryGeneratedColumn()
     id: number;
 
     @Column()
@@ -13,14 +13,14 @@ export class User {
     @Column()
     name: string;
 
-    @Column({ default: 0 })
+    @Column({ type: 'int', unsigned: true })
     studentNumber: number;
+
+    @Column({ select: false })
+    password: string;
 
     @Column({ default: 0 })
     totalDiscount: number;
-
-    @CreateDateColumn()
-    createDate: Date;
 
     @OneToMany(() => FoodFareRoom, (foodFareRoom) => foodFareRoom.creatorUser)
     foodFareRooms: FoodFareRoom[];
