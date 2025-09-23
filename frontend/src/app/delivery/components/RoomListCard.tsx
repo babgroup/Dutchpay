@@ -5,7 +5,7 @@ export default function RoomListCard({
   id,
 	restaurantName,
 	deliveryFee,
-	maxUser,
+	minUser,
 	currentUsers,
 	deadline,
 	imageUrl,
@@ -13,15 +13,15 @@ export default function RoomListCard({
 }: RoomListProps) {
 
   return (
-    <div key={id} className="w-4/5 bg-white rounded-2xl shadow-md flex justify-center items-center p-4 mb-4 hover:border-amber-500">
+    <div key={id} className="w-full bg-white rounded-2xl shadow-md flex justify-center items-center p-4 mb-4 hover:border-amber-500">
       <div className="flex flex-col">
         <h2 className="font-bold text-lg">{restaurantName}</h2>
         <p className="text-gray-600 text-sm">배달비 {deliveryFee}</p>
         <div className="flex items-center text-gray-500 text-sm mt-1">
-          {maxUser == 0 ? 
+          {minUser == 0 ? 
             (<p className="mr-1">👤 {currentUsers}/∞ </p>)
             :
-            (<p className="mr-1">👤 {currentUsers}/{maxUser}</p>)
+            (<p className="mr-1">👤 {currentUsers}/{minUser}</p>)
           }
         </div>
         <p className="flex items-center text-gray-500 text-sm mt-1">{deadline}</p>

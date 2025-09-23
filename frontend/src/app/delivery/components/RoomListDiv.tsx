@@ -1,5 +1,6 @@
 'use client'
 
+import { formatDate } from "@/common/formatDate";
 import { useEffect, useState } from "react";
 import useFetch from "@/common/customFetch";
 import RoomListCard from "./RoomListCard";
@@ -17,7 +18,7 @@ export default function RoomListDiv() {
       setMessage('로딩 중...')
       try {
         const data = await Fetch("/restaurant/current-rooms", { method: "GET" });
-        setRooms(data);
+        setRooms(data.data);
       } catch (e: any) {
         setMessage(e.message)
         setRooms([]);
@@ -30,7 +31,7 @@ export default function RoomListDiv() {
   }, []);
 
   return (
-    <div>
+    <div className="h-8/12 overflow-scroll m-4">
       {loading ? (
         <p>{message}</p>
       ) : rooms.length < 1 ? (
@@ -42,10 +43,10 @@ export default function RoomListDiv() {
             id={room.id}
             restaurantName={room.restaurantName}
             deliveryFee={room.deliveryFee}
-            maxUser={room.maxUser}
+            minUser={room.minUser}
             currentUsers={room.currentUsers}
             imageUrl={room.imageUrl}
-            deadline={room.deadline}
+            deadline={formatDate(room.deadline)}
             discount={((room.deliveryFee - room.deliveryFee / room.maxUser) / room.deliveryFee) * 100}
           />
         ))
