@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { RoomListProps } from "@/types/restaurant";
+import Link from "next/link";
 
 export default function RoomListCard({
   id,
@@ -13,9 +14,10 @@ export default function RoomListCard({
 }: RoomListProps) {
 
   return (
-    <div key={id} className="w-full bg-white rounded-2xl shadow-md flex justify-center items-center p-4 mb-4 hover:border-amber-500">
+    <Link href="" className="w-3/4">
+    <div key={id} className={`w-full bg-white rounded-2xl shadow-md flex justify-center items-center p-4 mb-4 hover:border hover:border-amber-500 hover:border-2`}>
       <div className="flex flex-col">
-        <h2 className="font-bold text-lg">{restaurantName}</h2>
+        <h2 className="font-medium text-lg">{restaurantName}땅땅치킨 여기점</h2>
         <p className="text-gray-600 text-sm">배달비 {deliveryFee}</p>
         <div className="flex items-center text-gray-500 text-sm mt-1">
           {minUser == 0 ? 
@@ -42,5 +44,6 @@ export default function RoomListCard({
           </span>
       </div>
     </div>
+    </Link>
   );
 }

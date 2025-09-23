@@ -9,7 +9,7 @@ export default async function Home() {
       <Title mainTitle="배달 Delivery" subTitle="배달비 부담은 낮추고, 포만감은 2배로!" />
       <RoomListDiv />
       
-
+      
       <div className="w-full flex justify-center">
         <BottomNav />
       </div>

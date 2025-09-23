@@ -5,7 +5,7 @@ import Title from "./components/Title";
 
 export default function Home() {
   return (
-    <div className="font-sans grid grid-rows-[auto_1fr_auto] min-h-screen p-8 pt-0 gap-16">
+    <div className="flex flex-col items-center w-full h-full overflow-auto pt-0">
       <Title mainTitle="홈 Home" subTitle="배달비 부담은 낮추고, 포만감은 2배로!"/>
       <div className="w-full flex justify-center">
         <BasicButton text="배달비 아끼러 가기!" href="/delivery" />

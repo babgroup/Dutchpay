@@ -1,5 +1,3 @@
-"use client";
-
 import React from "react";
 
 interface SearchBarProps {
@@ -14,7 +12,7 @@ export default function SearchBar({ searchTerm, setSearchTerm }: SearchBarProps)
       placeholder="식당 이름 검색..."
       value={searchTerm}
       onChange={(e) => setSearchTerm(e.target.value)}
-      className="border border-gray-300 rounded-2xl p-2 w-full mb-4 text-md"
+      className="flex border border-gray-300 rounded-2xl p-2 w-5/7 items-center  mb-4 text-md "
     />
   );
 }

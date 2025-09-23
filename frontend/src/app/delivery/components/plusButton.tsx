@@ -6,5 +6,5 @@ export default function PlusButton() {
     <div className="bg-white border-amber-500" >
       <Link href="/delivery/create-room" />
     </div>
-  )
+  );
 }
