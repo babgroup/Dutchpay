@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FoodJoinUser } from '../entities/food-join-user.entity';
 import { Repository } from 'typeorm';
@@ -11,17 +11,21 @@ export class MemberService {
     private readonly foodJoinUserRepo: Repository<FoodJoinUser>,
   ) {}
 
-  async getMemberMenu(userId: number, roomId: number): Promise<FoodRoomMemberResponseType> {
+  async getMemberMenu(roomId: number, userId: number): Promise<FoodRoomMemberResponseType> {
         const foodRoomMember = await this.foodJoinUserRepo.findOne({
             where: {
                 foodFareRoom: { id: roomId },
                 user: { id: userId }
             },
-            relations: ['user', 'foodFareRoom', 'foodFareRoom.restaurant', 'foodFareRoom.foodJoinUsers', 'foodOrders', 'foodOrders.foodItem']
+            relations: ['user', 'foodFareRoom', 'foodFareRoom.creatorUser', 'foodFareRoom.restaurant', 'foodFareRoom.foodJoinUsers', 'foodOrders', 'foodOrders.foodItem']
         })
         
         if (!foodRoomMember) {
           throw new NotFoundException(`Member not found for userId=${userId}, roomId=${roomId}`);
+        }
+
+        if(foodRoomMember.foodFareRoom.creatorUser.id !== userId) {
+          throw new ForbiddenException('본인이 참여한 방만 조회할 수 있습니다.')
         }
 
         return {
@@ -38,13 +42,18 @@ export class MemberService {
         }
     }
 
-    async patch2Delivery(id: string): Promise<void> {
+    async patch2Delivery(id: string, userId: number): Promise<void> {
         const foodJoinUser = await this.foodJoinUserRepo.findOne({
             where: {id: +id},
+            relations: ['foodFareRoom.creatorUser'],
         })
 
         if(!foodJoinUser) {
             throw new NotFoundException(`foodJoinUser에 ${id}번 방이 존재하지 않음`)
+        }
+
+        if(foodJoinUser.foodFareRoom.creatorUser.id !== userId) {
+          throw new ForbiddenException('본인이 참여한 방만 상태를 변경할 수 있습니다.')
         }
 
         foodJoinUser.deliveryConfirmation = 1;
