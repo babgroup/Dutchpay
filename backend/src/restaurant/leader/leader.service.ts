@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FoodFareRoom } from '../entities/food-fare-room.entity';
 import { FoodResult } from '../entities/food-result.entity';
@@ -16,13 +16,18 @@ export class LeaderService {
     private readonly foodResultRepo: Repository<FoodResult>,
   ) {}
 
-  async getLeaderFoodFareRoom(id: string): Promise<FoodRoomLeaderResponseType> {
+  async getLeaderFoodFareRoom(id: string, userId: number): Promise<FoodRoomLeaderResponseType> {
     const leaderFoodFareRoom = await this.foodFareRoomRepo.findOne({
       where: { id: +id },
-      relations: ['restaurant', 'foodJoinUsers', 'foodJoinUsers.user', 'foodJoinUsers.foodOrders', 'foodJoinUsers.foodOrders.foodItem'],
+      relations: ['creatorUser','restaurant', 'foodJoinUsers', 'foodJoinUsers.user', 'foodJoinUsers.foodOrders', 'foodJoinUsers.foodOrders.foodItem'],
     });
+
     if (!leaderFoodFareRoom) {
       throw new NotFoundException('FoodFareRoom not found');
+    }
+
+    if (leaderFoodFareRoom.creatorUser.id !== userId) {
+      throw new ForbiddenException('본인이 생성한 방만 조회할 수 있습니다.');
     }
     return {
       restaurantName: leaderFoodFareRoom.restaurant.restaurantName,
@@ -41,13 +46,18 @@ export class LeaderService {
     };
   }
 
-  async patch3Progress(id: string): Promise<void> {
+  async patch3Progress(id: string, userId: number): Promise<void> {
     const roomProgress = await this.foodResultRepo.findOne({
       where: {foodFareRoom: {id: +id}},
+      relations: ['foodFareRoom', 'foodFareRoom.creatorUser'],
     })
 
     if(!roomProgress) {
       throw new NotFoundException(`foodResult에 ${id}번 방이 존재하지 않음`)
+    }
+
+    if (roomProgress.foodFareRoom.creatorUser.id !== userId) {
+      throw new ForbiddenException('본인이 생성한 방만 상태를 변경할 수 있습니다.');
     }
 
     roomProgress.progress = 3;
@@ -55,13 +65,18 @@ export class LeaderService {
     await this.foodResultRepo.save(roomProgress)
   }
 
-  async patch4Progress(id: string): Promise<void> {
+  async patch4Progress(id: string, userId: number): Promise<void> {
     const roomProgress = await this.foodResultRepo.findOne({
       where: {foodFareRoom: {id: +id}},
+      relations: ['foodFareRoom', 'foodFareRoom.creatorUser'],
     })
 
     if(!roomProgress) {
       throw new NotFoundException(`foodResult에 ${id}번 방이 존재하지 않음`)
+    }
+
+    if (roomProgress.foodFareRoom.creatorUser.id !== userId) {
+      throw new ForbiddenException('본인이 생성한 방만 상태를 변경할 수 있습니다.');
     }
 
     roomProgress.progress = 4;
