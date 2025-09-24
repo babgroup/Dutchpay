@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import BasicButton from '../../components/BasicButton';
+import BasicButton from '../../../components/BasicButton';
 import PartyTypeCard from './components/PartyTypeCard';
 import Dropdown, { DropdownOption } from './components/Dropdown';
 import SelectDropdown from './components/Dropdown';
