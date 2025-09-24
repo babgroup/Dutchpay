@@ -10,12 +10,13 @@ export default function RoomListCard({
 	currentUsers,
 	deadline,
 	imageUrl,
-  discount
+  discount,
+  onClick
 }: RoomListProps) {
 
   return (
-    <Link href="" className="w-3/4">
-    <div key={id} className={`w-full bg-white rounded-2xl shadow-md flex justify-center items-center p-3 mb-4 hover:border hover:border-amber-500 hover:border-2`}>
+    <div onClick={onClick}
+    key={id} className={`w-3/4 bg-white rounded-2xl shadow-md flex justify-center items-center p-3 mb-4 hover:border hover:border-amber-500 hover:border-2`}>
       <div className="flex flex-col">
         <h2 className="font-medium text-lg">{restaurantName}</h2>
         <p className="text-gray-600 text-sm">🏍️ {deliveryFee}원</p>
@@ -44,6 +45,5 @@ export default function RoomListCard({
           </span>
       </div>
     </div>
-    </Link>
   );
 }
