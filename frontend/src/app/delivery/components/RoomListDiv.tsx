@@ -7,14 +7,19 @@ import RoomListCard from "./RoomListCard";
 import { CurrentRoom }  from "@/types/restaurant"
 import SearchBar from "./SearchBar";
 import SortButton from "./SortButton";
+import PartyPopup from "./PartyPopup";
+import { useRouter } from "next/navigation";
 
 export default function RoomListDiv() {
   const Fetch = useFetch();
+  const router = useRouter();
   const [rooms, setRooms] = useState<CurrentRoom[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [message, setMessage] = useState<string>('');
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [sortingOption, setSortingOption] = useState<'최신순' | '종료일순' | '가게이름순'>('최신순'); //최신순 기본
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [selectedRoom, setSelectedRoom] = useState<CurrentRoom | null>(null);
  
 
   useEffect(() => {
@@ -34,6 +39,19 @@ export default function RoomListDiv() {
     };
     fetchCurrentRooms();
   }, []);
+
+  //팝업 열기, 닫기, 참가
+  const openPopup = (room: CurrentRoom) => {
+    setSelectedRoom(room); 
+    setIsPopupOpen(true);
+  };
+  const closePopup = () => setIsPopupOpen(false);
+  const joinParty = () => {
+    if (selectedRoom) {
+      router.push(`/delivery/member/${selectedRoom.id}`); //임시로 /member/[roomid]
+    }
+    closePopup();
+  };
 
   // 검색어 필터
   const filteredRooms = rooms.filter((room) =>
@@ -63,6 +81,7 @@ export default function RoomListDiv() {
       ) : (
         sortedRooms.map((room) => (
           <RoomListCard 
+            onClick={() => openPopup(room)}
             key={room.id}
             id={room.id}
             restaurantName={room.restaurantName}
@@ -74,6 +93,14 @@ export default function RoomListDiv() {
             discount={((room.deliveryFee - room.deliveryFee / room.minUser) / room.deliveryFee) * 100}
           />
         ))
+      )}
+      {selectedRoom && (
+        <PartyPopup 
+          open={isPopupOpen}
+          onClose={closePopup}
+          onJoin={joinParty}
+          deliveryTime={formatDate(selectedRoom.deadline)} // 선택된 room 사용
+        />
       )}
     </div>
   );

@@ -16,7 +16,8 @@ export interface RoomListProps {
 	currentUsers: number,
 	deadline: string
 	imageUrl: string,
-	discount: number
+	discount: number,
+	onClick?: React.MouseEventHandler<HTMLDivElement>
 };
 
 export interface RestaurantList {
