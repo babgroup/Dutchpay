@@ -15,7 +15,7 @@ export default function PartyTypeCard({
         ${
           isSelected
             ? 'bg-orange-50 border-orange-400 text-orange-600'
-            : 'border-gray-200 text-gray-700 hover:border-gray-400'
+            : 'bg-gray-50 border-gray-200 text-gray-700 hover:border-gray-400'
         }`}
       onClick={onClick}
     >
