@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ButtonProps } from "@/types/buttonProps";
+import { ButtonProps } from "@/types/ButtonProps";
 
 interface ModeButtonProps extends ButtonProps {
   isDisable?: boolean;  
