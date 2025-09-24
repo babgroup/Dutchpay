@@ -31,7 +31,6 @@ export default function PartyInfoDiv() {
             "Content-Type": "application/json",
           },
         });
-        console.log("Fetch 결과:", data);
         setInfos(data.data);
       } catch (e: unknown) {
         setMessage(e.message);
