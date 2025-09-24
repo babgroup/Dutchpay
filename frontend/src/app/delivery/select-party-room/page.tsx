@@ -1,8 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import BasicButton from '../../components/BasicButton';
 import PartyTypeCard from './components/PartyTypeCard';
+import Dropdown, { DropdownOption } from './components/Dropdown';
+import SelectDropdown from './components/Dropdown';
 
 const descriptions: { [key: string]: string } = {
     A: '파티 인원과 배달 시간이 모두 만족 되면 주문해요.',
@@ -11,6 +13,23 @@ const descriptions: { [key: string]: string } = {
 
 export default function PartySelectionPage() {
   const [selectedType, setSelectedType] = useState<string | null>(null);
+  const [selectedPartySize, setSelectedPartySize] = useState<string | null>(null);
+
+  const partySizeOptions: DropdownOption[] = [
+    { value: '2', label: '2명' },
+    { value: '3', label: '3명' },
+    { value: '4', label: '4명' },
+    { value: '5', label: '5명' },
+    { value: '6', label: '6명' },
+  ];
+
+  const isDropdownDisabled = selectedType !== 'A';
+
+  useEffect(() => {
+    if (selectedType !== 'A') {
+      setSelectedPartySize(null);
+    }
+  }, [selectedType]);
 
   return (
     <div className="flex flex-col h-full p-6">
@@ -31,16 +50,27 @@ export default function PartySelectionPage() {
       </div>
 
         {/* 안내문 */}
-      <div className={`text-center m-6 text-orange-500`}>
+      <div className={`text-center m-6 text-orange-500 h-6`}>
         {selectedType && descriptions[selectedType]}
       </div>
 
+        {/* 드롭다운 메뉴 */}
+      <div className="mt-4 w-80 mx-auto">
+        <SelectDropdown 
+            label="파티 인원 선택"
+            placeholder="인원을 선택해주세요"
+            options={partySizeOptions}
+            selectedValue={selectedPartySize}
+            onSelect={setSelectedPartySize}
+            disabled={isDropdownDisabled}
+        />
+      </div>
 
 
       <div className="flex flex-col m-10 items-center">
         <BasicButton 
           text="다음 단계로 이동" 
-          isDisable={!selectedType} 
+          isDisable={!selectedType}
         />
       </div>
     </div>
