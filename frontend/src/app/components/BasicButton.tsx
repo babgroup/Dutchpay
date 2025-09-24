@@ -1,5 +1,11 @@
 import Link from "next/link";
-import { ButtonProps } from "@/types/buttonProps";
+
+interface ButtonProps {
+  text: string;
+  size?: string; 
+  href?: string;
+  onClick?: () => void;
+};
 
 interface ModeButtonProps extends ButtonProps {
   isDisable?: boolean;  
@@ -20,7 +26,7 @@ export default function BasicButton({
     return (
       <Link
         href={href}
-        className={`${bgClass} rounded-xl hover:opacity-90 transition flex items-center justify-center ${size}`}
+        className={`${bgClass} rounded-xl hover:opacity-90 transition flex items-center justify-center m-1 ${size}`}
       >
         {text}
       </Link>
@@ -30,7 +36,7 @@ export default function BasicButton({
   return (
     <button
       onClick={onClick}
-      className={`${bgClass} rounded-xl hover:opacity-90 transition flex items-center justify-center ${size}`}
+      className={`${bgClass} rounded-xl hover:opacity-90 transition flex items-center justify-center m-1 ${size}`}
     >
       {text}
     </button>

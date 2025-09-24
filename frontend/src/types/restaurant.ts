@@ -32,3 +32,23 @@ export interface PostFoodFareRoomData {
   min_member: number;
   deadline: string;
 }
+
+export interface RoomMemberProps {
+  userId: number;
+  userName: string;
+  foodOrder: FoodItem[];
+}
+
+export interface FoodItem {
+  itemName: string;
+  quantity: number;
+  price: number;
+}
+
+export interface MyPartyData {
+  restaurantName: string;
+  minUser: number;
+  deadline: string;
+  deliveryFee: number;
+  user: RoomMemberProps[];
+}

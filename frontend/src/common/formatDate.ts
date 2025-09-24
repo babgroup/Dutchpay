@@ -10,3 +10,13 @@ export const formatDate = (isoString: string) => {
 
   return `${mm}월 ${dd}일 ${hh}:${min}`;
 };
+
+export const formaTime = (isoString: string) => {
+  if (!isoString) return "";
+  const date = new Date(isoString);
+  const pad = (n: number) => n.toString().padStart(2, "0");
+  const hh = pad(date.getHours());
+  const min = pad(date.getMinutes());
+
+  return `${hh}:${min}`;
+};
