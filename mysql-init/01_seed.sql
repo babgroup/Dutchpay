@@ -1,11 +1,11 @@
 USE `db`;
 
--- User 더미데이터
+-- User 더미데이터 (student_number: varchar(7) → 문자열로)
 INSERT INTO `user` (id, email, name, student_number, password, total_discount)
 VALUES
-  (1, 'alice@example.com',   'Alice',   20231234, '$2b$10$TB50LABUw2LOQFJTndZUz.zOEeibf2sH/d9pKJF/Yuy4Qg2aOZhoq', 0), -- abc123
-  (2, 'bob@example.com',     'Bob',     20235678, '$2b$10$/IazOXbqK7yl4g56uVGvFuoGV6syQ9hf8/mND/QImRTlPHTRzwDKa', 0), -- cdf456
-  (3, 'charlie@example.com', 'Charlie', 20239876, '$2b$10$gX5b9py8OAQDoq2pUOioiu2oHmFv00OZ0xYHbntkL4Tt6518M2.xO', 0); -- cdf123
+  (1, 'alice@example.com',   'Alice',   '2023123', '$2b$10$TB50LABUw2LOQFJTndZUz.zOEeibf2sH/d9pKJF/Yuy4Qg2aOZhoq', 0), -- abc123
+  (2, 'bob@example.com',     'Bob',     '2023567', '$2b$10$/IazOXbqK7yl4g56uVGvFuoGV6syQ9hf8/mND/QImRTlPHTRzwDKa', 0), -- cdf456
+  (3, 'charlie@example.com', 'Charlie', '2023987', '$2b$10$gX5b9py8OAQDoq2pUOioiu2oHmFv00OZ0xYHbntkL4Tt6518M2.xO', 0); -- cdf123
 
 -- Restaurant 더미데이터
 INSERT INTO restaurant (id, restaurant_name, address, phone_number, business_hours, delivery_fee, image_url)
@@ -34,15 +34,15 @@ VALUES
   (1, 1, 0, '주문 대기중'),
   (2, 2, 0, '결제 준비중');
 
--- FoodJoinUser 더미데이터
+-- FoodJoinUser 더미데이터 (delivery_confirmation: string → '0'로)
 INSERT INTO food_join_user (id, user_id, delivery_confirmation, food_fare_room_id)
 VALUES
-  (1, 1, 0, 1), -- Alice 참여
-  (2, 2, 0, 1), -- Bob 참여
-  (3, 2, 0, 2), -- Bob 참여
-  (4, 3, 0, 2); -- Charlie 참여
+  (1, 1, '0', 1), -- Alice 참여
+  (2, 2, '0', 1), -- Bob 참여
+  (3, 2, '0', 2), -- Bob 참여
+  (4, 3, '0', 2); -- Charlie 참여
 
--- FoodOrder 더미데이터
+-- FoodOrder 더미데이터 (변경 없음)
 INSERT INTO food_order (id, food_item_id, quantity, food_join_user_id)
 VALUES
   (1, 1, 1, 1), -- Alice: Pepperoni Pizza

@@ -7,14 +7,14 @@ export class User {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
+    @Column({ unique: true })
     email: string;
 
     @Column()
     name: string;
 
-    @Column({ type: 'int', unsigned: true })
-    studentNumber: number;
+    @Column({ type: 'varchar', length: 7, unique: true })
+    studentNumber: string;
 
     @Column({ select: false })
     password: string;

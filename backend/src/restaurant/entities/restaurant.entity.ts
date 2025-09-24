@@ -1,8 +1,9 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, Unique } from 'typeorm';
 import { FoodItem } from './food-item.entity';
 import { FoodFareRoom } from './food-fare-room.entity';
 
 @Entity()
+@Unique(['restaurantName', 'phoneNumber'])
 export class Restaurant {
   @PrimaryGeneratedColumn()
   id: number;

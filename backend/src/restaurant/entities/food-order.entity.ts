@@ -1,7 +1,9 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, Unique } from 'typeorm';
 import { FoodItem } from './food-item.entity';
 import { FoodJoinUser } from './food-join-user.entity';
+
 @Entity()
+@Unique(['foodJoinUser', 'foodItem'])
 export class FoodOrder {
   @PrimaryGeneratedColumn()
   id: number;

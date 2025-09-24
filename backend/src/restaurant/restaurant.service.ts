@@ -38,7 +38,6 @@ export class RestaurantService {
     const foodJoinUser = this.foodJoinUserRepo.create({
       user: { id: userId },
       foodFareRoom: savedRoom,
-      deliveryConfirmation: 0,
       foodOrders: [],
     });
     await this.foodJoinUserRepo.save(foodJoinUser);

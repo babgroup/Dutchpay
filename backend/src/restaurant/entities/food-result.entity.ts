@@ -11,7 +11,7 @@ export class FoodResult {
   })
   foodFareRoom: FoodFareRoom;
 
-  @Column()
+  @Column({ default: 0 })
   progress: number;
 
   @Column()

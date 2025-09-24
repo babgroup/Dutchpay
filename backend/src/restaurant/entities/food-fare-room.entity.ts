@@ -4,6 +4,7 @@ import {
   Column,
   OneToMany,
   ManyToOne,
+  Unique,
 } from 'typeorm';
 import { FoodResult } from './food-result.entity';
 import { Restaurant } from './restaurant.entity';
@@ -11,6 +12,7 @@ import { FoodJoinUser } from './food-join-user.entity';
 import { User } from 'src/user/entities/user.entity';
 
 @Entity()
+@Unique(['creatorUser', 'restaurant', 'deadline'])
 export class FoodFareRoom {
   @PrimaryGeneratedColumn()
   id: number;
