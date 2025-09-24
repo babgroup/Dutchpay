@@ -1,13 +1,12 @@
 import TopHeader from "../components/TopHeader";
 
-export default function TopLayout({ children, pageTitle }:Readonly<{
-  children: React.ReactNode;
-  pageTitle: string;
-}>) {
+export default function TopLayout({ children, pageTitle }: Readonly<{ children: React.ReactNode; pageTitle: string }>) {
   return (
-    <div className="min-h-screen bg-beige-100 font-sans">
+    <div className="bg-beige-100 font-sans flex flex-col">
       <TopHeader pageTitle={pageTitle} />
-      <main className="p-4">{children}</main>
+      <main className="flex-1 overflow-auto">
+        {children}
+      </main>
     </div>
   );
 }

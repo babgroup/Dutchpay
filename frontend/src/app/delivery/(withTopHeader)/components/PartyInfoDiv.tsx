@@ -52,7 +52,7 @@ export default function PartyInfoDiv() {
 
   return (
     <div className="w-full flex flex-col items-center justify-center">
-      <p>{infos.restaurantName} | 주문 시간 : {formaTime(infos.deadline)}</p>
+      <p className="mb-2">{infos.restaurantName} | 주문 시간 : {formaTime(infos.deadline)}</p>
       {(!infos.user || infos.user.length === 0) ? (
         <p className="text-center text-gray-400 mt-4">아직 파티에 참가한 사람이 없어요. 😳</p>
       ) : (

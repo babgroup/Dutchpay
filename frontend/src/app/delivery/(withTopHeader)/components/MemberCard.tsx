@@ -12,10 +12,10 @@ export default function MemberCard({
   );
 
   return (
-    <div className="bg-white rounded-2xl shadow-lg px-6 py-4 w-full max-w-xs flex flex-col gap-2 m-4 border border-gray-200">
+    <div className="bg-white rounded-2xl shadow-lg px-6 py-4 w-full max-w-xs flex flex-col gap-2 m-2 border border-gray-200">
       {/* 유저 이름, 아이디 */}
       <div className="inline-flex items-center bg-gray-100 rounded-md px-3 py-0.5 text-base font-medium text-gray-700 w-fit mb-1 text-center">
-        <span className="mr-2">{userId} {userName}</span>
+        <span className="">{userId} {userName}</span>
       </div>
 
       {/* 음식 주문 내역 */}
@@ -29,7 +29,6 @@ export default function MemberCard({
 
       <hr className="my-2 border-0.5 border-gray-200" />
 
-      {/* 하단 */}
       <div className="flex items-center justify-between">
         <button className="text-xs text-gray-400 underline underline-offset-2">
           메뉴 변경
