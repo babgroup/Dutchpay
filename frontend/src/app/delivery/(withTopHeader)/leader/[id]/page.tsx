@@ -14,8 +14,8 @@ export default function MyPartyPage() {
       </div>
       <div className="w-full flex flex-col items-center p-4">
         <BasicButton text="메뉴 변경 요청하기"/>
-        <BasicButton text="계좌번호 공개하기"/>
-        <Link className="mt-2 text-gray-300" href="파티해산하기">
+        <BasicButton isDisable={true} text="계좌번호 공개하기"/>
+        <Link className="mt-2 text-gray-300" href="파티해산하기"> {/* href 변경 필요 */}
           파티 해산하기
         </Link>
       </div>
