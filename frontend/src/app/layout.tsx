@@ -8,10 +8,9 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({
-  children, pageTitle
+  children
 }: Readonly<{
   children: React.ReactNode;
-  pageTitle: string;
 }>) {
   return (
     <html lang="kr">
