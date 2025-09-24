@@ -60,8 +60,8 @@ export default function PartyInfoDiv() {
           <MemberCard
             key={member.userId}
             userId={member.userId}
-            userName="김김진"
-            foodOrder={["hi", "hi"]}
+            userName={member.userName}
+            foodOrder={member.foodOrder}
           />
         ))
       )}

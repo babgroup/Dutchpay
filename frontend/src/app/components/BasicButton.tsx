@@ -1,5 +1,11 @@
 import Link from "next/link";
-import { ButtonProps } from "@/types/ButtonProps";
+
+interface ButtonProps {
+  text: string;
+  size?: string; 
+  href?: string;
+  onClick?: () => void;
+};
 
 interface ModeButtonProps extends ButtonProps {
   isDisable?: boolean;  

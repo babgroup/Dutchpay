@@ -1,8 +1,9 @@
 import BasicButton from "@/app/components/BasicButton";
 import PartyInfoDiv from "../../components/PartyInfoDiv"
 import Link from "next/link";
+
 export const metadata = {
-  title: "소개 페이지",
+  title: "내 파티",
 };
 
 export default function MyPartyPage() {
