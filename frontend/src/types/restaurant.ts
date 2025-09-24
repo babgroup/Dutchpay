@@ -2,7 +2,7 @@ export interface CurrentRoom {
 	id: number,
 	restaurantName: string,
 	deliveryFee: number,
-	maxUser: number,
+	minUser: number,
 	currentUsers: number,
 	deadline: string
 	imageUrl: string,
@@ -12,7 +12,7 @@ export interface RoomListProps {
 	id: number,
 	restaurantName: string,
 	deliveryFee: number,
-	maxUser: number,
+	minUser: number,
 	currentUsers: number,
 	deadline: string
 	imageUrl: string,
