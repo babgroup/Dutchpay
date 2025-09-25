@@ -7,7 +7,7 @@ Next.js(프론트) + NestJS(백엔드) + MySQL을 사용한 글로벌캠퍼스 �
 ### 1) 레포 클론
 ```bash
 git clone https://github.com/babgroup/Dutchpay
-cd babgroup-dutchPay
+cd Dutchpay
 .env 생성 후 작성
 ```
 ### 2.컨테이너 실행

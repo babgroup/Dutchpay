@@ -55,7 +55,7 @@ export class LeaderController {
   
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth('access-token')
-  @ApiOperation({ summary: '주문 성공', description: '해당 방 번호를 param으로 받아 jwt토큰 인증 후 상태를 주문 성공으로 변경' })
+  @ApiOperation({ summary: '주문 중', description: '해당 방 번호를 param으로 받아 jwt토큰 인증 후 상태를 주문 성공으로 변경' })
   @ApiParam({ name: 'id', type: Number, description: '업데이트할 방 ID', example: 1, })
   @ApiOkResponse({
     description: '업데이트 결과 메시지',
@@ -76,7 +76,7 @@ export class LeaderController {
 
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth('access-token')
-  @ApiOperation({ summary: '주문 중', description: '해당 방 번호를 param으로 받아 jwt토큰 인증 후 상태를 주문 성공으로 변경' })
+  @ApiOperation({ summary: '주문 성공', description: '해당 방 번호를 param으로 받아 jwt토큰 인증 후 상태를 주문 성공으로 변경' })
   @ApiParam({ name: 'id', type: Number, description: '업데이트할 방 ID', example: 1, })
   @ApiOkResponse({
     description: '업데이트 결과 메시지',
