@@ -46,6 +46,44 @@ export class LeaderService {
     };
   }
 
+  async patch1Progress(id: string, userId: number): Promise<void> {
+    const roomProgress = await this.foodResultRepo.findOne({
+      where: {foodFareRoom: {id: +id}},
+      relations: ['foodFareRoom', 'foodFareRoom.creatorUser'],
+    })
+
+    if(!roomProgress) {
+      throw new NotFoundException(`foodResult에 ${id}번 방이 존재하지 않음`)
+    }
+
+    if (roomProgress.foodFareRoom.creatorUser.id !== userId) {
+      throw new ForbiddenException('본인이 생성한 방만 상태를 변경할 수 있습니다.');
+    }
+
+    roomProgress.progress = 1;
+
+    await this.foodResultRepo.save(roomProgress)
+  }
+
+  async patch2Progress(id: string, userId: number): Promise<void> {
+    const roomProgress = await this.foodResultRepo.findOne({
+      where: {foodFareRoom: {id: +id}},
+      relations: ['foodFareRoom', 'foodFareRoom.creatorUser'],
+    })
+
+    if(!roomProgress) {
+      throw new NotFoundException(`foodResult에 ${id}번 방이 존재하지 않음`)
+    }
+
+    if (roomProgress.foodFareRoom.creatorUser.id !== userId) {
+      throw new ForbiddenException('본인이 생성한 방만 상태를 변경할 수 있습니다.');
+    }
+
+    roomProgress.progress = 2;
+
+    await this.foodResultRepo.save(roomProgress)
+  }
+
   async patch3Progress(id: string, userId: number): Promise<void> {
     const roomProgress = await this.foodResultRepo.findOne({
       where: {foodFareRoom: {id: +id}},
@@ -61,25 +99,6 @@ export class LeaderService {
     }
 
     roomProgress.progress = 3;
-
-    await this.foodResultRepo.save(roomProgress)
-  }
-
-  async patch4Progress(id: string, userId: number): Promise<void> {
-    const roomProgress = await this.foodResultRepo.findOne({
-      where: {foodFareRoom: {id: +id}},
-      relations: ['foodFareRoom', 'foodFareRoom.creatorUser'],
-    })
-
-    if(!roomProgress) {
-      throw new NotFoundException(`foodResult에 ${id}번 방이 존재하지 않음`)
-    }
-
-    if (roomProgress.foodFareRoom.creatorUser.id !== userId) {
-      throw new ForbiddenException('본인이 생성한 방만 상태를 변경할 수 있습니다.');
-    }
-
-    roomProgress.progress = 4;
 
     await this.foodResultRepo.save(roomProgress)
   }

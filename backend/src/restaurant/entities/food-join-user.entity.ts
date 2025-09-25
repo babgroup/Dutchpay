@@ -4,14 +4,12 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
   ManyToOne,
-  Unique,
 } from 'typeorm';
 import { FoodOrder } from './food-order.entity';
 import { FoodFareRoom } from './food-fare-room.entity';
 import { User } from 'src/user/entities/user.entity';
 
 @Entity()
-@Unique(['user', 'foodFareRoom'])
 export class FoodJoinUser {
   @PrimaryGeneratedColumn()
   id: number;

@@ -52,7 +52,7 @@ export class LeaderController {
       data: result,
     };
   }
-
+  
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: '주문 성공', description: '해당 방 번호를 param으로 받아 jwt토큰 인증 후 상태를 주문 성공으로 변경' })
@@ -61,16 +61,37 @@ export class LeaderController {
     description: '업데이트 결과 메시지',
     content: {
       'application/json': {
-        example: { message: 'foodFareRoom ID 1번 방에서 progress 3으로 변경' },
+        example: { message: 'foodFareRoom ID 1번 방에서 progress 1으로 변경' },
       },
     },
   })
-  @Patch('update-progress/:id')
-  async patch3Progress(@Param('id') id: string, @Req() req: Request) {
-    await this.leaderService.patch3Progress(id, req.user.id)
+  @Patch('update-progress1/:id')
+  async patch1Progress(@Param('id') id: string, @Req() req: Request) {
+    await this.leaderService.patch1Progress(id, req.user.id)
 
     return {
-      message: `foodFareRoom ID ${id}번 방에서 progress 3으로 변경`,
+      message: `foodFareRoom ID ${id}번 방에서 progress 1으로 변경`,
+    };
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: '주문 중', description: '해당 방 번호를 param으로 받아 jwt토큰 인증 후 상태를 주문 성공으로 변경' })
+  @ApiParam({ name: 'id', type: Number, description: '업데이트할 방 ID', example: 1, })
+  @ApiOkResponse({
+    description: '업데이트 결과 메시지',
+    content: {
+      'application/json': {
+        example: { message: 'foodFareRoom ID 1번 방에서 progress 2으로 변경' },
+      },
+    },
+  })
+  @Patch('update-progress2/:id')
+  async patch2Progress(@Param('id') id: string, @Req() req: Request) {
+    await this.leaderService.patch2Progress(id, req.user.id)
+
+    return {
+      message: `foodFareRoom ID ${id}번 방에서 progress 2으로 변경`,
     };
   }
 
@@ -82,16 +103,16 @@ export class LeaderController {
     description: '업데이트 결과 메시지',
     content: {
       'application/json': {
-        example: { message: 'foodFareRoom ID 1번 방에서 progress 4로 변경' },
+        example: { message: 'foodFareRoom ID 1번 방에서 progress 3로 변경' },
       },
     },
   })
-  @Patch('break-up/:id')
-  async patch4progress(@Param('id') id: string, @Req() req: Request) {
-    await this.leaderService.patch4Progress(id, req.user.id)
+  @Patch('update-progress3/:id')
+  async patch3progress(@Param('id') id: string, @Req() req: Request) {
+    await this.leaderService.patch3Progress(id, req.user.id)
 
     return {
-      message: `foodFareRoom ID ${id}방에서 progress 4로 변경`,
+      message: `foodFareRoom ID ${id}방에서 progress 3로 변경`,
     };
   }
 }

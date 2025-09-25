@@ -126,7 +126,6 @@ CREATE TABLE IF NOT EXISTS food_order (
   created_at         DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   INDEX idx_order_item_id (food_item_id),
   INDEX idx_order_join_user_id (food_join_user_id),
-  UNIQUE KEY uq_order_joinuser_item (food_join_user_id, food_item_id),
   CONSTRAINT fk_order__item
     FOREIGN KEY (food_item_id) REFERENCES food_item(id)
     ON DELETE CASCADE ON UPDATE CASCADE,
