@@ -5,6 +5,7 @@ import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { Request } from 'express';
 import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam } from '@nestjs/swagger';
 import { CreateFoodOrderDto } from './dto/create-food-order.dto';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('restaurant')
 export class RestaurantController {
@@ -35,7 +36,7 @@ export class RestaurantController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: '주문할 메뉴선택' })
-  @ApiParam({ name: 'roomId', type: Number, description: '참여할 방 번호', example: 1, })
+  @ApiParam({ name: 'roomId', type: String, description: '참여할 방 번호', example: 1, })
   @Post('food-order/:roomId')
   async createFoodOrder(@Param('roomId') roomId: string, @Body() dto: CreateFoodOrderDto, @Req() req: Request) {
     return await this.restaurantService.createFoodOrder(+roomId, dto, req.user.id)
@@ -115,10 +116,18 @@ export class RestaurantController {
       },
     },
   })
-  @ApiParam({ name: 'id', type: Number, example: 1 })
+  @ApiParam({ name: 'roomId', type: String, example: 1 })
   @Get('user-list/:id')
-  async getUserInRoom(@Param('id') id: string) {
-    const result = await this.restaurantService.getUserInRoom(id);
-    return { message: `${id}방에 참여한 유저 목록`, data: result };
+  async getUserInRoom(@Param('roomId') roomId: string) {
+    const result = await this.restaurantService.getUserInRoom(+roomId);
+    return { message: `${roomId}방에 참여한 유저 목록`, data: result };
+  }
+  
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('access-token')
+  @Get('progress/:roomId')
+  async getProgress(@Param('roomId') roomId: string, @Req() req: Request) {
+    const result = await this.restaurantService.getProgress(+roomId, req.user.id);
+    return { message: `${roomId}방의 현재 progress`, data: {result} };
   }
 }

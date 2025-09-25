@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { ConflictException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { FoodFareRoom } from './entities/food-fare-room.entity';
@@ -25,29 +25,36 @@ export class RestaurantService {
   ) {}
 
   async createFoodFareRoom(dto: FoodFareRoomDto, userId: number): Promise<FoodFareRoom> {
-    const room = this.foodFareRoomRepo.create({
-      restaurant: { id: dto.restaurantId },
-      creatorUser: { id: userId },
-      deadline: new Date(dto.deadline),
-      minMember: dto.minMember,
-    });
-    const savedRoom = await this.foodFareRoomRepo.save(room);
+    try {
+      const room = this.foodFareRoomRepo.create({
+        restaurant: { id: dto.restaurantId },
+        creatorUser: { id: userId },
+        deadline: new Date(dto.deadline),
+        minMember: dto.minMember,
+      });
+      const savedRoom = await this.foodFareRoomRepo.save(room);
 
-    const foodResult = this.foodResultRepo.create({
-      foodFareRoom: savedRoom,
-      progress: 0,
-      description: '없음',
-    });
-    await this.foodResultRepo.save(foodResult);
+      const foodResult = this.foodResultRepo.create({
+        foodFareRoom: savedRoom,
+        progress: 0,
+        description: '없음',
+      });
+      await this.foodResultRepo.save(foodResult);
 
-    const foodJoinUser = this.foodJoinUserRepo.create({
-      user: { id: userId },
-      foodFareRoom: savedRoom,
-      foodOrders: [],
-    });
-    await this.foodJoinUserRepo.save(foodJoinUser);
+      const foodJoinUser = this.foodJoinUserRepo.create({
+        user: { id: userId },
+        foodFareRoom: savedRoom,
+        foodOrders: [],
+      });
+      await this.foodJoinUserRepo.save(foodJoinUser);
 
-    return savedRoom;
+      return savedRoom;
+    } catch (e: any) {
+      if (e?.errno === 1062) {
+        throw new ConflictException('이미 동일한 조건의 방이 존재합니다.');
+      }
+      throw e;
+    }
   }
 
   async createFoodOrder(roomId: number, dto: CreateFoodOrderDto, userId: number) {
@@ -145,9 +152,9 @@ export class RestaurantService {
     }));
   }
 
-  async getUserInRoom(id: string): Promise<UserResponseType[]> {
+  async getUserInRoom(roomId: number): Promise<UserResponseType[]> {
     const rows = await this.foodJoinUserRepo.find({
-      where: { foodFareRoom: { id: +id } },
+      where: { foodFareRoom: { id: roomId } },
       relations: ['user', 'foodFareRoom', 'foodFareRoom.creatorUser'],
     });
 
@@ -157,5 +164,21 @@ export class RestaurantService {
       student_number: j.user.studentNumber,
       is_creator: j.user.id === j.foodFareRoom.creatorUser.id,
     }));
+  }
+
+  async getProgress(roomId: number, userId: number) {
+    const isMember = await this.foodJoinUserRepo.exist({
+      where: { foodFareRoom: { id: roomId }, user: { id: userId } },
+    });
+
+    if (!isMember) throw new ForbiddenException('해당 방에 참여하지 않았습니다.');
+
+    const currentProgress = await this.foodResultRepo.findOne({
+      where: { foodFareRoom: { id: roomId } },
+      select: { id: true, progress: true,  }
+    })
+    if (!currentProgress) throw new NotFoundException('progress가 존재하지 않습니다.')
+    
+    return currentProgress.progress
   }
 }
