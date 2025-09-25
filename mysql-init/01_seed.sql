@@ -25,8 +25,8 @@ VALUES
 -- FoodFareRoom 더미데이터
 INSERT INTO food_fare_room (id, creator_user_id, restaurant_id, deadline, min_member)
 VALUES
-  (1, 1, 1, '2025-07-07 15:30:00', 3),
-  (2, 2, 2, '2025-07-08 18:00:00', 2);
+  (1, 1, 1, '2026-07-07 15:30:00', 3),
+  (2, 2, 2, '2026-07-08 18:00:00', 2);
 
 -- FoodResult 더미데이터
 INSERT INTO food_result (id, food_fare_room_id, progress, description)
