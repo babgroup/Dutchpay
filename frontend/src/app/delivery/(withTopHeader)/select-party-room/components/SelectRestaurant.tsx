@@ -1,18 +1,16 @@
-import BasicButton from "@/app/components/BasicButton";
+'use client'
 
-interface SelectRestaurantProps {
-    onBack: () => void;
-    onNext: () => void;
-    selectedType: string | null;
-    selectedPartySize: string | null;
-}
+import BasicButton from "@/app/components/BasicButton";
+import { useEffect, useState } from "react";
+import RestaurantListDiv from "./RestaurantListDiv";
 
 export default function SelectRestaurant({
     onBack,
     onNext,
     selectedType,
-    selectedPartySize,
-}: SelectRestaurantProps) {
+    selectedPartySize
+}) {
+    const [selectedId, setSelectedId] = useState<string | null>(null);
     
     const getDescription = () => {
         if (selectedType === 'A') {
@@ -29,6 +27,10 @@ export default function SelectRestaurant({
             <div className="flex flex-col justify-center items-center m-4">
                 <p className="text-xl text-black">{getDescription()}</p>
                 <p className="text-xs text-gray-400 m-4">* 해당 목록은 영업시간에 따른 배달 가능 매장 목록입니다. 가게 사정 등으로 현재 배달이 불가능 한 곳이 있을 수 있으니 직접 확인 해주세요.</p>
+            </div>
+
+            <div>
+                <RestaurantListDiv />
             </div>
             
             <div className="flex flex-col m-10 items-center">
