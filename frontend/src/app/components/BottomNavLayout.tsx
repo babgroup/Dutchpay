@@ -16,13 +16,21 @@ export default function BottomNavLayout() {
       return;
     }
     try {
-      const data = await Fetch("/auth/me", {method: "GET"});
-      if (data && !data.error) {
-        router.push(`/user/${data.id}`); // 응답 내 유저 id 사용
+      const res = await Fetch("/auth/me", {method: "GET"});
+
+      if (res.statusCode === 401) {
+        localStorage.removeItem("jwtToken");
+        router.push("/login");
+        return;
+      }
+      if (res && !res.error) {
+        router.push(`/user/${res.id}`); // 응답 내 유저 id 사용
       } else {
+        localStorage.removeItem("jwtToken");
         router.push("/login"); 
       }
     } catch (error) {
+      localStorage.removeItem("jwtToken");
       router.push("/login");
     }
   };
