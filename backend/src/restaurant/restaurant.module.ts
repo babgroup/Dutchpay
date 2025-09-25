@@ -10,9 +10,11 @@ import { LeaderController } from './leader/leader.controller';
 import { LeaderService } from './leader/leader.service';
 import { MemberController } from './member/member.controller';
 import { MemberService } from './member/member.service';
+import { FoodOrder } from './entities/food-order.entity';
+import { FoodItem } from './entities/food-item.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Restaurant, FoodFareRoom, FoodResult, FoodJoinUser,])],
+  imports: [TypeOrmModule.forFeature([Restaurant, FoodFareRoom, FoodResult, FoodJoinUser, FoodOrder, FoodItem])],
   controllers: [RestaurantController, LeaderController, MemberController],
   providers: [RestaurantService, LeaderService, MemberService],
 })

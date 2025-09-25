@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsInt, IsISO8601 } from 'class-validator';
+import { IsInt, IsISO8601, Min } from 'class-validator';
 
 export class FoodFareRoomDto {
   @ApiProperty({ type: Number, description: '식당 번호', required: true, example: 1 })
@@ -7,6 +7,7 @@ export class FoodFareRoomDto {
   restaurantId: number;
 
   @ApiProperty({ type: Number, description: '주문을 시작하기 위해 필요한 최소 인원', required: true, example: 4 })
+  @Min(1)
   @IsInt()
   minMember: number;
 

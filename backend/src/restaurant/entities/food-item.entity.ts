@@ -4,11 +4,13 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
   OneToMany,
+  Unique,
 } from 'typeorm';
 import { Restaurant } from './restaurant.entity';
 import { FoodOrder } from './food-order.entity';
 
 @Entity()
+@Unique(['restaurant', 'itemName'])
 export class FoodItem {
   @PrimaryGeneratedColumn()
   id: number;

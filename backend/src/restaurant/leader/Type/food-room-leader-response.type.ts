@@ -7,7 +7,7 @@ class FoodOrderInformationType {
 }
 
 class JoinUserInformationType {
-  userId: number;
+  userId: string;
   userName: string;
   @Type(() => FoodOrderInformationType)
   foodOrder: FoodOrderInformationType[];

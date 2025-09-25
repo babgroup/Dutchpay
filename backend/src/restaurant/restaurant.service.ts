@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { FoodFareRoom } from './entities/food-fare-room.entity';
@@ -9,6 +9,9 @@ import { FoodFareRoomDto } from './dto/create-food-fare-room.dto';
 import { CurrentFoodRoomsResponseType } from './Type/current-food-rooms-response.type';
 import { ListResponseType } from './Type/list-response.type';
 import { UserResponseType } from './Type/user-list-response.type';
+import { CreateFoodOrderDto } from './dto/create-food-order.dto';
+import { FoodOrder } from './entities/food-order.entity';
+import { FoodItem } from './entities/food-item.entity';
 
 @Injectable()
 export class RestaurantService {
@@ -17,6 +20,8 @@ export class RestaurantService {
     @InjectRepository(FoodResult) private readonly foodResultRepo: Repository<FoodResult>,
     @InjectRepository(FoodJoinUser) private readonly foodJoinUserRepo: Repository<FoodJoinUser>,
     @InjectRepository(Restaurant) private readonly restaurantRepo: Repository<Restaurant>,
+    @InjectRepository(FoodOrder) private readonly foodOrderRepo: Repository<FoodOrder>,
+    @InjectRepository(FoodItem) private readonly foodItemRepo: Repository<FoodItem>,
   ) {}
 
   async createFoodFareRoom(dto: FoodFareRoomDto, userId: number): Promise<FoodFareRoom> {
@@ -38,12 +43,74 @@ export class RestaurantService {
     const foodJoinUser = this.foodJoinUserRepo.create({
       user: { id: userId },
       foodFareRoom: savedRoom,
-      deliveryConfirmation: 0,
       foodOrders: [],
     });
     await this.foodJoinUserRepo.save(foodJoinUser);
 
     return savedRoom;
+  }
+
+  async createFoodOrder(roomId: number, dto: CreateFoodOrderDto, userId: number) {
+    const room = await this.foodFareRoomRepo.findOne({
+      where: { id: roomId },
+      relations: ['restaurant'],
+    });
+    if (!room) throw new NotFoundException('방을 찾을 수 없습니다.');
+
+    const result = await this.foodResultRepo.findOne({
+      where: { foodFareRoom: { id: room.id }, progress: 0 },
+    });
+    if (!result) throw new ForbiddenException('이미 진행이 종료된 방입니다.');
+    if (room.deadline <= new Date()) {
+      throw new ForbiddenException('마감 시간이 지나 주문할 수 없습니다.');
+    }
+
+    const join = await this.foodJoinUserRepo.findOne({
+      where: { foodFareRoom: { id: room.id }, user: { id: userId } },
+      relations: ['foodFareRoom', 'user'],
+    });
+    if (!join) throw new ForbiddenException('해당 방에 참여하지 않았습니다.');
+
+    const foodItem = await this.foodItemRepo.findOne({
+      where: { id: dto.foodItemId },
+      relations: ['restaurant'],
+    });
+    if (!foodItem) throw new NotFoundException('메뉴(FoodItem)를 찾을 수 없습니다.');
+    if (foodItem.restaurant.id !== room.restaurant.id) {
+      throw new ForbiddenException('방의 레스토랑과 다른 메뉴는 주문할 수 없습니다.');
+    }
+
+    const created = this.foodOrderRepo.create({
+      foodJoinUser: { id: join.id },
+      foodItem: { id: foodItem.id },
+      quantity: dto.quantity,
+    });
+    await this.foodOrderRepo.save(created);
+
+    const myOrders = await this.foodOrderRepo.find({
+      where: { foodJoinUser: { id: join.id } },
+      relations: ['foodItem'],
+      order: { id: 'ASC' },
+    });
+
+    const items = myOrders.map(o => ({
+      orderItemId: o.id,
+      foodItemId: o.foodItem.id,
+      itemName: o.foodItem.itemName,
+      unitPrice: o.foodItem.price,
+      quantity: o.quantity,
+      subtotal: o.foodItem.price * o.quantity,
+    }));
+    const myTotal = items.reduce((s, it) => s + it.subtotal, 0);
+
+    return {
+      message: '주문이 저장되었습니다.',
+      data: {
+        foodJoinUserId: join.id,
+        myOrderItems: items,
+        myTotal,
+      },
+    };
   }
 
   async getCurrentRooms(): Promise<CurrentFoodRoomsResponseType[]> {

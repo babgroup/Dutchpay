@@ -3,14 +3,14 @@ import { RestaurantService } from './restaurant.service';
 import { FoodFareRoomDto } from './dto/create-food-fare-room.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { Request } from 'express';
-import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam } from '@nestjs/swagger';
+import { CreateFoodOrderDto } from './dto/create-food-order.dto';
 
 @Controller('restaurant')
 export class RestaurantController {
   constructor(private readonly restaurantService: RestaurantService) {}
 
   @UseGuards(JwtAuthGuard)
-  @Post('food-fare-room')
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'dutchPay 방 생성', description: 'foodFareRoom을 생성한다. jwt토큰을 이용해 creatorUser에 자신의 Id를 넣는다.' })
   @ApiCreatedResponse({
@@ -27,11 +27,20 @@ export class RestaurantController {
       },
     },
   })
+  @Post('food-fare-room')
   async createFoodFareRoom(@Body() dto: FoodFareRoomDto, @Req() req: Request) {
     return await this.restaurantService.createFoodFareRoom(dto, req.user.id);
   }
 
-  @Get('current-rooms')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: '주문할 메뉴선택' })
+  @ApiParam({ name: 'roomId', type: Number, description: '참여할 방 번호', example: 1, })
+  @Post('food-order/:roomId')
+  async createFoodOrder(@Param('roomId') roomId: string, @Body() dto: CreateFoodOrderDto, @Req() req: Request) {
+    return await this.restaurantService.createFoodOrder(+roomId, dto, req.user.id)
+  }
+
   @ApiOperation({ summary: '현재 생성되어 있는 방 목록', description: 'jwt토큰 검사 없이 누구나 볼 수 있음.' })
   @ApiOkResponse({
     description: '현재 진행중(progress=0)인 방 리스트',
@@ -63,12 +72,12 @@ export class RestaurantController {
       },
     },
   })
+  @Get('current-rooms')
   async getCurrentRooms() {
     const result = await this.restaurantService.getCurrentRooms();
     return { message: '현재 생성된 방 전체', data: result };
   }
 
-  @Get('list')
   @ApiOperation({ summary: '식당 전체 목록', description: 'jwt토큰 검사 없이 누구나 볼 수 있음.' })
   @ApiOkResponse({
     description: '레스토랑 전체 리스트',
@@ -85,12 +94,12 @@ export class RestaurantController {
       },
     },
   })
+  @Get('list')
   async getRestaurantList() {
     const result = await this.restaurantService.getRestaurantList();
     return { message: '레스토랑 목록 전체', data: result };
   }
 
-  @Get('user-list/:id')
   @ApiOperation({ summary: '선택한 방에 있는 유저 목록', description: 'jwt토큰 검사 없이 누구나 볼 수 있음.' })
   @ApiOkResponse({
     description: '해당 방의 참여 유저 리스트',
@@ -106,6 +115,8 @@ export class RestaurantController {
       },
     },
   })
+  @ApiParam({ name: 'id', type: Number, example: 1 })
+  @Get('user-list/:id')
   async getUserInRoom(@Param('id') id: string) {
     const result = await this.restaurantService.getUserInRoom(id);
     return { message: `${id}방에 참여한 유저 목록`, data: result };

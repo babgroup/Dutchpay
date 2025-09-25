@@ -17,8 +17,8 @@ export class FoodJoinUser {
   @ManyToOne(() => User, (user) => user.foodJoinUsers, { onDelete: 'CASCADE' })
   user: User;
 
-  @Column()
-  deliveryConfirmation: number;
+  @Column({ default: '0' })
+  deliveryConfirmation: string;
 
   @ManyToOne(() => FoodFareRoom, (foodFareRoom) => foodFareRoom.foodJoinUsers, {
     onDelete: 'CASCADE',

@@ -1,6 +1,6 @@
 export class UserResponseType {
-  user_id: number;
+  user_id: string;
   name: string;
-  student_number: number;
+  student_number: string;
   is_creator: boolean;
 }
