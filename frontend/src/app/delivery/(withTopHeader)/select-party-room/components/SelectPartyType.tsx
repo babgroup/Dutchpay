@@ -23,6 +23,7 @@ export default function SelectPartyType({
     onNext,
 }: SelectPartyTypeProps) {
     const isDropdownDisabled = selectedType !== 'A';
+    const isButtonDisabled = !selectedType || (selectedType === 'A' && !selectedPartySize);
   
     return (
         <div className="flex flex-col h-full p-6">
@@ -66,8 +67,8 @@ export default function SelectPartyType({
         <div className="flex flex-col m-10 items-center">
             <BasicButton 
                 text="다음 단계로 이동" 
-                isDisable={!selectedType}
-                onClick={onNext}
+                isDisable={isButtonDisabled}
+                onClick={isButtonDisabled ? () => {} : onNext}
             />
         </div>
     </div>
