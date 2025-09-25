@@ -5,6 +5,7 @@ import BasicButton from '../../../components/BasicButton';
 import PartyTypeCard from './components/PartyTypeCard';
 import Dropdown, { DropdownOption } from './components/Dropdown';
 import SelectDropdown from './components/Dropdown';
+import Link from 'next/link';
 
 const descriptions: { [key: string]: string } = {
     A: '파티 인원과 배달 시간이 모두 만족 되면 주문해요.',
@@ -68,10 +69,12 @@ export default function PartySelectionPage() {
 
 
       <div className="flex flex-col m-10 items-center">
-        <BasicButton 
-          text="다음 단계로 이동" 
-          isDisable={!selectedType}
-        />
+        <Link href="/delivery/select-restaurant">
+          <BasicButton 
+            text="다음 단계로 이동" 
+            isDisable={!selectedType}
+          />
+        </Link>
       </div>
     </div>
   );
