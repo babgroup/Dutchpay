@@ -2,10 +2,12 @@
 
 import BottomNav from "./BottomNav";
 import useFetch from "@/common/customFetch";
+import { useRouter } from "next/navigation";
 
 
 export default function BottomNavLayout() {
   const Fetch = useFetch();
+  const router = useRouter();
 
   const handleUserClick = async () => {
     const token = localStorage.getItem("jwtToken");
@@ -14,20 +16,16 @@ export default function BottomNavLayout() {
       return;
     }
     try {
-      const res = await Fetch("/auth/me", {method: "GET"});
-
-      if (res.ok) {
-        const data = await res.json();
-        window.location.href = `/user/${data.id}`; // 응답 내 유저 id 사용
+      const data = await Fetch("/auth/me", {method: "GET"});
+      if (data && !data.error) {
+        router.push(`/user/${data.id}`); // 응답 내 유저 id 사용
       } else {
-        window.location.href = "/login"; 
+        router.push("/login"); 
       }
     } catch (error) {
-      window.location.href = "/login";
+      router.push("/login");
     }
   };
-
-
 
   return (
     <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 w-1/4 h-12 bg-white rounded-3xl shadow-md flex items-center justify-around p-2">
