@@ -1,6 +1,7 @@
 'use client';
 
 import BottomNav from "./BottomNav";
+import isTokenValid from "@/common/jwdTokenVaild";
 
 export default function BottomNavLayout() {
   return (
@@ -13,7 +14,7 @@ export default function BottomNavLayout() {
         alt="user icon"
         onClick={() => {
           const token = localStorage.getItem("jwtToken");
-          if (token) {
+          if (token && isTokenValid(token)) {
             window.location.href = `/user`;
           } else {
             window.location.href = "/login";
