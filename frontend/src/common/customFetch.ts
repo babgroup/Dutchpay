@@ -2,7 +2,7 @@ const useFetch = () => {
   const customFetch = async (endpoint: string, options: RequestInit = {}) => {
     //RequestInit = {} : fetch의 두 번째 인자로 넣을 수 있는 옵션들 전부가 정의되어 있는 타입, 기본값으로 빈 객체
 
-    const BASE_URL = process.env.NEXT_PUBLIC_API_URL as string;
+    const BASE_URL = process.env.NEXT_PUBLIC_API_URL as string; //.env 파일의 변수 값 사용
     
     // local storage에서 토큰 가져오기
     const token = typeof window !== "undefined" ? localStorage.getItem("jwtToken") : null; 
