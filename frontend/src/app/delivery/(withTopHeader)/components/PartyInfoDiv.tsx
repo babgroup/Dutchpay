@@ -22,18 +22,12 @@ export default function PartyInfoDiv() {
       setLoading(true);
       setMessage('로딩 중입니다...');
       try {
-        const token = typeof window !== "undefined" ? localStorage.getItem("jwtToken") : null; //로컬스토리지에서 토큰 받아오기, 임시
-
-        // api id 임시
-        const data = await Fetch("/restaurant/leader/1", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        });
+        const data = await Fetch("/restaurant/leader/1");
         setInfos(data.data);
-      } catch (e: unknown) {
-        setMessage(e.message);
+      } catch (error) {
+        if(error instanceof Error) setMessage(error.message) 
+          //error instanceof Error 사용하면 모든 에러 객체가 true값이 되므로 모든 에러 종류에 대해 일괄적으로 처리가능(JS 표준 에러 객체, 라이브러리(axios 같은) 에러 객체 등)...
+          // = Error객체를 상속받는 모든 에러 객체가 true가 됨
         setInfos({
           restaurantName: "",
           minUser: 0,
