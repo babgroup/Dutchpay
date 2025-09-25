@@ -6,7 +6,11 @@ import useFetch from "@/common/customFetch";
 import { MyPartyData } from "@/types/restaurant";
 import { formaTime } from "@/common/formatDate";
 
-export default function PartyInfoDiv() {
+interface PartyInfoDivProps {
+  onDeadlineChange?: (deadline: string) => void; // 부모 컴포넌트에 데드라인 전달(주문버튼 버튼 활성화용)
+}
+
+export default function PartyInfoDiv({ onDeadlineChange }: PartyInfoDivProps) {
   const Fetch = useFetch();
   const [infos, setInfos] = useState<MyPartyData>({
     restaurantName: "",
@@ -24,6 +28,7 @@ export default function PartyInfoDiv() {
       try {
         const data = await Fetch("/restaurant/leader/1");
         setInfos(data.data);
+        if(onDeadlineChange) onDeadlineChange(data.data.deadline);
       } catch (error) {
         if(error instanceof Error) setMessage(error.message) 
           //error instanceof Error 사용하면 모든 에러 객체가 true값이 되므로 모든 에러 종류에 대해 일괄적으로 처리가능(JS 표준 에러 객체, 라이브러리(axios 같은) 에러 객체 등)...
@@ -50,14 +55,16 @@ export default function PartyInfoDiv() {
       {(!infos.user || infos.user.length === 0) ? (
         <p className="text-center text-gray-400 mt-2">아직 파티에 참가한 사람이 없어요. 😳</p>
       ) : (
-        infos.user.map((member) => (
-          <MemberCard
-            key={member.userId}
-            userId={member.userId}
-            userName={member.userName}
-            foodOrder={member.foodOrder}
-          />
-        ))
+        <div className="w-full h-[33vw] overflow-y-auto flex flex-col items-center">
+          {infos.user.map((member) => (
+            <MemberCard
+              key={member.userId}
+              userId={member.userId}
+              userName={member.userName}
+              foodOrder={member.foodOrder}
+            />
+          ))}
+        </div>
       )}
     </div>
   )
