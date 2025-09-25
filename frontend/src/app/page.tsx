@@ -18,7 +18,6 @@ export default function Home() {
       <div className="mt-70 w-full flex justify-center">
         <BasicButton text="배달비 아끼러 가기!" href="/delivery" />
       </div>
-
       <BottomNavLayout />
     </div>
   );
