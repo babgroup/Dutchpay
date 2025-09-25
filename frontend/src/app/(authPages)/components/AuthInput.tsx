@@ -21,7 +21,7 @@ export default function AuthInput({ type, placeholder, register, error, serverEr
         type={type}
         placeholder={placeholder}
         {...register}
-        className={`rounded-2xl h-[10vh] p-2 bg-gray-100 border border-2 focus:outline-none focus:ring-0 ${
+        className={`text-black rounded-2xl h-[10vh] p-2 bg-gray-100 border border-2 focus:outline-none focus:ring-0 ${
           hasError ? "border-amber-600" : "border-gray-100"
         }`}
       />
