@@ -5,6 +5,7 @@ import BasicButton from '../../../components/BasicButton';
 import PartyTypeCard from './components/PartyTypeCard';
 import Dropdown, { DropdownOption } from './components/Dropdown';
 import SelectDropdown from './components/Dropdown';
+import TopHeader from '../../components/TopHeader';
 
 const descriptions: { [key: string]: string } = {
     A: '파티 인원과 배달 시간이 모두 만족 되면 주문해요.',
@@ -33,7 +34,9 @@ export default function PartySelectionPage() {
 
   return (
     <div className="flex flex-col h-full p-6">
-        <div className="mb-37" />
+      {/* title (layout.tsx) 수정 필요 */}
+      {/* <TopHeader pageTitle='파티 타입 선택' /> */}
+      <div className="mb-10" />
 
       {/* 카드 */}
       <div className="flex flex-col gap-4">
@@ -55,15 +58,17 @@ export default function PartySelectionPage() {
       </div>
 
         {/* 드롭다운 메뉴 */}
-      <div className="mt-4 w-80 mx-auto">
-        <SelectDropdown 
-            label="파티 인원 선택"
-            placeholder="인원을 선택해주세요"
-            options={partySizeOptions}
-            selectedValue={selectedPartySize}
-            onSelect={setSelectedPartySize}
-            disabled={isDropdownDisabled}
-        />
+      <div className="mt-4 w-80 h-[92px] mx-auto">
+        {selectedType === 'A' && (
+          <SelectDropdown 
+              label="파티 인원 선택"
+              placeholder="인원을 선택해주세요"
+              options={partySizeOptions}
+              selectedValue={selectedPartySize}
+              onSelect={setSelectedPartySize}
+              disabled={isDropdownDisabled}
+          />
+        )}
       </div>
 
 
