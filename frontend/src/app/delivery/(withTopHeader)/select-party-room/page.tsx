@@ -51,6 +51,8 @@ export default function PartySelectionPage() {
         <SelectRestaurant
           onNext={goNextStep}
           onBack={goPreviousStep}
+          selectedPartySize={selectedPartySize}
+          selectedType={selectedType}
         />
       )}
       
