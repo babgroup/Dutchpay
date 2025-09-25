@@ -14,8 +14,8 @@ const useFetch = () => {
         "Content-Type": "application/json",
         ...(token ? { Authorization: `Bearer ${token}` } : {}), // 토큰이 있으면 헤더에 토큰 객체 추가, 없으면 빈 객체
       },
-      // credentials: "include",
-      // cache: "no-cache",
+      // credentials: "include", // 쿠키 전송
+      // cache: "no-cache",      // 항상 최신 데이터 CORS오류 때문에 주석
     };
 
     const mergedOptions = { ...defaultOptions, ...options }; //기본 옵션과 선언한 옵션 합치기
