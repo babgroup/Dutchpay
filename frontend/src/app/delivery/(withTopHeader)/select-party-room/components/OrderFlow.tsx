@@ -1,17 +1,18 @@
 'use client'
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import SelectPartyType from './SelectPartyType';
 import SelectRestaurant from './SelectRestaurant';
 import SelectTime from './SelectTime';
-import type { DropdownOption } from './Dropdown'; 
+import type { DropdownOption } from './Dropdown';
+import type { RestaurantList } from '@/types/restaurant';
+
+type PartySelection = { type: 'A'; partySize: number } | { type: 'B' };
 
 export default function OrderFlow() {
-    const [partyType, setPartyType] = useState('');
-    const [restaurant, setRestaurant] = useState('');
-    const [time, setTime] = useState('');
-    const [selectedType, setSelectedType] = useState<string | null>(null);
-    const [selectedPartySize, setSelectedPartySize] = useState<string | null>(null);
+    const [selectedParty, setSelectParty] = useState<PartySelection | null>(null);
+    const [selectedRestaurant, setSelectRestaurant] = useState<RestaurantList | null>(null);
+    const [selectedTime, setSelectedTime] = useState<string | null>(null);
     const [step, setStep] = useState(1);
 
     const partySizeOptions: DropdownOption[] = [
@@ -30,23 +31,24 @@ export default function OrderFlow() {
     const goNextStep = () => {setStep((prev) => prev + 1)};
 
     function handleSubmit() {
-        console.log({ partyType, restaurant, time });
-    }
+        if (!selectedRestaurant || !selectedTime) return;
 
-    useEffect(() => {
-        if (selectedType !== 'A') {
-            setSelectedPartySize(null);
-        }
-    }, [selectedType]);
+        const requestBody = {
+            restaurantId: selectedRestaurant.id,
+            minMember: selectedParty?.type === 'A' ? selectedParty.partySize : null,
+            deadline: selectedTime,
+        };
+
+        console.log(requestBody);
+        // 실제 POST 요청
+    }
 
     return (
         <div className="h-full">
             {step === 1 && (
                 <SelectPartyType
-                    selectedType={selectedType}
-                    setSelectedType={setSelectedType}
-                    selectedPartySize={selectedPartySize}
-                    setSelectedPartySize={setSelectedPartySize}
+                    selectedParty={selectedParty}
+                    onSelectParty={setSelectParty}
                     partySizeOptions={partySizeOptions}
                     descriptions={descriptions}
                     onNext={goNextStep}
@@ -55,14 +57,19 @@ export default function OrderFlow() {
     
             {step === 2 && (
                 <SelectRestaurant
+                    selectedParty={selectedParty}
+                    selectedRestaurant={selectedRestaurant}
+                    onSelectRestaurant={setSelectRestaurant}
                     onNext={goNextStep}
-                    selectedPartySize={selectedPartySize}
-                    selectedType={selectedType}
                 />
             )}
 
             {step === 3 && (
-                <SelectTime />
+                <SelectTime
+                    selectedTime={selectedTime}
+                    onSelectTime={setSelectedTime}
+                    onSubmit={handleSubmit}
+                />
             )}
         </div>
     );
