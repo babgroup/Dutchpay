@@ -18,17 +18,12 @@ export default function BottomNavLayout() {
     try {
       const res = await Fetch("/auth/me", {method: "GET"});
 
-      if (res.statusCode === 401) {
+      if (!res.ok) {
         localStorage.removeItem("jwtToken");
         router.push("/login");
         return;
       }
-      if (res && !res.error) {
-        router.push(`/user/${res.id}`); // 응답 내 유저 id 사용
-      } else {
-        localStorage.removeItem("jwtToken");
-        router.push("/login"); 
-      }
+      router.push(`/user/${res.data.id}`); // 응답 내 유저 id 사용
     } catch (error) {
       localStorage.removeItem("jwtToken");
       router.push("/login");
