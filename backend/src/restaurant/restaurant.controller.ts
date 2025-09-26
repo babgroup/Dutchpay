@@ -5,7 +5,6 @@ import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { Request } from 'express';
 import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam } from '@nestjs/swagger';
 import { CreateFoodOrderDto } from './dto/create-food-order.dto';
-import { AuthGuard } from '@nestjs/passport';
 
 @Controller('restaurant')
 export class RestaurantController {
@@ -22,7 +21,7 @@ export class RestaurantController {
           id: 5,
           creatorUser: { id: 1 },
           restaurant: { id: 1 },
-          deadline: '2024-09-20T20:00:00.000Z',
+          deadline: '2026-09-20T20:00:00.000Z',
           minMember: 4,
         },
       },
@@ -87,9 +86,9 @@ export class RestaurantController {
         example: {
           message: '레스토랑 목록 전체',
           data: [
-            { id: 1, restaurantName: '', deliveryFee: 2000, imageUrl: null, businessHours: '' },
-            { id: 2, restaurantName: '', deliveryFee: 3000, imageUrl: null, businessHours: '' },
-            { id: 3, restaurantName: '', deliveryFee: 4000, imageUrl: null, businessHours: '' },
+            { id: 1, restaurantName: 'Campus Pizza', deliveryFee: 2000, imageUrl: null, businessHours: '09:00-21:00' },
+            { id: 2, restaurantName: 'Global Sushi', deliveryFee: 3000, imageUrl: null, businessHours: '11:00-22:00' },
+            { id: 3, restaurantName: 'Korean BBQ', deliveryFee: 4000, imageUrl: null, businessHours: '17:00-23:00' },
           ],
         },
       },

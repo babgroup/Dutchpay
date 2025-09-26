@@ -17,6 +17,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   password         VARCHAR(255) NOT NULL,
   total_discount   INT          NOT NULL DEFAULT 0,
   created_at       DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  refresh_token_hash VARCHAR(255)      DEFAULT NULL, 
   UNIQUE KEY uq_user_student_number (student_number)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
