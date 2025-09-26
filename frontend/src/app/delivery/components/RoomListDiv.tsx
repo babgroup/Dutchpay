@@ -29,9 +29,11 @@ export default function RoomListDiv() {
       try {
         const data = await Fetch("/restaurant/current-rooms", { method: "GET" });
         setRooms(data.data);
-      } catch (e: unknown) {
-        setMessage(e.message)
+      } catch (error) {
+        if (error instanceof Error) {
+        setMessage(error.message)
         setRooms([]);
+        }
       } finally {
         setLoading(false);
         setMessage('')
