@@ -27,4 +27,7 @@ export class User {
 
     @OneToMany(() => FoodJoinUser, (foodJoinUser) => foodJoinUser.user)
     foodJoinUsers: FoodJoinUser[];
+
+    @Column({ select: false, nullable: true })
+    refreshTokenHash?: string;
 }

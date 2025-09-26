@@ -1,8 +1,9 @@
-import { Controller, Post, Body, HttpCode, Get, UseGuards, Req } from '@nestjs/common';
+import { Controller, Post, Body, HttpCode, Get, UseGuards, Req, Res, UnauthorizedException } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { JwtAuthGuard } from './jwt-auth.guard';
 import { ApiBearerAuth, ApiOkResponse, ApiOperation } from '@nestjs/swagger';
+import { Response, Request } from 'express';
 
 @Controller('auth')
 export class AuthController {
@@ -25,9 +26,14 @@ export class AuthController {
     },
   })
   
-  async login(@Body() loginDto: LoginDto ) {
+  async login(@Body() loginDto: LoginDto, @Res({ passthrough: true }) res: Response ) {
     const user = await this.authService.userAuth(loginDto);
-    return this.authService.login(user);
+
+    const { accessToken, refreshToken, tokenType, expiresIn } = await this.authService.login(user);
+
+    res.setHeader('refresh-token', refreshToken);
+
+    return { accessToken, tokenType, expiresIn };
   }
 
   @Get('me')
@@ -47,6 +53,19 @@ export class AuthController {
     },
   })
   getMe(@Req() req) {
-  return req.user;
+    return req.user;
+  }
+
+  @Post('refresh')                         
+  @HttpCode(200)                        
+  async refresh(@Req() req: Request, @Res({ passthrough: true }) res: Response, ) {
+    const refreshToken = req.header('refresh-token'); 
+    
+    if (!refreshToken) throw new UnauthorizedException('Refresh token missing');
+
+    const { accessToken, refreshToken: rotated } = await this.authService.refresh(refreshToken); 
+
+    res.setHeader('refresh-token', rotated);        
+    return { accessToken };                         
   }
 }
