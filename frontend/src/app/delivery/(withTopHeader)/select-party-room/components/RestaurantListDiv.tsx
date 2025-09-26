@@ -3,9 +3,14 @@
 import { useEffect, useState } from "react";
 import RestaurantListCard from "./RestaurantListCard";
 import useFetch from "@/common/customFetch";
-import { RestaurantList } from "@/types/restaurant";
+import type { RestaurantList } from "@/types/restaurant";
 
-export default function RestaurantListDiv() {
+interface RestaurantDivProps {
+    selectedRestaurant: RestaurantList | null;
+    onSelect: (res: RestaurantList) => void;
+}
+
+export default function RestaurantListDiv({ selectedRestaurant, onSelect }: RestaurantDivProps) {
     const Fetch = useFetch();
     const [loading, setLoading] = useState<boolean>(true);
     const [list, setList] = useState<RestaurantList[]>([])
@@ -45,6 +50,8 @@ export default function RestaurantListDiv() {
                     deliveryFee={res.deliveryFee}
                     imageUrl={res.imageUrl}
                     businessHours={res.businessHours}
+                    isSelected={selectedRestaurant?.id === res.id}
+                    onClick={() => onSelect(res)}
                 />
             ))}
         </div>

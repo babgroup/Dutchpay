@@ -1,31 +1,35 @@
 'use client'
 
 import BasicButton from "@/app/components/BasicButton";
-import { useEffect, useState } from "react";
 import RestaurantListDiv from "./RestaurantListDiv";
+import type { RestaurantList } from "@/types/restaurant";
+
+type PartySelection =
+    | { type: 'A', partySize: number }
+    | { type: 'B'};
 
 interface SelectRestaurantProps {
     onNext: () => void;
-    selectedType: string;
-    selectedPartySize: number;
+    selectedParty: PartySelection | null;
+    selectedRestaurant: RestaurantList | null;
+    onSelectRestaurant: (res: RestaurantList) => void;
 }
 
 export default function SelectRestaurant({
     onNext,
-    selectedType,
-    selectedPartySize
+    selectedParty,
+    selectedRestaurant,
+    onSelectRestaurant
 }: SelectRestaurantProps) {
-    const [selectedId, setSelectedId] = useState<string | null>(null);
-    
     const getDescription = () => {
-        if (selectedType === 'A') {
-            return selectedPartySize ? `${selectedPartySize}명이 모일 경우...` :  '';
+        if (selectedParty?.type === 'A') {
+            return selectedParty.partySize ? `${selectedParty.partySize}명이 모일 경우...` :  '';
         }
-        if (selectedType === 'B') {
+        if (selectedParty?.type === 'B') {
             return '1/N의 배달비가 나옵니다.'
         }
     };
-    // const isButtonDisabled = !selectedRestaurant
+    const isButtonDisabled = !selectedRestaurant
 
     return (
         <div className="flex flex-col h-full p-6">
@@ -35,14 +39,18 @@ export default function SelectRestaurant({
             </div>
 
             <div>
-                <RestaurantListDiv />
+                <RestaurantListDiv
+                selectedRestaurant={selectedRestaurant}
+                onSelect={onSelectRestaurant}
+                />
             </div>
             
             <div className="flex flex-col m-10 items-center">
-                <BasicButton
-                text="다음 단계로 이동"
-                onClick={onNext}
-            />
+                <BasicButton 
+                    text="다음 단계로 이동" 
+                    isDisable={isButtonDisabled}
+                    onClick={isButtonDisabled ? () => {} : onNext}
+                />
             </div>
         </div>
     );
