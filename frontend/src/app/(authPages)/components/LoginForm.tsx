@@ -61,10 +61,9 @@ export default function LoginForm() {
         error={errors.password} //validation 에러
         serverError={serverError}
       />
-      {errors.password && <p>{errors.password.message}</p>}
 
       {(serverError) && (
-        <p className="text-amber-600">이메일 혹은 비밀번호를 확인 해주세요.</p>
+        <p className="text-amber-600 mt-1">이메일 혹은 비밀번호를 확인 해주세요.</p> //Error가 캐치 되면 여기에 에러메세지 표시
       )}
       {message && <p>{message}</p>}
 
