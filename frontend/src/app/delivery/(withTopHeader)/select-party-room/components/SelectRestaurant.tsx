@@ -4,12 +4,17 @@ import BasicButton from "@/app/components/BasicButton";
 import { useEffect, useState } from "react";
 import RestaurantListDiv from "./RestaurantListDiv";
 
+interface SelectRestaurantProps {
+    onNext: () => void;
+    selectedType: string;
+    selectedPartySize: number;
+}
+
 export default function SelectRestaurant({
-    onBack,
     onNext,
     selectedType,
     selectedPartySize
-}) {
+}: SelectRestaurantProps) {
     const [selectedId, setSelectedId] = useState<string | null>(null);
     
     const getDescription = () => {
