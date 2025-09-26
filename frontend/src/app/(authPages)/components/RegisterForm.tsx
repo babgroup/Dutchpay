@@ -67,7 +67,12 @@ export default function RegisterForm() {
       <AuthInput
         type="email"
         placeholder=" EMAIL"
-        register={register("email", { required: "이메일은 필수입니다."})}
+        register={register("email", { required: "이메일은 필수입니다.",
+          pattern: {
+          value: /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/,
+          message: "올바른 이메일 형식이어야 합니다."
+        }
+        })}
         error={errors.email} //validation 에러
         serverError={serverError}
       />
@@ -81,7 +86,7 @@ export default function RegisterForm() {
         error={errors.password} //validation 에러
         serverError={serverError}
       />
-
+      
       {(serverError) && (
         <p className="text-amber-600 mt-1">모든 값을 작성해주세요.</p> //Error가 캐치 되면 여기에 에러메세지 표시
       )}
