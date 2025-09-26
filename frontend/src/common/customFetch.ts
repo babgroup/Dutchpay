@@ -1,4 +1,4 @@
-const useFetch = () => {
+const useCustomFetch = () => {
   const customFetch = async (endpoint: string, options: RequestInit = {}) => {
     //RequestInit = {} : fetch의 두 번째 인자로 넣을 수 있는 옵션들 전부가 정의되어 있는 타입, 기본값으로 빈 객체
 
@@ -22,10 +22,17 @@ const useFetch = () => {
 
     const response = await fetch(`${BASE_URL}${endpoint}`, mergedOptions);
 
-    return response.json(); // json -> JS 객체 변환, json() 또 안써도 됨
-  };
+    const result = await response.json();
 
+    return {
+      ok: response.ok, // 200~299면 true, 아니면 false
+      status: response.status, // 401, 400 등 요청 에러
+      message: result.message, // 서버 메시지
+      data: result.data // 실제 데이터
+    }      
+  };
   return customFetch;
+
 };
 
-export default useFetch;
+export default useCustomFetch;
