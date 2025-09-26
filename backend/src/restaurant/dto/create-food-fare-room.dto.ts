@@ -11,7 +11,7 @@ export class FoodFareRoomDto {
   @IsInt()
   minMember: number;
 
-  @ApiProperty({ type: String, description: '방의 마감기한 (ISO8601 형식)', required: true, example: '2024-09-20T20:00:00Z' })
+  @ApiProperty({ type: String, description: '방의 마감기한 (ISO8601 형식)', required: true, example: '2026-09-20T20:00:00Z' })
   @IsISO8601()
   deadline: string;
 }

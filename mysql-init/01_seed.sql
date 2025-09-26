@@ -10,17 +10,17 @@ VALUES
 -- Restaurant 더미데이터
 INSERT INTO restaurant (id, restaurant_name, address, phone_number, business_hours, delivery_fee, image_url)
 VALUES
-  (1, 'Campus Pizza', '123 Campus St', '010-1111-2222', '09:00-21:00', 2000, 'https://example.com/pizza.jpg'),
-  (2, 'Global Sushi', '456 Global Ave','010-3333-4444', '11:00-22:00', 3000, 'https://example.com/sushi.jpg'),
-  (3, 'Korean BBQ',   '789 BBQ Rd',    '010-5555-6666', '17:00-23:00', 4000, 'https://example.com/bbq.jpg');
+  (1, 'Campus Pizza', '123 Campus St', '010-1111-2222', '09:00-21:00', 2000, 'https://www.google.com/imgres?q=%EC%B9%98%ED%82%A8&imgurl=http%3A%2F%2Fwww.bhc.co.kr%2Fupload%2Fbhc%2Fmenu%2FHOT%25ED%259B%2584%25EB%259D%25BC%25EC%259D%25B4%25EB%2593%259C_%25EC%25BD%25A4%25EB%25B3%25B4_410x271.jpg&imgrefurl=https%3A%2F%2Fm.bhc.co.kr%2Fmenu%2Fchicken.html%3Fmenu_code%3DHOT&docid=gr3GQLG4DXX5MM&tbnid=0Kvz4inYLQcmlM&vet=12ahUKEwj_rtDx9_aPAxU_e_UHHXfHGaMQM3oECBYQAA..i&w=410&h=271&hcb=2&ved=2ahUKEwj_rtDx9_aPAxU_e_UHHXfHGaMQM3oECBYQAA'),
+  (2, 'Global Sushi', '456 Global Ave','010-3333-4444', '11:00-22:00', 3000, 'https://www.google.com/imgres?q=%EC%B9%98%ED%82%A8&imgurl=http%3A%2F%2Fwww.bhc.co.kr%2Fupload%2Fbhc%2Fmenu%2FHOT%25ED%259B%2584%25EB%259D%25BC%25EC%259D%25B4%25EB%2593%259C_%25EC%25BD%25A4%25EB%25B3%25B4_410x271.jpg&imgrefurl=https%3A%2F%2Fm.bhc.co.kr%2Fmenu%2Fchicken.html%3Fmenu_code%3DHOT&docid=gr3GQLG4DXX5MM&tbnid=0Kvz4inYLQcmlM&vet=12ahUKEwj_rtDx9_aPAxU_e_UHHXfHGaMQM3oECBYQAA..i&w=410&h=271&hcb=2&ved=2ahUKEwj_rtDx9_aPAxU_e_UHHXfHGaMQM3oECBYQAA'),
+  (3, 'Korean BBQ',   '789 BBQ Rd',    '010-5555-6666', '17:00-23:00', 4000, 'https://www.google.com/imgres?q=%EC%B9%98%ED%82%A8&imgurl=http%3A%2F%2Fwww.bhc.co.kr%2Fupload%2Fbhc%2Fmenu%2FHOT%25ED%259B%2584%25EB%259D%25BC%25EC%259D%25B4%25EB%2593%259C_%25EC%25BD%25A4%25EB%25B3%25B4_410x271.jpg&imgrefurl=https%3A%2F%2Fm.bhc.co.kr%2Fmenu%2Fchicken.html%3Fmenu_code%3DHOT&docid=gr3GQLG4DXX5MM&tbnid=0Kvz4inYLQcmlM&vet=12ahUKEwj_rtDx9_aPAxU_e_UHHXfHGaMQM3oECBYQAA..i&w=410&h=271&hcb=2&ved=2ahUKEwj_rtDx9_aPAxU_e_UHHXfHGaMQM3oECBYQAA');
 
 -- FoodItem 더미데이터
 INSERT INTO food_item (id, restaurant_id, item_name, price, image_url)
 VALUES
-  (1, 1, 'Pepperoni Pizza', 12000, 'https://example.com/pepperoni.jpg'),
-  (2, 1, 'Cheese Pizza',    10000, 'https://example.com/cheese.jpg'),
-  (3, 2, 'Salmon Sushi Set',15000, 'https://example.com/salmon.jpg'),
-  (4, 3, 'Pork Belly BBQ',  20000, 'https://example.com/porkbelly.jpg');
+  (1, 1, 'Pepperoni Pizza', 12000, 'https://www.google.com/imgres?q=%EC%B9%98%ED%82%A8&imgurl=http%3A%2F%2Fwww.bhc.co.kr%2Fupload%2Fbhc%2Fmenu%2FHOT%25ED%259B%2584%25EB%259D%25BC%25EC%259D%25B4%25EB%2593%259C_%25EC%25BD%25A4%25EB%25B3%25B4_410x271.jpg&imgrefurl=https%3A%2F%2Fm.bhc.co.kr%2Fmenu%2Fchicken.html%3Fmenu_code%3DHOT&docid=gr3GQLG4DXX5MM&tbnid=0Kvz4inYLQcmlM&vet=12ahUKEwj_rtDx9_aPAxU_e_UHHXfHGaMQM3oECBYQAA..i&w=410&h=271&hcb=2&ved=2ahUKEwj_rtDx9_aPAxU_e_UHHXfHGaMQM3oECBYQAA'),
+  (2, 1, 'Cheese Pizza',    10000, 'https://www.google.com/imgres?q=%EC%B9%98%ED%82%A8&imgurl=http%3A%2F%2Fwww.bhc.co.kr%2Fupload%2Fbhc%2Fmenu%2FHOT%25ED%259B%2584%25EB%259D%25BC%25EC%259D%25B4%25EB%2593%259C_%25EC%25BD%25A4%25EB%25B3%25B4_410x271.jpg&imgrefurl=https%3A%2F%2Fm.bhc.co.kr%2Fmenu%2Fchicken.html%3Fmenu_code%3DHOT&docid=gr3GQLG4DXX5MM&tbnid=0Kvz4inYLQcmlM&vet=12ahUKEwj_rtDx9_aPAxU_e_UHHXfHGaMQM3oECBYQAA..i&w=410&h=271&hcb=2&ved=2ahUKEwj_rtDx9_aPAxU_e_UHHXfHGaMQM3oECBYQAA'),
+  (3, 2, 'Salmon Sushi Set',15000, 'https://www.google.com/imgres?q=%EC%B9%98%ED%82%A8&imgurl=http%3A%2F%2Fwww.bhc.co.kr%2Fupload%2Fbhc%2Fmenu%2FHOT%25ED%259B%2584%25EB%259D%25BC%25EC%259D%25B4%25EB%2593%259C_%25EC%25BD%25A4%25EB%25B3%25B4_410x271.jpg&imgrefurl=https%3A%2F%2Fm.bhc.co.kr%2Fmenu%2Fchicken.html%3Fmenu_code%3DHOT&docid=gr3GQLG4DXX5MM&tbnid=0Kvz4inYLQcmlM&vet=12ahUKEwj_rtDx9_aPAxU_e_UHHXfHGaMQM3oECBYQAA..i&w=410&h=271&hcb=2&ved=2ahUKEwj_rtDx9_aPAxU_e_UHHXfHGaMQM3oECBYQAA'),
+  (4, 3, 'Pork Belly BBQ',  20000, 'https://www.google.com/imgres?q=%EC%B9%98%ED%82%A8&imgurl=http%3A%2F%2Fwww.bhc.co.kr%2Fupload%2Fbhc%2Fmenu%2FHOT%25ED%259B%2584%25EB%259D%25BC%25EC%259D%25B4%25EB%2593%259C_%25EC%25BD%25A4%25EB%25B3%25B4_410x271.jpg&imgrefurl=https%3A%2F%2Fm.bhc.co.kr%2Fmenu%2Fchicken.html%3Fmenu_code%3DHOT&docid=gr3GQLG4DXX5MM&tbnid=0Kvz4inYLQcmlM&vet=12ahUKEwj_rtDx9_aPAxU_e_UHHXfHGaMQM3oECBYQAA..i&w=410&h=271&hcb=2&ved=2ahUKEwj_rtDx9_aPAxU_e_UHHXfHGaMQM3oECBYQAA');
 
 -- FoodFareRoom 더미데이터
 INSERT INTO food_fare_room (id, creator_user_id, restaurant_id, deadline, min_member)
