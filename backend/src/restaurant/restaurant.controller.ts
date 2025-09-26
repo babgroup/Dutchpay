@@ -125,6 +125,21 @@ export class RestaurantController {
   
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: '방의 현재 진행 상태 조회'})
+  @ApiParam({ name: 'roomId', type: String, example: 1 })
+  @ApiOkResponse({
+    description: '방의 현재 진행 상태 조회 성공',
+    content: {
+      'application/json': {
+        example: {
+          message: '1방의 현재 progress',
+          data: {
+            result: 0,
+          },
+        },
+      },
+    }
+  })
   @Get('progress/:roomId')
   async getProgress(@Param('roomId') roomId: string, @Req() req: Request) {
     const result = await this.restaurantService.getProgress(+roomId, req.user.id);

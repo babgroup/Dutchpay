@@ -40,13 +40,54 @@ export class AuthService {
     };
 
     const accessToken = this.jwtService.sign(payload);
+    const refreshToken = this.jwtService.sign(payload, {
+      expiresIn: this.config.get<string>('JWT_REFRESH_EXPIRES_IN') ?? '7d',
+    });
+
+    const hash = await bcrypt.hash(refreshToken, 10);
+    await this.userRepo.update(user.id, { refreshTokenHash: hash });
 
     return {
       accessToken,
+      refreshToken,
       tokenType: 'Bearer',
       expiresIn: this.config.get<string>('JWT_ACCESS_EXPIRES_IN') ?? '15m',
     };
-
   }
 
+  async refresh(refreshToken: string) {
+    let payload: any;
+    try {
+      payload = this.jwtService.verify(refreshToken);
+    } catch {
+      throw new UnauthorizedException('Invalid or expired refresh token');
+    }
+
+    const user = await this.userRepo
+      .createQueryBuilder('u')
+      .addSelect('u.refreshTokenHash')
+      .where('u.id = :id', { id: payload.sub })
+      .getOne();
+
+    if (!user || !user.refreshTokenHash) {
+      throw new UnauthorizedException('Session not found');
+    }
+
+    const ok = await bcrypt.compare(refreshToken, user.refreshTokenHash);
+    if (!ok) {
+      throw new UnauthorizedException('Refresh token mismatch');
+    }
+
+    const base = { sub: user.id, email: payload.email, userStuNum: payload.userStuNum };
+
+    const newAccess = this.jwtService.sign(base);
+    const newRefresh = this.jwtService.sign(base, {
+      expiresIn: this.config.get<string>('JWT_REFRESH_EXPIRES_IN') ?? '7d',
+    });
+
+    const newHash = await bcrypt.hash(newRefresh, 10);
+    await this.userRepo.update(user.id, { refreshTokenHash: newHash });
+
+    return { accessToken: newAccess, refreshToken: newRefresh };
+  }
 }
