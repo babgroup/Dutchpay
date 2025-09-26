@@ -12,7 +12,7 @@ const useCustomFetch = () => {
     const defaultOptions: RequestInit = {
       headers: {
         "Content-Type": "application/json",
-        ...(token ? { Authorization: `Bearer ${token}` } : {}), // 토큰이 있으면 헤더에 토큰 객체 추가, 없으면 빈 객체
+        ...(token && endpoint !== "/auth/login" ? { Authorization: `Bearer ${token}` } : {}), // 토큰이 있으면 헤더에 토큰 객체 추가, 없으면 빈 객체
       },
       // credentials: "include", // 쿠키 전송
       // cache: "no-cache",      // 항상 최신 데이터 CORS오류 때문에 주석
@@ -28,7 +28,7 @@ const useCustomFetch = () => {
       ok: response.ok, // 200~299면 true, 아니면 false
       status: response.status, // 401, 400 등 요청 에러
       message: result.message, // 서버 메시지
-      data: result.data // 실제 데이터
+      data: result.data || result // 실제 데이터, /auth/login api 처럼 data 객체 없이 바로 result 나올 경우를 위해
     }      
   };
   return customFetch;

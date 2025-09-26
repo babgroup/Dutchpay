@@ -1,6 +1,6 @@
 'use client';
 
-import useFetch from "@/common/customFetch";
+import useCustomFetch from "@/common/customFetch";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import Link from "next/link";
@@ -13,9 +13,8 @@ type LoginFormInputs = {
 }; //form 에 사용할 데이터 타입
 
 export default function LoginForm() {
-  const Fetch = useFetch();
+  const Fetch = useCustomFetch();
   const router = useRouter();
-  const [message, setMessage] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [serverError, setServerError] = useState(false);
 
@@ -30,16 +29,15 @@ export default function LoginForm() {
         method: "POST",
         body: JSON.stringify(data),
       });
-      if (response.accessToken) {
-        localStorage.setItem("jwtToken", response.accessToken); //토큰값 받았을 경우(로그인 성공) 로컬스토리지에 저장
-        await router.push("/");
-      } else {
+      if (response.ok && response.data?.accessToken) {
+          localStorage.setItem("jwtToken", response.data.accessToken);
+          await router.push("/");
+        } else {
+          setServerError(true);
+        }
+      } catch (error) {
+        // 요청 실패는 전부 여기서 처리
         setServerError(true);
-        return;
-      }
-    } catch (error) {
-      setServerError(true);
-      if (error instanceof Error) setMessage(`로그인 실패: ${error.message}`);
     } finally {
       setLoading(false);
     }
@@ -65,7 +63,6 @@ export default function LoginForm() {
       {(serverError) && (
         <p className="text-amber-600 mt-1">이메일 혹은 비밀번호를 확인 해주세요.</p> //Error가 캐치 되면 여기에 에러메세지 표시
       )}
-      {message && <p>{message}</p>}
 
       <button type="submit" disabled={loading}
         className="bg-amber-500 text-white w-1/3 h-[6vh] rounded-xl">
