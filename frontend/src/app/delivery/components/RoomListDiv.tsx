@@ -15,28 +15,26 @@ export default function RoomListDiv() {
   const router = useRouter();
   const [rooms, setRooms] = useState<CurrentRoom[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const [message, setMessage] = useState<string>('');
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [sortingOption, setSortingOption] = useState<'최신순' | '종료일순' | '가게이름순'>('최신순'); //최신순 기본
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [selectedRoom, setSelectedRoom] = useState<CurrentRoom | null>(null);
+  const [error, setError] = useState<boolean>(false);
  
 
   useEffect(() => {
     const fetchCurrentRooms = async () => {
       setLoading(true);
-      setMessage('로딩 중...')
       try {
         const data = await Fetch("/restaurant/current-rooms", { method: "GET" });
         setRooms(data.data);
       } catch (error) {
         if (error instanceof Error) {
-        setMessage(error.message)
+        setError(true);
         setRooms([]);
         }
       } finally {
         setLoading(false);
-        setMessage('')
       }
     };
     fetchCurrentRooms();
@@ -76,10 +74,12 @@ export default function RoomListDiv() {
     <div className="flex flex-col items-center h-8/12 overflow-auto m-4 w-full">
       <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
       <SortButton sortingOption={sortingOption} setSortingOption={setSortingOption} />
-      {loading ? (
-        <p>{message}</p>
+      {error ? (
+        <p className="text-black m-4">리스트 가져오기에 실패 했습니다. 나중에 다시 시도해주세요. 🥲</p>
+      ) : loading ? (
+        <p className="text-black m-4">파티를 불러오는 중...⏳</p>
       ) : rooms.length < 1 ? (
-        <p className="bottom-1/2" >현재 모집중인 파티가 없습니다. 😢</p>
+        <p className="text-black m-4">모집중인 파티가 없습니다. 😢</p>
       ) : (
         sortedRooms.map((room) => (
           <RoomListCard 
