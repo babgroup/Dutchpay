@@ -15,13 +15,28 @@ export default function RestaurantListCard({
     isSelected,
     onClick
 }: RestaurantProps) {
+    const [openTime, closeTime] = businessHours.split("-");
+    const now = new Date();
+
+    const [openHour, openMinute] = openTime.split(":").map(Number);
+    const [closeHour, closeMinute] = closeTime.split(":").map(Number);
+
+    const openDate = new Date(now);
+    openDate.setHours(openHour, openMinute, 0, 0);
+
+    const closeDate = new Date(now);
+    closeDate.setHours(closeHour, closeMinute, 0, 0);
+
+    const isOpen = now >= openDate && now <= closeDate;
+
     return (
         <div
-            className={`flex items-center justify-between p-4 bg-white rounded-xl shadow-sm cursor-pointer ${isSelected ? 'border-1 border-orange-500 shadow-sm' : 'border-1 border-transparent'}`}
-            onClick={() => onClick(id)}
+            className={`relative flex items-center justify-between p-4 bg-white rounded-xl shadow-sm transition
+                ${isOpen && isSelected ? 'border-1 border-orange-500 shadow-sm' : 'border-1 border-transparent'}`}
+            onClick={isOpen ? () => onClick(id) : undefined}
         >
             <div className="text-left text-black">
-                <h2>{restaurantName}</h2>
+                <h2 className="font-semibold">{restaurantName}</h2>
                 <p>배달비 {deliveryFee}</p>
             </div>
             
@@ -34,6 +49,12 @@ export default function RestaurantListCard({
                     className="rounded-xl object-cover"
                 />
             </div>
+
+            {!isOpen && (
+                <div className="absolute inset-0 bg-black/20 z-0 rounded-xl">
+                    <span className="absolute inset-0 flex items-center justify-center text-white font-semibold z-10">영업이 마감되었습니다.</span>
+                </div>
+            )}
         </div>
     );
 }
