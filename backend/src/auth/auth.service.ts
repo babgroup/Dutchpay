@@ -6,7 +6,7 @@ import { Repository } from 'typeorm';
 import { LoginDto } from './dto/login.dto';
 import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcrypt';
-import { createHash } from 'crypto';
+import { createHash, timingSafeEqual } from 'crypto';
 
 @Injectable()
 export class AuthService {
@@ -19,6 +19,12 @@ export class AuthService {
 
   private sha256Hex(token: string): string {
     return createHash('sha256').update(token).digest('hex');
+  }
+
+  private timingSafeEqualHex(aHex: string, bHex: string): boolean {
+    const a = Buffer.from(aHex, 'hex');
+    const b = Buffer.from(bHex, 'hex');
+    return a.length === b.length && timingSafeEqual(a, b);
   }
 
   async userAuth(dto: LoginDto) {
@@ -48,7 +54,7 @@ export class AuthService {
       expiresIn: this.config.get<string>('JWT_REFRESH_EXPIRES_IN') ?? '7d',
     });
 
-    const refreshTokenHash = await bcrypt.hash(this.sha256Hex(refreshToken), 10);
+    const refreshTokenHash = this.sha256Hex(refreshToken);
     await this.userRepo.update(user.id, { refreshTokenHash: refreshTokenHash });
 
     return {
@@ -78,8 +84,10 @@ export class AuthService {
       throw new UnauthorizedException('Session not found');
     }
 
-    const isRefreshMatch = await bcrypt.compare(this.sha256Hex(refreshToken), user.refreshTokenHash);
-    if (!isRefreshMatch) throw new UnauthorizedException('Refresh token mismatch');
+    const frontRefreshToken = this.sha256Hex(refreshToken);
+    if (!this.timingSafeEqualHex(frontRefreshToken, user.refreshTokenHash)) {
+      throw new UnauthorizedException('Refresh token mismatch');
+    }
     const newPayload = { sub: user.id, email: payload.email, userStuNum: payload.userStuNum };
 
     const newAccessToken = this.jwtService.sign(newPayload);
@@ -88,7 +96,7 @@ export class AuthService {
       expiresIn: this.config.get<string>('JWT_REFRESH_EXPIRES_IN') ?? '7d',
     });
 
-    const refreshTokenHash = await bcrypt.hash(this.sha256Hex(newRefreshToken), 10);
+    const refreshTokenHash = this.sha256Hex(newRefreshToken);
     await this.userRepo.update(user.id, { refreshTokenHash: refreshTokenHash });
 
     return { accessToken: newAccessToken, refreshToken: newRefreshToken };
