@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import BasicButton from '@/app/components/BasicButton';
 import PartyTypeCard from './PartyTypeCard';
-import SelectDropdown, { DropdownOption } from './Dropdown';
+import Dropdown, { DropdownOption } from './Dropdown';
 
 type PartySelection = { type: 'A'; partySize: number } | { type: 'B' };
 
@@ -41,7 +41,6 @@ export default function SelectPartyType({
   
     return (
         <div className="flex flex-col h-full p-6">
-            {/* delivery/(withTopHeader)/layout.tsx 에서 title 수정필요 */}
             <div className="mb-10" />
 
             {/* 카드 */}
@@ -66,7 +65,7 @@ export default function SelectPartyType({
             {/* 드롭다운 메뉴 */}
             <div className="mt-4 w-80 h-[92px] mx-auto">
                 {type === 'A' && (
-                    <SelectDropdown 
+                    <Dropdown 
                         label="파티 인원 선택"
                         placeholder="인원을 선택해주세요"
                         options={partySizeOptions}
