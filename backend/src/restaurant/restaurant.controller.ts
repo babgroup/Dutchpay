@@ -148,7 +148,7 @@ export class RestaurantController {
     },
   })
   @ApiParam({ name: 'roomId', type: String, example: 1 })
-  @Get('user-list/:id')
+  @Get('user-list/:roomId')
   async getUserInRoom(@Param('roomId') roomId: string) {
     const result = await this.restaurantService.getUserInRoom(+roomId);
     return { message: `${roomId}방에 참여한 유저 목록`, data: result };
