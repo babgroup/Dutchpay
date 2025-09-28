@@ -6,6 +6,8 @@ import SelectRestaurant from './SelectRestaurant';
 import SelectTime from './SelectTime';
 import type { DropdownOption } from './Dropdown';
 import type { RestaurantList } from '@/types/restaurant';
+import { useRouter } from 'next/router';
+import useCustomFetch from '@/common/customFetch';
 
 type PartySelection = { type: 'A'; partySize: number } | { type: 'B' };
 
@@ -14,6 +16,8 @@ export default function OrderFlow() {
     const [selectedRestaurant, setSelectRestaurant] = useState<RestaurantList | null>(null);
     const [selectedTime, setSelectedTime] = useState<string | null>(null);
     const [step, setStep] = useState(1);
+
+    const Fetch = useCustomFetch();
 
     const partySizeOptions: DropdownOption[] = [
         { value: '2', label: '2명' },
@@ -30,17 +34,36 @@ export default function OrderFlow() {
 
     const goNextStep = () => {setStep((prev) => prev + 1)};
 
-    function handleSubmit() {
+    const handleSubmit = async () => {
         if (!selectedRestaurant || !selectedTime) return;
+
+        const [hour, minute] = selectedTime.split(':').map(Number);
+        const now = new Date();
+        now.setHours(hour, minute, 0, 0);
+        const isoDeadline = now.toISOString();
 
         const requestBody = {
             restaurantId: selectedRestaurant.id,
             minMember: selectedParty?.type === 'A' ? selectedParty.partySize : null,
-            deadline: selectedTime,
+            deadline: isoDeadline,
         };
 
-        console.log(requestBody);
-        // 실제 POST 요청
+        const token = localStorage.getItem('jwtToken');
+
+        try {
+            const response = await Fetch('restaurant/food-fare-room', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+                body: JSON.stringify(requestBody),
+            });
+
+            console.log(response);
+        } catch (error) {
+            console.error(error);
+        }
     }
 
     return (
