@@ -36,6 +36,38 @@ export class RestaurantController {
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: '주문할 메뉴선택' })
   @ApiParam({ name: 'roomId', type: String, description: '참여할 방 번호', example: 1, })
+  @ApiCreatedResponse({
+    description: '주문이 저장됨',
+    content: {
+      'application/json': {
+        example: {
+          message: '주문이 저장되었습니다.',
+          data: {
+            foodJoinUserId: 6,
+            myOrderItems: [
+              {
+                orderItemId: 5,
+                foodItemId: 1,
+                itemName: 'Pepperoni Pizza',
+                unitPrice: 12000,
+                quantity: 1,
+                subtotal: 12000,
+              },
+              {
+                orderItemId: 6,
+                foodItemId: 1,
+                itemName: 'Pepperoni Pizza',
+                unitPrice: 12000,
+                quantity: 1,
+                subtotal: 12000,
+              },
+            ],
+            myTotal: 24000,
+          },
+        },
+      },
+    },
+  })
   @Post('food-order/:roomId')
   async createFoodOrder(@Param('roomId') roomId: string, @Body() dto: CreateFoodOrderDto, @Req() req: Request) {
     return await this.restaurantService.createFoodOrder(+roomId, dto, req.user.id)

@@ -17,8 +17,16 @@ export class AuthController {
       'application/json': {
         example: {
           accessToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
-          tokenType: 'Bearer',
-          expiresIn: '15m',
+        },
+      },
+    },
+    headers: {
+      'refresh-token': {
+        description: '리프레시 토큰',
+        schema: {
+          type: 'string',
+          example:
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
         },
       },
     },
@@ -34,10 +42,36 @@ export class AuthController {
 
   @Post('refresh')
   @HttpCode(200)
+  @ApiOperation({
+    summary: '액세스 토큰 재발급',
+    description: '요청 헤더의 refresh-token을 검증하여 새로운 accessToken을 발급합니다.',
+  })
   @ApiHeader({
     name: 'refresh-token',
     description: '로그인/이전 재발급 응답 헤더에서 받은 Refresh JWT',
     required: true,
+    example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImlhdCI6MTY...'
+  })
+  @ApiOkResponse({
+    description: '재발급 성공',
+    content: {
+      'application/json': {
+        example: {
+          accessToken:
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImlhdCI6MTY...'
+        },
+      },
+    },
+    headers: {
+      'refresh-token': {
+        description: '회전(rotated)된 리프레시 토큰(회전 정책 사용 시).',
+        schema: {
+          type: 'string',
+          example:
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImlhdCI6MTY...'
+        },
+      },
+    },
   })
   async refresh(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
     const headerRefreshToken = req.header('refresh-token');
