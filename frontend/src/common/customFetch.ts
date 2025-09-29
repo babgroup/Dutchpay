@@ -26,7 +26,7 @@ const useCustomFetch = () => {
       try {
         const refreshRes = await fetch(`${BASE_URL}/auth/refresh`, {
           method: "POST",
-          credentials: "include", // HTTP-only cookie
+          // credentials: "include", // cors 오류로 주석처리
         });
         const refreshData = await refreshRes.json();
         if (refreshRes.ok && refreshData.accessToken) {
