@@ -2,6 +2,7 @@
 
 import SelectDropdown, { DropdownOption } from "../delivery/(withTopHeader)/select-party-room/components/Dropdown"
 import { useState } from "react";
+import InquiryInput from "./components/InquiryInput";
 
 
 export default function Inquiry() {
@@ -15,6 +16,18 @@ export default function Inquiry() {
     ]
 
     const [selectedInquiry, setSelectedInquiry] = useState<string | null>(null);
+    const [inquiryText, setInquiryText] = useState<string>("");
+
+    const handleSubmit = () => {
+        if (!selectedInquiry || !inquiryText.trim()) {
+            alert("카테고리와 문의 내용을 모두 입력해주세요.");
+            return;
+        }
+        console.log({
+            category: selectedInquiry,
+            content: inquiryText
+        }); // api 요청
+    }
 
     return (
         <div className="flex flex-col h-full p-6">
@@ -26,6 +39,13 @@ export default function Inquiry() {
                 options={inquiryOptions}
                 selectedValue={selectedInquiry}
                 onSelect={setSelectedInquiry}
+            />
+
+            <InquiryInput
+                label="문의 내용을 입력해주세요"
+                placeholder="Type here..."
+                value={inquiryText}
+                onChange={setInquiryText}
             />
         </div>
     )
