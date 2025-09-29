@@ -15,7 +15,7 @@ export default function InquiryInput({
 }: InquiryInputProps) {
     return (
         <div className="mt-6 w-full">
-            <label className="block pl-2 text-sm font-medium text-black-700 mb-1">
+            <label className="block pl-2 text-sm font-medium text-gray-700 mb-1">
                 {label}
             </label>
             <textarea

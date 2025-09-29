@@ -3,6 +3,7 @@
 import SelectDropdown, { DropdownOption } from "../delivery/(withTopHeader)/select-party-room/components/Dropdown"
 import { useState } from "react";
 import InquiryInput from "./components/InquiryInput";
+import BasicButton from "../components/BasicButton";
 
 
 export default function Inquiry() {
@@ -46,6 +47,12 @@ export default function Inquiry() {
                 placeholder="Type here..."
                 value={inquiryText}
                 onChange={setInquiryText}
+            />
+
+            <BasicButton
+                text="제출하기"
+                onClick={handleSubmit}
+                isDisable={!selectedInquiry || !inquiryText.trim()}
             />
         </div>
     )
