@@ -140,8 +140,8 @@ export class RestaurantController {
         example: {
           message: '1방에 참여한 유저 목록',
           data: [
-            { user_id: 20231234, name: '', student_number: 20231234, is_creator: true },
-            { user_id: 20235678, name: '', student_number: 20235678, is_creator: false },
+            { user_id: 1, name: '', student_number: 20231234, is_creator: true },
+            { user_id: 2, name: '', student_number: 20235678, is_creator: false },
           ],
         },
       },

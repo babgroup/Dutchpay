@@ -1,5 +1,5 @@
 export class UserResponseType {
-  user_id: string;
+  user_id: number;
   name: string;
   student_number: string;
   is_creator: boolean;
