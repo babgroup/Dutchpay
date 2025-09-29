@@ -1,6 +1,5 @@
-import Title from "@/app/components/Title";
 import TopHeader from "../../components/TopHeader";
-import Toggle from "./components/Toggle";
+import BreakPartyContainer from "../components/BreakPartyContainer";
 
 export default function PartyBrakeUpPage() {
   return (
@@ -9,13 +8,13 @@ export default function PartyBrakeUpPage() {
       
       <div className="flex flex-col items-center text-center gap-2 w-full">
         <h1 className="text-3xl font-semibold">해산 사유를 선택해주세요.</h1>
-        <p className="text-gray-600 text-lg">
+        <p className="text-gray-600 text-md">
           비정상적인 사유로 인한 해산일 경우 추후 검토에 따라 <br />
           이용 정지 등의 불이익이 발생할 수 있습니다.
         </p>
       </div>
 
-      <Toggle />
+      <BreakPartyContainer />
     </div>
   );
 }
