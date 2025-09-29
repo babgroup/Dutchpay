@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, Param, UseGuards, Req } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, UseGuards, Req, Delete } from '@nestjs/common';
 import { RestaurantService } from './restaurant.service';
 import { FoodFareRoomDto } from './dto/create-food-fare-room.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
@@ -140,8 +140,8 @@ export class RestaurantController {
         example: {
           message: '1방에 참여한 유저 목록',
           data: [
-            { user_id: 20231234, name: '', student_number: 20231234, is_creator: true },
-            { user_id: 20235678, name: '', student_number: 20235678, is_creator: false },
+            { user_id: 1, name: '', student_number: 20231234, is_creator: true },
+            { user_id: 2, name: '', student_number: 20235678, is_creator: false },
           ],
         },
       },
@@ -174,6 +174,14 @@ export class RestaurantController {
   @Get('progress/:roomId')
   async getProgress(@Param('roomId') roomId: string, @Req() req: Request) {
     const result = await this.restaurantService.getProgress(+roomId, req.user.id);
-    return { message: `${roomId}방의 현재 progress`, data: {result} };
+    return { message: `${roomId}방의 현재 progress`, data: result };
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('access-token')
+  @Delete('food-order/:roomId/:foodOrderId')
+  async deleteFoodOrder(@Param('roomId') roomId: string, @Param('foodOrderId') orderId: string, @Req() req:Request) {
+    const result = await this.restaurantService.deleteFoodOrder(+roomId, +orderId, req.user.id);
+    return { message: `${roomId}방의 foodOrderId 삭제`, data: result }
   }
 }
