@@ -33,7 +33,7 @@ export default function PartySelectionPage() {
 
   return (
     <div className="flex flex-col h-full p-6">
-        <div className="mb-37" />
+      <div className="mb-37" />
 
       {/* 카드 */}
       <div className="flex flex-col gap-4">
