@@ -7,10 +7,8 @@ const useCustomFetch = () => {
 
     let token = typeof window !== "undefined" ? localStorage.getItem("jwtToken") : null;
 
-    const isPublicEndpoint =
-      endpoint.startsWith("/auth/login") ||
-      endpoint.startsWith("/user/signup") ||
-      endpoint.startsWith("/auth/refresh");
+    const publicEndpoints = ["/auth/login", "/user/signup", "/auth/refresh"]; // 하위 url에는 영향을 미치지 않도록 배열로 정확히 일치하느 값만 처리 하도록 관리
+    const isPublicEndpoint = publicEndpoints.includes(endpoint);
 
     // 토큰 만료 5분 전 체크
     const isTokenExpiring = (token: string, minutesBefore = 5) => {
@@ -32,8 +30,15 @@ const useCustomFetch = () => {
         });
         const refreshData = await refreshRes.json();
         if (refreshRes.ok && refreshData.accessToken) {
-          token = refreshData.accessToken;
-          localStorage.setItem("jwtToken", token);
+          const newAccessToken = refreshData.accessToken;
+          const newRefreshToken = refreshRes.headers.get("refresh-token"); //헤더에서 꺼냄
+          localStorage.setItem("jwtToken", newAccessToken);
+
+          // refresh token도 따로 저장
+          if (newRefreshToken) {
+            localStorage.setItem("refreshToken", newRefreshToken);
+          }
+          token = newAccessToken; 
         } else {
           localStorage.removeItem("jwtToken");
           throw new Error("세션이 만료되었습니다. 다시 로그인 해주세요.");
@@ -42,9 +47,14 @@ const useCustomFetch = () => {
       } catch {
         // 자동 로그아웃 처리 - 만료시간 될 때 까지 프론트에서 아무런 요청 X 일 경우(사용자의 움직임이 X) 
         localStorage.removeItem("jwtToken");
-         window.location.href = ("/login");
         alert("세션이 만료되었습니다. 다시 로그인해주세요.");
-        return;
+        window.location.href = ("/login");
+        return {
+          ok: false,
+          status: 401,
+          message: "세션 만료",
+          data: null,
+        };
       }
     }
 
@@ -78,7 +88,7 @@ export default useCustomFetch;
 // 전체 흐름 정리 
 // 	1.	로컬 스토리지에서 JWT 가져오기
 // 	2.	만료 5분 전 체크 후 자동 갱신 (Refresh API 호출)
-// 	- 성공 → 새 토큰 저장
+// 	- refresh 토큰 사용 성공 → 새 엑세스 토큰 및 리프레쉬 토큰 저장
 // 	- 실패 → 로컬 토큰 삭제 + /login으로 강제 이동 + alert로 로그인 만료 표시
 // 	3.	API 요청 보낼 때 Authorization 헤더 추가
 // 	4.	응답을 {ok, status, message, data} 형태로 리턴
