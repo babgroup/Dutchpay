@@ -111,7 +111,7 @@ export class RestaurantService {
     });
 
     const items = myOrders.map(order => ({
-        orderItemId: order.id,
+        foodOrderId: order.id,
         foodItemId: order.foodItem.id,
         itemName: order.foodItem.itemName,
         unitPrice: order.foodItem.price,
@@ -191,5 +191,32 @@ export class RestaurantService {
     if (!currentProgress) throw new NotFoundException('progress가 존재하지 않습니다.')
     
     return currentProgress.progress
+  }
+
+  async deleteFoodOrder(roomId: number, orderId: number, userId: number) {
+    const room = await this.foodFareRoomRepo.findOne({ where: { id: roomId } });
+    if (!room) throw new NotFoundException('방을 찾을 수 없습니다.');
+
+    const result = await this.foodResultRepo.findOne({
+      where: { foodFareRoom: { id: room.id }, progress: 0 },
+    });
+    if (!result) throw new ForbiddenException('이미 진행이 종료된 방입니다.');
+    if (room.deadline <= new Date()) {
+      throw new ForbiddenException('마감 시간이 지나 주문할 수 없습니다.');
+    }
+
+    const join = await this.foodJoinUserRepo.findOne({
+      where: { foodFareRoom: { id: room.id }, user: { id: userId } },
+      relations: ['foodFareRoom', 'user'],
+    });
+    if (!join) throw new ForbiddenException('해당 방에 참여하지 않았습니다.');
+
+    const foodOrder = await this.foodOrderRepo.delete({
+      id: orderId,
+      foodJoinUser: { id: join.id }
+    });
+    if (!foodOrder.affected) throw new NotFoundException('삭제할 foodOrder가 없습니다')
+
+    return foodOrder
   }
 }
