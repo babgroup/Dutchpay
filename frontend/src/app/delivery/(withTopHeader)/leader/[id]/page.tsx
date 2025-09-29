@@ -3,10 +3,6 @@
 import Link from "next/link";
 import PartyContainer from "../../components/PartyContainer";
 
-export const metadata = {
-  title: "내 파티",
-};
-
 export default function MyPartyPage() {
 
   return (
