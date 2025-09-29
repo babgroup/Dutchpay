@@ -6,6 +6,7 @@ import PartyInfoDiv from "./PartyInfoDiv";
 import PartyButtonDiv from "./PartyButtonDiv";
 import { MyPartyData } from "@/types/restaurant";
 import { useParams } from "next/navigation";
+import Link from "next/link";
 
 export default function PartyContainer() {
   const apiFetch = useCustomFetch();
@@ -20,6 +21,7 @@ export default function PartyContainer() {
       try {
         const res = await apiFetch(`/restaurant/leader/${id}`) || { ok: false, data: {} };
         console.log("PartyContainer id:", id);
+        console
         
         if(res.ok) {
           setParty(res.data);
@@ -46,6 +48,11 @@ export default function PartyContainer() {
       <div className="flex-shrink-0">
         <PartyButtonDiv startTime={party.deadline} />
       </div>
+
+      <Link href={`/delivery/break-up-party/${id}`} className="mt-2 text-gray-300 text-center mb-1" href="파티해산하기"      
+          >
+        파티 해산하기
+      </Link>
     </div>
   );
 }
