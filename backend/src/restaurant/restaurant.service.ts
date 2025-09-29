@@ -87,28 +87,39 @@ export class RestaurantService {
       throw new ForbiddenException('방의 레스토랑과 다른 메뉴는 주문할 수 없습니다.');
     }
 
-    const created = this.foodOrderRepo.create({
-      foodJoinUser: { id: join.id },
-      foodItem: { id: foodItem.id },
-      quantity: dto.quantity,
+    const existing = await this.foodOrderRepo.findOne({
+        where: { foodJoinUser: { id: join.id }, foodItem: { id: foodItem.id } },
     });
-    await this.foodOrderRepo.save(created);
+
+    if (existing) {
+        await this.foodOrderRepo.update(
+            { id: existing.id },
+            { quantity: dto.quantity },
+        );
+    } else {
+        const created = this.foodOrderRepo.create({
+            foodJoinUser: { id: join.id },
+            foodItem: { id: foodItem.id },
+            quantity: dto.quantity,
+        });
+        await this.foodOrderRepo.save(created);
+    }
 
     const myOrders = await this.foodOrderRepo.find({
       where: { foodJoinUser: { id: join.id } },
       relations: ['foodItem'],
-      order: { id: 'ASC' },
     });
 
-    const items = myOrders.map(o => ({
-      orderItemId: o.id,
-      foodItemId: o.foodItem.id,
-      itemName: o.foodItem.itemName,
-      unitPrice: o.foodItem.price,
-      quantity: o.quantity,
-      subtotal: o.foodItem.price * o.quantity,
+    const items = myOrders.map(order => ({
+        foodOrderId: order.id,
+        foodItemId: order.foodItem.id,
+        itemName: order.foodItem.itemName,
+        unitPrice: order.foodItem.price,
+        quantity: order.quantity,
+        subtotal: order.foodItem.price * order.quantity,
     }));
-    const myTotal = items.reduce((s, it) => s + it.subtotal, 0);
+
+    const myTotal = items.reduce((sum, item) => sum + item.subtotal, 0);
 
     return {
       message: '주문이 저장되었습니다.',
@@ -121,13 +132,13 @@ export class RestaurantService {
   }
 
   async getCurrentRooms(): Promise<CurrentFoodRoomsResponseType[]> {
-    const rows = await this.foodResultRepo.find({
+    const results = await this.foodResultRepo.find({
       where: { progress: 0 },
       relations: ['foodFareRoom', 'foodFareRoom.restaurant', 'foodFareRoom.foodJoinUsers'],
     });
 
-    return rows.map(r => {
-      const room = r.foodFareRoom;
+    return results.map(foodResult  => {
+      const room = foodResult.foodFareRoom;
       return {
         id: room.id,
         restaurantName: room.restaurant.restaurantName,
@@ -141,28 +152,28 @@ export class RestaurantService {
   }
 
   async getRestaurantList(): Promise<ListResponseType[]> {
-    const list = await this.restaurantRepo.find();
+    const restaurantList = await this.restaurantRepo.find();
 
-    return list.map(r => ({
-      id: r.id,
-      restaurantName: r.restaurantName,
-      deliveryFee: r.deliveryFee,
-      imageUrl: r.imageUrl,
-      businessHours: r.businessHours,
+    return restaurantList.map(restaurant => ({
+      id: restaurant.id,
+      restaurantName: restaurant.restaurantName,
+      deliveryFee: restaurant.deliveryFee,
+      imageUrl: restaurant.imageUrl,
+      businessHours: restaurant.businessHours,
     }));
   }
 
   async getUserInRoom(roomId: number): Promise<UserResponseType[]> {
-    const rows = await this.foodJoinUserRepo.find({
+    const joins  = await this.foodJoinUserRepo.find({
       where: { foodFareRoom: { id: roomId } },
       relations: ['user', 'foodFareRoom', 'foodFareRoom.creatorUser'],
     });
 
-    return rows.map(j => ({
-      user_id: j.user.studentNumber,
-      name: j.user.name,
-      student_number: j.user.studentNumber,
-      is_creator: j.user.id === j.foodFareRoom.creatorUser.id,
+    return joins .map(join  => ({
+      user_id: join .user.id,
+      name: join .user.name,
+      student_number: join .user.studentNumber,
+      is_creator: join .user.id === join .foodFareRoom.creatorUser.id,
     }));
   }
 
@@ -180,5 +191,32 @@ export class RestaurantService {
     if (!currentProgress) throw new NotFoundException('progress가 존재하지 않습니다.')
     
     return currentProgress.progress
+  }
+
+  async deleteFoodOrder(roomId: number, orderId: number, userId: number) {
+    const room = await this.foodFareRoomRepo.findOne({ where: { id: roomId } });
+    if (!room) throw new NotFoundException('방을 찾을 수 없습니다.');
+
+    const result = await this.foodResultRepo.findOne({
+      where: { foodFareRoom: { id: room.id }, progress: 0 },
+    });
+    if (!result) throw new ForbiddenException('이미 진행이 종료된 방입니다.');
+    if (room.deadline <= new Date()) {
+      throw new ForbiddenException('마감 시간이 지나 주문할 수 없습니다.');
+    }
+
+    const join = await this.foodJoinUserRepo.findOne({
+      where: { foodFareRoom: { id: room.id }, user: { id: userId } },
+      relations: ['foodFareRoom', 'user'],
+    });
+    if (!join) throw new ForbiddenException('해당 방에 참여하지 않았습니다.');
+
+    const foodOrder = await this.foodOrderRepo.delete({
+      id: orderId,
+      foodJoinUser: { id: join.id }
+    });
+    if (!foodOrder.affected) throw new NotFoundException('삭제할 foodOrder가 없습니다')
+
+    return foodOrder
   }
 }
