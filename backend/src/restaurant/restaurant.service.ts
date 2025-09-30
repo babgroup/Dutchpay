@@ -163,6 +163,19 @@ export class RestaurantService {
     }));
   }
 
+  async getFoodList(foodId: number) {
+    const foodList = await this.foodItemRepo.find({
+      where: { restaurant: {id: foodId} },
+    });
+
+    return foodList.map(food => ({
+      id: food.id,
+      foodName: food.itemName,
+      foodPrice: food.price,
+      imageUrl: food.imageUrl,
+    }));
+  }
+
   async getUserInRoom(roomId: number): Promise<UserResponseType[]> {
     const joins  = await this.foodJoinUserRepo.find({
       where: { foodFareRoom: { id: roomId } },

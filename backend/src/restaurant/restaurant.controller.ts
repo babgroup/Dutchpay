@@ -132,6 +132,36 @@ export class RestaurantController {
     return { message: '레스토랑 목록 전체', data: result };
   }
 
+  @ApiOperation({ summary: '음식 전체 목록', description: 'jwt토큰 검사 없이 누구나 볼 수 있음.' })
+  @ApiOkResponse({
+  description: '레스토랑 음식 목록',
+  schema: {
+    example: {
+      message: "해당 레스토랑 음식 목록 전체",
+      data: [
+        {
+          id: 2,
+          foodName: "Cheese Pizza",
+          foodPrice: 10000,
+          imageUrl: "http://www.bhc.co.kr/upload/bhc/menu/HOT%ED%99%84%EB%9D%BC%EB%8C%80%EC%9D%BC%EB%B3%B4_410x271.jpg",
+        },
+        {
+          id: 1,
+          foodName: "Pepperoni Pizza",
+          foodPrice: 12000,
+          imageUrl: "http://www.bhc.co.kr/upload/bhc/menu/HOT%ED%99%84%EB%9D%BC%EB%8C%80%EC%9D%BC%EB%B3%B4_410x271.jpg",
+        },
+      ],
+    },
+  },
+})
+  @ApiParam({ name: 'restaurantId', type: String, example: 1})
+  @Get('list/:restaurantId')
+  async getFoodList(@Param('restaurantId') restaurantId: string) {
+    const result = await this.restaurantService.getFoodList(+restaurantId);
+    return { message: '해당 레스토랑 음식 목록 전체', data: result };
+  }
+  
   @ApiOperation({ summary: '선택한 방에 있는 유저 목록', description: 'jwt토큰 검사 없이 누구나 볼 수 있음.' })
   @ApiOkResponse({
     description: '해당 방의 참여 유저 리스트',
