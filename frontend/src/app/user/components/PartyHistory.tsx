@@ -20,7 +20,7 @@ export default function PartyHistory() {
       const decoded = decodeJWT(token);
       if (decoded) {
         setUserInfo({
-          userName: "임시이륾",
+          userName: "임시이름",
           userId: decoded.userStuNum,
           userEmail: decoded.email,
         });
