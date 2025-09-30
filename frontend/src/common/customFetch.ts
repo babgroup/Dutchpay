@@ -5,7 +5,7 @@ const useCustomFetch = () => {
   const customFetch = async (endpoint: string, options: RequestInit = {}) => {
     const BASE_URL = process.env.NEXT_PUBLIC_API_URL as string;
 
-    let token = typeof window !== "undefined" ? localStorage.getItem("jwtToken") : null;
+    let token = typeof window !== "undefined" ? localStorage.getItem("jwtToken") : null; 
 
     const publicEndpoints = ["/auth/login", "/user/signup", "/auth/refresh"]; // 하위 url에는 영향을 미치지 않도록 배열로 정확히 일치하느 값만 처리 하도록 관리
     const isPublicEndpoint = publicEndpoints.includes(endpoint);
@@ -13,8 +13,8 @@ const useCustomFetch = () => {
     // 토큰 만료 5분 전 체크
     const isTokenExpiring = (token: string, minutesBefore = 5) => {
       try {
-        const payload = JSON.parse(atob(token.split(".")[1]));
-        const expiry = payload.exp * 1000;
+        const payload = JSON.parse(atob(token.split(".")[1])); //header.payload
+        const expiry = payload.exp * 1000; //1초로 만들어주기
         return expiry - Date.now() < minutesBefore * 60 * 1000;
       } catch {
         return true;
