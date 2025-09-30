@@ -56,6 +56,7 @@ export class MemberService {
           deliveryFee: foodRoomMember.foodFareRoom.restaurant.deliveryFee,
           memberCount: foodRoomMember.foodFareRoom.foodJoinUsers.length,
           myOrderItems: foodRoomMember.foodOrders.map((order) => ({
+            orderId: order.id,
             itemName: order.foodItem.itemName,
             quantity: order.quantity,
             price: order.foodItem.price

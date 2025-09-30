@@ -55,7 +55,7 @@ export class MemberController {
             deliveryFee: 2000,
             memberCount: 2,
             myOrderItems: [
-              { itemName: '', quantity: 1, price: 12000 },
+              { orderId: '6', itemName: '치킨', quantity: 1, price: 12000 },
             ],
           },
         },
