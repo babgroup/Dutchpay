@@ -50,7 +50,8 @@ export class MemberController {
           message: '1번방에서 내가 시킨 메뉴',
           data: {
             foodJoinUserId: 1,
-            restaurantName: '',
+            restaurantId: 1, 
+            restaurantName: 'aaaa',
             deadline: 'Mon Jul 07 2025 15:30:00 GMT+0000 (Coordinated Universal Time)',
             deliveryFee: 2000,
             memberCount: 2,
