@@ -191,7 +191,7 @@ export default function MenuSelectDiv() {
       />
       <BasicButton
         text={posting ? "주문 중..." : "메뉴 결정하기"}
-        isDisable={posting || selectedFoods.length === 0}
+        isDisable={posting || selectedFoods.length === 0} // 최소 메뉴 1개 이상은 선택되어 있어야 하도록
         onClick={handleSubmit}
       />
     </div>
