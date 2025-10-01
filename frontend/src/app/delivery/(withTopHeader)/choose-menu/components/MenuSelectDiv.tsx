@@ -83,37 +83,41 @@ export default function MenuSelectDiv() {
     fetchData();
   }, [id]);
 
-
-  // 사용자가 음식 + 버튼을 눌렀을 때 선택 메뉴 상태(selectedFoods)를 업데이트
-  // 1.	이미 선택한 메뉴인지 확인 (exists)
-	// 2.	선택된 메뉴이면 quantity +1
-	// 3.	없으면 새 객체 { foodId, quantity:1 } 추가
-
   const handleSelectFood = (food: FoodItem) => {
     setSelectedFoods(prev => {
       const exists = prev.find(f => f.foodId === food.id);
+      // 이미 선택 된 음식인지 찾기
+
       if (exists) {
+        // 이미 있다면 quantity +1
         return prev.map(f =>
           f.foodId === food.id ? { ...f, quantity: f.quantity + 1 } : f
         );
       }
+      // 없으면 새 음식 추가, quantity = 1
       return [...prev, { foodId: food.id, quantity: 1 }];
     });
   };
 
-  const handleDecrease = (foodId: number) => {
+  const handleDecrease = async (foodId: number) => {
     const food = selectedFoods.find(f => f.foodId === foodId);
+    // 이미 선택한 음식 중에서 같은 foodId 찾기
     if (!food) return;
 
     if (food.quantity <= 1) {
-      // 수량 0이면 DELETE 호출
+      // 수량이 1 이하
       if (food.orderId) {
-        apiFetch(`/restaurant/food-order/${id}/${food.orderId}`, { method: "DELETE" });
+        // 이미 주문된 음식이라면 DELETE API 요청
+        await apiFetch(`/restaurant/food-order/${id}/${food.orderId}`, { method: "DELETE" });
       }
+      // 상태에서도 해당 음식 제거
       setSelectedFoods(prev => prev.filter(f => f.foodId !== foodId));
     } else {
+      // 수량이 2 이상일 경우 - 1 빼기
       setSelectedFoods(prev =>
-        prev.map(f => f.foodId === foodId ? { ...f, quantity: f.quantity - 1 } : f)
+        prev.map(f =>
+          f.foodId === foodId ? { ...f, quantity: f.quantity - 1 } : f
+        )
       );
     }
   };
@@ -123,31 +127,51 @@ export default function MenuSelectDiv() {
     setPosting(true);
 
     try {
-      const newSelectedFoods: SelectedFood[] = [];
+      const updatedFoods: SelectedFood[] = [];
+
       for (const f of selectedFoods) {
-        const res = await apiFetch(`/restaurant/food-order/${id}`, {
-          method: "POST",
-          body: JSON.stringify({
-            foodItemId: f.foodId,
-            quantity: f.quantity,
-          }),
-        });
-        if (!res.ok) {
-          alert("메뉴 주문 실패: " + res.message);
-        } else {
-          // 새 orderId 반영
-          newSelectedFoods.push({
-            ...f,
-            orderId: res.data?.orderId || f.orderId,
+        // 1 - 새 주문 (orderId 없음 → POST)
+        if (!f.orderId) {
+          const res = await apiFetch(`/restaurant/food-order/${id}`, {
+            method: "POST",
+            body: JSON.stringify({
+              foodItemId: f.foodId,
+              quantity: f.quantity,
+            }),
           });
+          if (!res.ok) {
+            alert("메뉴 주문 실패: " + res.message);
+          } else {
+            updatedFoods.push({
+              ...f,
+              orderId: res.data?.orderId, // 서버가 준 orderId 저장
+            });
+          }
+        }
+        // 2 - 기존 주문 수정 - POST 다시 하기
+        else {
+          const res = await apiFetch(`/restaurant/food-order/${id}`, {
+            method: "POST",
+            body: JSON.stringify({
+              foodItemId: f.foodId,
+              quantity: f.quantity,
+            }),
+          });
+          if (!res.ok) {
+            alert("수정 실패: " + res.message);
+            updatedFoods.push(f); // 실패하면 기존 상태 유지
+          } else {
+            updatedFoods.push(f);
+          }
         }
       }
-      setSelectedFoods(newSelectedFoods);
+
+      setSelectedFoods(updatedFoods);
       alert("메뉴 선택 완료!");
-      // router.back(); // 직전 페이지로 보내기, member 일 경우로 leader일 경우도 있어서
-    } catch(error) {
+      // router.back();
+    } catch (error) {
       alert("주문 중 오류 발생");
-      console.log(error.message)
+      if (error instanceof Error) console.log(error.message);
     } finally {
       setPosting(false);
     }
