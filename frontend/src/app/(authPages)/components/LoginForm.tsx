@@ -21,23 +21,28 @@ export default function LoginForm() {
   const { register, handleSubmit, formState: { errors } } = useForm<LoginFormInputs>();
 
   const onSubmit = async (data: LoginFormInputs) => {
-
     try {
       setServerError(false);
       setLoading(true);
-      const response = await Fetch("/auth/login", {
+
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
         method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
-      if (response.ok && response.data?.accessToken) {
-          localStorage.setItem("jwtToken", response.data.accessToken);
-          await router.push("/");
-        } else {
-          setServerError(true);
-        }
-      } catch (error) {
-        // 요청 실패는 전부 여기서 처리
+
+      const responseData = await res.json();
+      const refreshToken = res.headers.get("refresh-token");
+
+      if (res.ok && responseData.accessToken) {
+        localStorage.setItem("jwtToken", responseData.accessToken);
+        if (refreshToken) localStorage.setItem("refreshToken", refreshToken); // 리프레쉬 토큰도 로컬스토리지에 저장
+        await router.push("/");
+      } else {
         setServerError(true);
+      }
+    } catch (error) {
+      setServerError(true);
     } finally {
       setLoading(false);
     }
