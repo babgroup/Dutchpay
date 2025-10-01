@@ -51,6 +51,7 @@ export class MemberService {
 
     return {
           foodJoinUserId: foodRoomMember.user.id,
+          restaurantId: foodRoomMember.foodFareRoom.restaurant.id,
           restaurantName: foodRoomMember.foodFareRoom.restaurant.restaurantName,
           deadline: foodRoomMember.foodFareRoom.deadline.toString(),
           deliveryFee: foodRoomMember.foodFareRoom.restaurant.deliveryFee,

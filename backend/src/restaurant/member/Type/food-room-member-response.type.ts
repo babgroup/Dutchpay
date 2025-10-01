@@ -7,6 +7,7 @@ class MyOrderItemType {
 }
 
 export class FoodRoomMemberResponseType {
+  restaurantId: number;
   foodJoinUserId: number;
   restaurantName: string;
   deadline: string;
