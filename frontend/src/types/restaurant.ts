@@ -41,9 +41,10 @@ export interface RoomMemberProps {
 }
 
 export interface FoodItem {
-  itemName: string;
-  quantity: number;
-  price: number;
+  id: number;
+  foodName: string;
+  foodPrice?: number;
+  imageUrl: string;
 }
 
 export interface MyPartyData {
