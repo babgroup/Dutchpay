@@ -181,7 +181,7 @@ export default function MenuSelectDiv() {
   if (error) return <p className="text-red-500">{error}</p>;
 
   return (
-    <div className="flex flex-col w-full justify-center items-center">
+    <div className="flex flex-col w-full justify-center items-center text-black">
       {restaurantName && <h2 className="text-xl font-bold mb-4">{restaurantName}</h2>}
       <FoodList
         foods={foods}
