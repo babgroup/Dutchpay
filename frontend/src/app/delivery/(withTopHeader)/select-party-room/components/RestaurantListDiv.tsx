@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import RestaurantListCard from "./RestaurantListCard";
-import useFetch from "@/common/customFetch";
+import useCustomFetch from "@/common/customFetch";
 import type { RestaurantList } from "@/types/restaurant";
 
 interface RestaurantDivProps {
@@ -11,7 +11,7 @@ interface RestaurantDivProps {
 }
 
 export default function RestaurantListDiv({ selectedRestaurant, onSelect }: RestaurantDivProps) {
-    const Fetch = useFetch();
+    const apiFetch = useCustomFetch();
     const [loading, setLoading] = useState<boolean>(true);
     const [list, setList] = useState<RestaurantList[]>([])
     const [message, setMessage] = useState('');
@@ -21,7 +21,7 @@ export default function RestaurantListDiv({ selectedRestaurant, onSelect }: Rest
             setLoading(true);
             setMessage('로딩 중...');
             try {
-                const response = await Fetch("restaurant/list", { method: "GET" })
+                const response = await apiFetch("restaurant/list", { method: "GET" })
                 console.log(response);
                 if (response && Array.isArray(response.data)) {
                     setList(response.data);
@@ -29,12 +29,11 @@ export default function RestaurantListDiv({ selectedRestaurant, onSelect }: Rest
                     setList([]);
                     setMessage('데이터를 불러오는 데 실패했습니다');
                 }
-            } catch (e: unknown) {
+            } catch (e: any) {
                 setMessage(e.message || '오류가 발생했습니다');
                 setList([]);
             } finally {
                 setLoading(false);
-                setMessage('');
             }
         };
         fetchRestaurantList();
@@ -42,6 +41,8 @@ export default function RestaurantListDiv({ selectedRestaurant, onSelect }: Rest
 
     return (
         <div className="flex flex-col gap-3">
+            {loading && <p className="text-gray-500">로딩 중...</p>}
+            {message && !loading && <p className="text-red-500">{message}</p>}
             {list.map((res) => (
                 <RestaurantListCard
                     key={res.id} 
