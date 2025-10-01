@@ -11,7 +11,7 @@ import Link from "next/link";
 export default function PartyContainer() {
   const apiFetch = useCustomFetch();
   const [party, setParty] = useState<MyPartyData | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true); 
   const [error, setError] = useState<string | null>(null);
   const {id} = useParams(); // 현재 url의 패스파라미터 값이 들어옴
 
@@ -49,7 +49,7 @@ export default function PartyContainer() {
           className="text-md text-gray-400 underline underline-offset-2">
           내 메뉴
         </Link>
-        <PartyButtonDiv startTime={party.deadline} />
+        <PartyButtonDiv startTime={party.deadline} minUser={party.minUser} currentUserCount={party.user?.length || 0} roomId={id} />
       </div>
 
       <Link href={`/delivery/break-up-party/${id}`} className=" text-gray-300 text-center text-sm mb-1"      

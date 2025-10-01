@@ -3,23 +3,24 @@
 import { useEffect, useState } from "react";
 import BasicButton from "@/app/components/BasicButton";
 import useCustomFetch from "@/common/customFetch";
-import { useParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 
 interface PartyButtonDivProps {
   startTime: string; // 부모에서 전달받은 시작 시간
+  minUser?: number;
+  currentUserCount?: number;
+  roomId: string; // 상위 컴포넌트에서 useParams 로 가져오는데 값을 string으로 반환 함
 }
 
-export default function PartyButtonDiv({ startTime }: PartyButtonDivProps) {
+export default function PartyButtonDiv({ startTime, roomId, minUser = 0, currentUserCount = 0 }: PartyButtonDivProps) {
   const apiFetch = useCustomFetch();
   const [progress, setProgress] = useState<number | null>(null);
-  const {id} = useParams(); //url 의 패스 파라ㅁ
   const router = useRouter();
 
   useEffect(() => {
     const fetchPartyProgress = async () => {
       try {
-        const res = await apiFetch(`/restaurant/progress/${id}`);
+        const res = await apiFetch(`/restaurant/progress/${roomId}`);
         if (res.ok && res.data !== undefined) {
           setProgress(res.data.data); // 상태가 업데이트 되면 값 날아가지만 리랜더링 위해 값 할당
         } else {
@@ -30,11 +31,11 @@ export default function PartyButtonDiv({ startTime }: PartyButtonDivProps) {
       }
     };
     fetchPartyProgress();
-  }, [id]); // 파라미터 바뀌면 새 값 받아서 다시 그려주기
+  }, [roomId]); // 파라미터 바뀌면 새 값 받아서 다시 그려주기
 
   const patchProgress = async (nextValue: number) => {
     try {
-      await apiFetch(`/restaurant/leader/update-progress${nextValue}/${id}`, { method: "PATCH"});
+      await apiFetch(`/restaurant/leader/update-progress${nextValue}/${roomId}`, { method: "PATCH"});
       setProgress(nextValue);
     } catch (error) {
       if (error instanceof Error) console.log(error.message);
@@ -56,7 +57,7 @@ export default function PartyButtonDiv({ startTime }: PartyButtonDivProps) {
           />
           <BasicButton
             text="계좌번호 공개하기"
-            isDisable={!deadlinePassed}
+            isDisable={!deadlinePassed || currentUserCount < minUser} // 배달 시작 시간과 최소 인원 모두 만족 할 경우 활성화
             onClick={() => patchProgress(1)}
           />
         </>
