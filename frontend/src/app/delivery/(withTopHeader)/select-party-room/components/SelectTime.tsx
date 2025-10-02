@@ -1,13 +1,14 @@
 'use client'
 
-import { useState } from "react";
+import { useRouter } from "next/navigation";
 import BasicButton from "@/app/components/BasicButton";
 import Dropdown, { DropdownOption } from "./Dropdown";
 
 interface SelectTimeProps {
     selectedTime: string | null;
     onSelectTime: (time: string) => void;
-    onSubmit: () => void;
+    onSubmit: () => Promise<{ success: boolean; id?: string}>;
+    id: string | null;
 }
 
 export default function SelectTime({
@@ -16,6 +17,16 @@ export default function SelectTime({
     onSubmit
 }: SelectTimeProps) {
     const isButtonDisabled = !selectedTime;
+    const router = useRouter();
+
+    const handleClick = async () => {
+        if (isButtonDisabled) return;
+
+        const result = await onSubmit();
+        if (result.success) {
+            router.push(`/delivery/leader/${result.id}`);
+        }
+    };
 
     const generateTimeOptions = () : DropdownOption[] => {
         const times: DropdownOption[] = [];
@@ -52,7 +63,7 @@ export default function SelectTime({
             <div className="flex flex-col m-10 items-center">
                 <BasicButton
                     text="파티 만들기"
-                    onClick={isButtonDisabled ? () => {} : onSubmit}
+                    onClick={handleClick}
                     isDisable={isButtonDisabled}
                 />
             </div>

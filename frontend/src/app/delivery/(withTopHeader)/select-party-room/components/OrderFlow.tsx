@@ -16,6 +16,7 @@ export default function OrderFlow() {
     const [selectedRestaurant, setSelectRestaurant] = useState<RestaurantList | null>(null);
     const [selectedTime, setSelectedTime] = useState<string | null>(null);
     const [step, setStep] = useState(1);
+    const [roomId, setRoomId] = useState<string | null>(null);
 
     const Fetch = useCustomFetch();
 
@@ -35,7 +36,9 @@ export default function OrderFlow() {
     const goNextStep = () => {setStep((prev) => prev + 1)};
 
     const handleSubmit = async () => {
-        if (!selectedRestaurant || !selectedTime) return;
+        if (!selectedRestaurant || !selectedTime) {
+            return { success: false };
+        }
 
         const [hour, minute] = selectedTime.split(':').map(Number);
         const now = new Date();
@@ -60,9 +63,13 @@ export default function OrderFlow() {
                 body: JSON.stringify(requestBody),
             });
 
-            console.log(response);
+            if (!response.ok) return { success: false };
+
+            const data = response.data;
+            return { success: true, id: data.id };
         } catch (error) {
             console.error(error);
+            return { success: false };
         }
     }
 
@@ -92,6 +99,7 @@ export default function OrderFlow() {
                     selectedTime={selectedTime}
                     onSelectTime={setSelectedTime}
                     onSubmit={handleSubmit}
+                    id={roomId}
                 />
             )}
         </div>
