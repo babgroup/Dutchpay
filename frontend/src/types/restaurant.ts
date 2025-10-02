@@ -34,10 +34,17 @@ export interface PostFoodFareRoomData {
   deadline: string;
 }
 
+export interface OrderItem {
+  orderId: number;
+  itemName: string;
+  quantity: number;
+  price: number;
+}
+
 export interface RoomMemberProps {
   userId: number;
   userName: string;
-  foodOrder: FoodItem[];
+  foodOrder: OrderItem[];
 }
 
 export interface FoodItem {

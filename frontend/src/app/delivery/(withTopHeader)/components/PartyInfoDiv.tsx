@@ -9,8 +9,8 @@ interface PartyInfoDivProps {
 export default function PartyInfoDiv({ party } : PartyInfoDivProps ) {
   return (
     <div className="flex flex-col items-center w-full">
-      <p className="mb-4 text-xl font-black text-center">
-        {party.restaurantName} | 주문 시간 : {formaTime(party.deadline)}
+      <p className="mb-4 text-lg font-black text-center">
+        {party.restaurantName} | 주문 시간 {formaTime(party.deadline)}
       </p>
 
       {/* 카드 리스트 영역만 스크롤 가능 */}

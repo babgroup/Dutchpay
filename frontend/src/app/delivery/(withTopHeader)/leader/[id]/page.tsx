@@ -1,6 +1,5 @@
 'use client';
 
-import Link from "next/link";
 import PartyContainer from "../../components/PartyContainer";
 
 export default function MyPartyPage() {
