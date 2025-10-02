@@ -44,14 +44,14 @@ export default function OrderFlow() {
 
         const requestBody = {
             restaurantId: selectedRestaurant.id,
-            minMember: selectedParty?.type === 'A' ? selectedParty.partySize : null,
+            minMember: selectedParty?.type === 'A' ? selectedParty.partySize : 1,
             deadline: isoDeadline,
         };
 
         const token = localStorage.getItem('jwtToken');
 
         try {
-            const response = await Fetch('restaurant/food-fare-room', {
+            const response = await Fetch('/restaurant/food-fare-room', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

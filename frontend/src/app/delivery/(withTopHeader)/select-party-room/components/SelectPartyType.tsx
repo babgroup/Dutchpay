@@ -41,7 +41,6 @@ export default function SelectPartyType({
   
     return (
         <div className="flex flex-col h-full p-6">
-            <div className="mb-10" />
 
             {/* 카드 */}
             <div className="flex flex-col gap-4">

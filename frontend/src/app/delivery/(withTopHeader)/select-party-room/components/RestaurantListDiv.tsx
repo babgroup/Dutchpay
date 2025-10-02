@@ -21,7 +21,7 @@ export default function RestaurantListDiv({ selectedRestaurant, onSelect }: Rest
             setLoading(true);
             setMessage('로딩 중...');
             try {
-                const response = await apiFetch("restaurant/list", { method: "GET" })
+                const response = await apiFetch("/restaurant/list", { method: "GET" })
                 console.log(response);
                 if (response && Array.isArray(response.data)) {
                     setList(response.data);
@@ -34,6 +34,7 @@ export default function RestaurantListDiv({ selectedRestaurant, onSelect }: Rest
                 setList([]);
             } finally {
                 setLoading(false);
+                setMessage('');
             }
         };
         fetchRestaurantList();
