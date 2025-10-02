@@ -15,7 +15,6 @@ export default function PartyHistory() {
 
   useEffect(() => {
     const token = localStorage.getItem("jwtToken");
-    console.log("디코딩한 JWT:", decodeJWT(token));
     if (token) {
       const decoded = decodeJWT(token);
       if (decoded) {
