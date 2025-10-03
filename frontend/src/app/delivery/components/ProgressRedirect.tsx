@@ -15,8 +15,9 @@ export default function ProgressRedirect() {
     const fetchProgress = async () => {
       try {
         const res = await apiFetch(`/restaurant/progress/${roomId}`);
-        const progress = res.data.data; 
-        if (progress !== "3" && progress !== "2") {
+        const progress = res.data; 
+        console.log(progress)
+        if (progress !== 3 && progress !== 2) {
           router.replace(`/delivery/${role}/${roomId}`);
         }
       } catch(error) {

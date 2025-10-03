@@ -22,7 +22,8 @@ export default function PartyButtonDiv({ startTime, roomId, minUser = 0, current
       try {
         const res = await apiFetch(`/restaurant/progress/${roomId}`);
         if (res.ok && res.data !== undefined) {
-          setProgress(res.data.data); // 상태가 업데이트 되면 값 날아가지만 리랜더링 위해 값 할당
+          console.log("프로그레스:",res.data)
+          setProgress(res.data); // 상태가 업데이트 되면 값 날아가지만 리랜더링 위해 값 할당
         } else {
           console.error("progress fetch failed:", res?.message ?? "Unknown error");
         }
