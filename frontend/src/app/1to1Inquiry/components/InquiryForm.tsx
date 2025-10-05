@@ -31,24 +31,27 @@ export default function InquiryForm() {
 
     return (
             <div className="flex flex-col h-full p-6">
-                <div className="mb-15" />
     
-                <Dropdown
-                    label=" 카테고리 선택"
-                    placeholder="문의 사항을 선택해주세요"
-                    options={inquiryOptions}
-                    selectedValue={selectedInquiry}
-                    onSelect={setSelectedInquiry}
-                />
+                <div className="mb-8">
+                    <Dropdown
+                        label=" 카테고리 선택"
+                        placeholder="문의 사항을 선택해주세요"
+                        options={inquiryOptions}
+                        selectedValue={selectedInquiry}
+                        onSelect={setSelectedInquiry}
+                    />
+                </div>
     
-                <InquiryInput
-                    label="문의 내용을 입력해주세요"
-                    placeholder="Type here..."
-                    value={inquiryText}
-                    onChange={setInquiryText}
-                />
+                <div className="flex-grow mb-10">
+                    <InquiryInput
+                        label="문의 내용을 입력해주세요"
+                        placeholder="Type here..."
+                        value={inquiryText}
+                        onChange={setInquiryText}
+                    />
+                </div>
     
-                <div className="flex flex-col m-10 items-center">
+                <div className="w-full flex justify-center mt-30">
                     <BasicButton
                         text="제출하기"
                         onClick={handleSubmit}
