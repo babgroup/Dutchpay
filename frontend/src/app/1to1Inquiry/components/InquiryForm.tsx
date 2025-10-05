@@ -48,11 +48,13 @@ export default function InquiryForm() {
                     onChange={setInquiryText}
                 />
     
-                <BasicButton
-                    text="제출하기"
-                    onClick={handleSubmit}
-                    isDisable={!selectedInquiry || !inquiryText.trim()}
-                />
+                <div className="flex flex-col m-10 items-center">
+                    <BasicButton
+                        text="제출하기"
+                        onClick={handleSubmit}
+                        isDisable={!selectedInquiry || !inquiryText.trim()}
+                    />
+                </div>
             </div>
         )
 }
