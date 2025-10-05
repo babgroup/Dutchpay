@@ -22,7 +22,8 @@ export default function InquiryInput({
                 value={value}
                 onChange={(e) => onChange?.(e.target.value)}
                 placeholder={placeholder}
-                className="w-full resize-none rounded-md border border-gray-300 bg-white px-4 py-2 text-sm text-gray-900 placeholder-gray-400 focus:ring-orange-100 focus:border-orange-500"
+                rows={6}
+                className="w-full resize-none rounded-md border border-gray-300 bg-white px-4 py-2 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-orange-100 focus:border-orange-500"
             />
         </div>
     );
