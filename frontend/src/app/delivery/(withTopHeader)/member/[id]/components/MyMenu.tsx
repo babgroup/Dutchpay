@@ -38,7 +38,7 @@ export default function MyMenu({ deliveryFee }: MyMenuProps) {
     const totalPrice = myOrderItems.reduce((sum, item) => sum + item.price, 0) + deliveryFee;
 
     return (
-        <div className="flex flex-col gap-2 bg-white px-6 py-6 rounded-2xl m-1 border border-gray-200 shadow-lg">
+        <div className="flex flex-col gap-2 bg-white px-6 py-6 rounded-2xl m-1 border border-gray-300">
             <p>내 메뉴</p>
 
             {/* 내 메뉴 */}
@@ -46,21 +46,25 @@ export default function MyMenu({ deliveryFee }: MyMenuProps) {
                 {myOrderItems.length === 0 ? (
                     <p className="pb-6">선택된 메뉴가 없습니다. 메뉴 변경 버튼을 눌러 메뉴를 선택해주세요.</p>
                 ) : (
-                    <ul>
+                    <ul className="space-y-1">
                         {myOrderItems.map(item => (
-                            <li key={item.orderId}>
-                                {item.itemName}  x{item.quantity}
+                            <li key={item.orderId} className="flex justify-between">
+                                <span>{item.itemName}</span>
+                                <span className="pl-30">x{item.quantity}</span>
                             </li>
                         ))}
                     </ul>
                 )}
             </div>
 
-            <hr />
+            <hr className="w-2/3 border-gray-300 mx-auto my-4" />
 
-            <p className="pt-2">배달비<span className="pl-46">{deliveryFee.toLocaleString()}원</span></p>
+            <p className="flex justify-between">
+                <span>배달비</span>
+                <span className="pl-46">{deliveryFee.toLocaleString()}원</span>
+            </p>
 
-            <div className="pt-2 justify-center items-center">
+            <div className="flex justify-center pt-2 text-amber-500">
                 총 {totalPrice.toLocaleString()}원
             </div>
 

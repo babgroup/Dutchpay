@@ -37,11 +37,11 @@ export default function MyPartyContainer() {
                 <MyCardDiv party={party}/>
             </div>
 
-            <div className="flex w-full mt-10 justify-center items-center">
+            <div className="flex w-full mt-8 justify-center items-center">
                 <ProgressButtonDiv />
             </div>
 
-            <Link href={`/delivery`} className="text-gray-300 text-center text-sm mb-1">파티 나가기</Link>
+            <Link href={`/delivery`} className="text-gray-300 text-center text-sm mb-1 pt-2">파티 나가기</Link>
         </div>
     )
 }
