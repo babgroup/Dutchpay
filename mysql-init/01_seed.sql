@@ -49,3 +49,10 @@ VALUES
   (2, 2, 2, 2), -- Bob: Cheese Pizza x2
   (3, 3, 1, 3), -- Bob: Sushi Set
   (4, 4, 1, 4); -- Charlie: Pork Belly BBQ
+
+-- UserBankAccount 더미데이터
+INSERT INTO user_bank_account (id, user_id, bank_name, account_number, is_primary)
+VALUES
+  (1, 1, 'Kookmin Bank',  '123-4567-8901', true),   -- Alice 주계좌
+  (2, 2, 'Shinhan Bank',  '987-6543-2100', true),   -- Bob 주계좌
+  (3, 3, 'Hana Bank',     '555-3333-2222', true);   -- Charlie 주계좌

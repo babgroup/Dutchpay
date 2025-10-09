@@ -1,6 +1,7 @@
 import { FoodFareRoom } from "src/restaurant/entities/food-fare-room.entity";
 import { FoodJoinUser } from "src/restaurant/entities/food-join-user.entity";
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { UserBankAccount } from "./userBankAccount.entity";
 
 @Entity()
 export class User {
@@ -27,6 +28,9 @@ export class User {
 
     @OneToMany(() => FoodJoinUser, (foodJoinUser) => foodJoinUser.user)
     foodJoinUsers: FoodJoinUser[];
+
+    @OneToMany(() => UserBankAccount, (bankAccount) => bankAccount.user)
+    userBankAccounts: UserBankAccount[];
 
     @Column({ select: false, nullable: true })
     refreshTokenHash?: string;

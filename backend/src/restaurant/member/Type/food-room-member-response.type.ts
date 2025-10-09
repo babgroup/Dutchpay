@@ -15,4 +15,9 @@ export class FoodRoomMemberResponseType {
   memberCount: number;
   @Type(() => MyOrderItemType)
   myOrderItems: MyOrderItemType[];
+  primaryBankAccount: {
+    id: number;
+    bankName: string;
+    accountNumber: string;
+  };
 }
