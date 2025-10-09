@@ -4,9 +4,10 @@ import { formaTime } from "@/common/formatDate";
 
 interface MyCardProps {
     party: MyPartyData;
+    progress: number | null;
 }
 
-export default function MyCardDiv({ party }: MyCardProps) {
+export default function MyCardDiv({ party, progress }: MyCardProps) {
     return (
         <div className="flex flex-col items-center w-full">
             <p>
@@ -14,7 +15,11 @@ export default function MyCardDiv({ party }: MyCardProps) {
             </p>
 
             <div className="py-8">
-                <MyMenu deliveryFee={party.deliveryFee}/>
+                <MyMenu 
+                    deliveryFee={party.deliveryFee}
+                    progress={progress}
+                    accountNumber={null} // API 값
+                />
             </div>
         </div>
     )

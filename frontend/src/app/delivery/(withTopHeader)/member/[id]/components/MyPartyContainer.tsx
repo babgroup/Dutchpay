@@ -14,6 +14,7 @@ export default function MyPartyContainer() {
 
     const [party, setParty] = useState<MyPartyData | null>(null);
     const [loading, setLoading] = useState(true);
+    const [progress, setProgress] = useState<number | null>(null);
 
     useEffect(() => {
         const fetchParty = async () => {
@@ -29,16 +30,14 @@ export default function MyPartyContainer() {
     if(loading) return <p>로딩 중...</p>;
     if (!party) return <p>파티 정보가 없습니다..</p>;
 
-    const savedFee = ((party.user?.length ?? 1) -1) * party.deliveryFee;
-
     return (
         <div className="flex flex-col p-4">
             <div className="text-black">
-                <MyCardDiv party={party}/>
+                <MyCardDiv party={party} progress={progress} />
             </div>
 
             <div className="flex w-full mt-8 justify-center items-center">
-                <ProgressButtonDiv />
+                <ProgressButtonDiv onProgressUpdate={setProgress} />
             </div>
 
             <Link href={`/delivery`} className="text-gray-300 text-center text-sm mb-1 pt-2">파티 나가기</Link>

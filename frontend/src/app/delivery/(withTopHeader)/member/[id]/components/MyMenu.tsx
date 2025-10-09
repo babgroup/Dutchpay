@@ -7,9 +7,11 @@ import { OrderItem } from "@/types/restaurant";
 
 interface MyMenuProps {
     deliveryFee: number;
+    progress: number | null;
+    accountNumber?: string | null; // 나중에 API로 받아올 것
 }
 
-export default function MyMenu({ deliveryFee }: MyMenuProps) {
+export default function MyMenu({ deliveryFee, progress, accountNumber }: MyMenuProps) {
     const apiFetch = useCustomFetch();
     const { id } = useParams();
     const [loading, setLoading] = useState(true);
@@ -36,6 +38,9 @@ export default function MyMenu({ deliveryFee }: MyMenuProps) {
     }, [id]);
 
     const totalPrice = myOrderItems.reduce((sum, item) => sum + item.price, 0) + deliveryFee;
+
+    console.log("progress:", progress);
+    console.log("accountNumber", accountNumber);
 
     return (
         <div className="flex flex-col gap-2 bg-white px-6 py-6 rounded-2xl m-1 border border-gray-300">
@@ -68,8 +73,10 @@ export default function MyMenu({ deliveryFee }: MyMenuProps) {
                 총 {totalPrice.toLocaleString()}원
             </div>
 
-            <div className="rounded-xl flex items-center justify-center m-1 bg-amber-500 text-white p-2">
-                계좌번호
+            <div className={`rounded-xl flex items-center justify-center m-1 text-white p-3 text-xs ${progress === 0 ? 'bg-gray-300' : 'bg-amber-500'}`}>
+                {progress === 0
+                    ? '주문시간 10분 전 이곳에 방장의 계좌번호가 표시됩니다.'
+                    : accountNumber || '임시번호 123-213'}
             </div>
         </div>
     )

@@ -10,7 +10,11 @@ interface PartyData {
     user: { userId: number }[];
 }
 
-export default function ProgressButtonDiv() {
+interface ProgressButtonDivProps {
+    onProgressUpdate?: (progress: number) => void;
+}
+
+export default function ProgressButtonDiv({ onProgressUpdate }: ProgressButtonDivProps) {
     const apiFetch = useCustomFetch();
     const { id } = useParams();
     const [progress, setProgress] = useState<number | null>(null);
@@ -38,6 +42,10 @@ export default function ProgressButtonDiv() {
                 if (res.ok && res.data.data !== undefined) {
                     console.log("progress:", res.data.data);
                     setProgress(res.data.data);
+
+                    if (onProgressUpdate) {
+                        onProgressUpdate(res.data.data);
+                    }
                 } else {
                     console.error("failed to fetch progress:", res?.message);
                 }
@@ -69,7 +77,7 @@ export default function ProgressButtonDiv() {
         }
     };
 
-    const buttonText = progress >= 2 ? "수령 확인" : "메뉴 변경";
+    const buttonText = progress === 2 ? "수령 확인" : "메뉴 변경";
     const isDisabled = progress === 1;
 
     return (
