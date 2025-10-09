@@ -5,18 +5,38 @@ import BasicButton from "@/app/components/BasicButton"
 import useCustomFetch from "@/common/customFetch"
 import { useParams, useRouter } from "next/navigation";
 
+interface PartyData {
+    deliveryFee: number;
+    user: { userId: number }[];
+}
+
 export default function ProgressButtonDiv() {
     const apiFetch = useCustomFetch();
     const { id } = useParams();
     const [progress, setProgress] = useState<number | null>(null);
     const [loading, setLoading] = useState(true);
+    const [party, setParty] = useState<PartyData | null>(null);
     const router = useRouter();
 
     useEffect(() => {
+        const fetchPartyData = async () => {
+            try {
+                const res = await apiFetch(`/restaurant/member/${id}`);
+                if (res.ok && res.data) {
+                    setParty(res.data);
+                } else {
+                    console.error("failed to fetch party data:", res?.message)
+                }
+            } catch (error) {
+                console.error("error:", error);
+            }
+        };
+
         const fetchPartyProgress = async() => {
             try {
                 const res = await apiFetch(`/restaurant/progress/${id}`);
                 if (res.ok && res.data.data !== undefined) {
+                    console.log("progress:", res.data.data);
                     setProgress(res.data.data);
                 } else {
                     console.error("failed to fetch progress:", res?.message);
@@ -29,7 +49,17 @@ export default function ProgressButtonDiv() {
         };
 
         fetchPartyProgress();
+        fetchPartyData();
     }, [id]);
+
+    const participants = party?.user?.length ?? 1;
+    const deliveryFee = party?.deliveryFee ?? 0;
+    const perPersonFee = Math.ceil(deliveryFee / participants);
+    const savedFee = deliveryFee - perPersonFee;
+
+    console.log("participants:", participants);
+    console.log("per person fee:", perPersonFee);
+    console.log("saved fee", savedFee);
 
     const handleClick = () => {
         if (progress === 2) {
@@ -43,12 +73,24 @@ export default function ProgressButtonDiv() {
     const isDisabled = progress === 1;
 
     return (
-        <div className="flex justify-center w-full">
-            <BasicButton
-                text={buttonText}
-                isDisable={isDisabled}
-                onClick={handleClick}
-            />
+        <div>
+            <p className="text-black pb-4">
+                {progress === 2 ? (
+                    "생활관 앞에서 음식을 픽업해주세요!"
+                ) : (
+                    <>
+                        총 <span className="text-amber-500">{savedFee.toLocaleString()}원</span>의 배달비를 아꼈어요!
+                    </>
+                )} 
+            </p>
+
+            <div className="flex justify-center w-full">
+                <BasicButton
+                    text={buttonText}
+                    isDisable={isDisabled}
+                    onClick={handleClick}
+                />
+            </div>
         </div>
     )
 }
