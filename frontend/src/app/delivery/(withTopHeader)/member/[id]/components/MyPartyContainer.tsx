@@ -6,6 +6,7 @@ import useCustomFetch from "@/common/customFetch";
 import MyCardDiv from "./MyCardDiv";
 import { MyPartyData } from "@/types/restaurant";
 import Link from "next/link";
+import ProgressButtonDiv from "./ProgressButtonDiv";
 
 export default function MyPartyContainer() {
     const { id } = useParams();
@@ -30,16 +31,16 @@ export default function MyPartyContainer() {
 
     return (
         <div className="flex flex-col p-4">
-            <div>
+            <div className="text-black">
                 <MyCardDiv party={party}/>
             </div>
 
-            <p>
-                총 <span>...원</span>의 배달비를 아꼈어요!
+            <p className="text-black">
+                총 <span className="text-amber-500">...원</span>의 배달비를 아꼈어요!
             </p>
 
-            <div>
-                <button>메뉴 변경</button>
+            <div className="flex w-full mt-10 justify-center items-center">
+                <ProgressButtonDiv />
             </div>
 
             <Link href={`/delivery`} className="text-gray-300 text-center text-sm mb-1">파티 나가기</Link>

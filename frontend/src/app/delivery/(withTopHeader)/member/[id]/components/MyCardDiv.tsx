@@ -12,7 +12,10 @@ export default function MyCardDiv({ party }: MyCardProps) {
             <p>
                 {party.restaurantName} | 주문 시간 {formaTime(party.deadline)}
             </p>
-            <MyMenu deliveryFee={party.deliveryFee}/>
+
+            <div className="py-8">
+                <MyMenu deliveryFee={party.deliveryFee}/>
+            </div>
         </div>
     )
 }
