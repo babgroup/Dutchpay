@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
@@ -24,5 +24,28 @@ export class UserService {
     })
     const savedUser = await this.userRepo.save(user)
     return savedUser;
+  }
+
+  async getMyInfo(userId: number) {
+    const user = await this.userRepo.findOne({
+      where: { id: userId },
+      relations: ['userBankAccounts'],
+    });
+
+    if (!user) {
+      throw new NotFoundException(`해당 유저(id=${userId})가 존재하지 않습니다.`);
+    }
+
+    return {
+      id: user.id,
+      name: user.name,
+      studentNumber: user.studentNumber,
+      email: user.email,
+      bankAccounts: (user.userBankAccounts ?? []).map((account) => ({
+        bankName: account.bankName,
+        accountNumber: account.accountNumber,
+        isPrimary: account.isPrimary,
+      })),
+    };
   }
 }

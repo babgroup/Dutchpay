@@ -1,7 +1,9 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, Get, Req, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import { ApiCreatedResponse, ApiOperation } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation } from '@nestjs/swagger';
+import { Request } from 'express';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('user')
 export class UserController {
@@ -29,4 +31,29 @@ export class UserController {
     return { message: '유저 회원가입 성공', date: result }
   }
 
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('access-token')
+  @Get('me')
+  @ApiOperation({ summary: '내 정보 조회', description: 'JWT 토큰의 본인 정보(이름/학번/이메일/계좌)를 반환합니다.' })
+  @ApiOkResponse({
+    description: '내 정보 조회 성공',
+    schema: {
+      example: {
+        message: '내 정보 조회 성공',
+        data: {
+          id: 1,
+          name: 'Alice',
+          studentNumber: '2023123',
+          email: 'alice@example.com',
+          bankAccounts: [
+            { bankName: 'Kookmin Bank', accountNumber: '123-4567-8901', isPrimary: true },
+          ],
+        },
+      },
+    },
+  })
+  async getMe(@Req() req: Request) {
+    const result = await this.userService.getMyInfo(req.user.id);
+    return { message: '내 정보 조회 성공', data: result };
+  }
 }
