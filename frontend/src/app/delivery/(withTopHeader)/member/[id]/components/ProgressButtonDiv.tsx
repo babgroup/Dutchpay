@@ -8,6 +8,7 @@ import { useParams, useRouter } from "next/navigation";
 interface PartyData {
     deliveryFee: number;
     user: { userId: number }[];
+    memberCount: number;
 }
 
 interface ProgressButtonDivProps {
@@ -60,7 +61,7 @@ export default function ProgressButtonDiv({ onProgressUpdate }: ProgressButtonDi
         fetchPartyData();
     }, [id]);
 
-    const participants = party?.user?.length ?? 1;
+    const participants = party?.memberCount ?? 1;
     const deliveryFee = party?.deliveryFee ?? 0;
     const perPersonFee = Math.ceil(deliveryFee / participants);
     const savedFee = deliveryFee - perPersonFee;
