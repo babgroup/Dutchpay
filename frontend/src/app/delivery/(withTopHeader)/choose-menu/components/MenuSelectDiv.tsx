@@ -5,7 +5,7 @@ import BasicButton from "@/app/components/BasicButton";
 import useCustomFetch from "@/common/customFetch";
 import { FoodItem } from "@/types/restaurant";
 import FoodList from "./FoodList";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 
 interface SelectedFood {
   foodId: number;
@@ -15,6 +15,7 @@ interface SelectedFood {
 
 export default function MenuSelectDiv() {
   const apiFetch = useCustomFetch();
+  const router = useRouter();
   const { id } = useParams();
 
   const [restaurantName, setRestaurantName] = useState<string | null>(null);
@@ -135,6 +136,7 @@ export default function MenuSelectDiv() {
 
       setSelectedFoods(updatedFoods);
       alert("메뉴 선택 완료!");
+      router.push(`/delivery/member/${id}`);
     } catch (err) {
       alert("주문 중 오류 발생");
       if (err instanceof Error) console.log(err.message);
