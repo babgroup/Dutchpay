@@ -40,7 +40,11 @@ export default function MyPartyContainer() {
                 <ProgressButtonDiv onProgressUpdate={setProgress} />
             </div>
 
-            <Link href={`/delivery`} className="text-gray-300 text-center text-sm mb-1 pt-2">파티 나가기</Link>
+            {progress === 0 && !loading && (
+                <Link href={`/delivery`} className="text-gray-300 text-center text-sm mb-1 pt-2">
+                    파티 나가기
+                </Link>
+            )}
         </div>
     )
 }
