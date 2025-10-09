@@ -42,11 +42,16 @@ export class MemberService {
             foodFareRoom: { id: roomId },
             user: { id: userId }
         },
-        relations: ['user', 'foodFareRoom', 'foodFareRoom.creatorUser', 'foodFareRoom.restaurant', 'foodFareRoom.foodJoinUsers', 'foodOrders', 'foodOrders.foodItem']
+        relations: ['user', 'user.userBankAccounts', 'foodFareRoom', 'foodFareRoom.creatorUser', 'foodFareRoom.restaurant', 'foodFareRoom.foodJoinUsers', 'foodOrders', 'foodOrders.foodItem']
     })
     
     if (!foodRoomMember) {
       throw new NotFoundException(`해당 방에 참여한 기록이 없습니다. userId=${userId}, roomId=${roomId}`);
+    }
+
+    const primary = foodRoomMember.user.userBankAccounts.find(account => account.isPrimary);
+    if (!primary) {
+      throw new NotFoundException('해당 사용자의 주계좌가 설정되어 있지 않습니다.');
     }
 
     return {
@@ -61,7 +66,12 @@ export class MemberService {
             itemName: order.foodItem.itemName,
             quantity: order.quantity,
             price: order.foodItem.price
-          }))
+          })),
+          primaryBankAccount: {
+          id: primary.id,
+          bankName: primary.bankName,
+          accountNumber: primary.accountNumber,
+        },
     }
     }
 

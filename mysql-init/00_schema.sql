@@ -134,3 +134,22 @@ CREATE TABLE IF NOT EXISTS food_order (
     FOREIGN KEY (food_join_user_id) REFERENCES food_join_user(id)
     ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+-- ─────────────────────────────────────────────────────────────
+-- user_bank_account (UserBankAccount 엔티티)
+--  - 한 유저는 여러 계좌를 가질 수 있음 (1:N)
+--  - (user_id, is_primary) 조합은 유저당 주계좌 1개만 허용하도록 UNIQUE
+--  - user 삭제 시 계좌도 함께 삭제 (ON DELETE CASCADE)
+-- ─────────────────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS user_bank_account (
+  id              INT AUTO_INCREMENT PRIMARY KEY,
+  user_id         INT NOT NULL,
+  bank_name       VARCHAR(50) NOT NULL,
+  account_number  VARCHAR(100) NOT NULL,
+  is_primary      BOOLEAN NOT NULL DEFAULT false,
+  created_at      DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  INDEX idx_bank_user_id (user_id),
+  UNIQUE KEY uq_user_primary (user_id, is_primary),
+  CONSTRAINT fk_bank__user
+    FOREIGN KEY (user_id) REFERENCES `user`(id)
+    ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
