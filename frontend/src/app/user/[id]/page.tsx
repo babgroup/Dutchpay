@@ -1,5 +1,5 @@
 import CopyRight from "@/app/(authPages)/components/CopyRight";
-import PartyHistory from "../components/PartyHistory";
+import UserInfoContainer  from "../components/UserInfoContainer";
 import BottomNavLayout from "@/app/components/BottomNavLayout";
 
 export default function UserPage() {
@@ -7,7 +7,7 @@ export default function UserPage() {
   return (
     <div className="flex flex-col text-black items-center h-full w-full">
         
-        <PartyHistory/>        
+        <UserInfoContainer/>        
         <CopyRight />
         <BottomNavLayout />
     </div>

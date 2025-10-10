@@ -3,28 +3,29 @@
 import Link from "next/link";
 import PartyMenu from "./PartyMenu";
 import { useEffect, useState } from "react";
+import useCustomFetch from "@/common/customFetch";
 
 interface UserInfo {
-  userName: string;
-  userId: string;
-  userEmail: string;
+  name: string;
+  studentNumber: number;
+  email: string;
 }
 
-export default function PartyHistory() {
+export default function UserInfoContainer() {
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
+  const apiFetch = useCustomFetch();
 
   useEffect(() => {
-    const token = localStorage.getItem("jwtToken");
-    if (token) {
-      const decoded = decodeJWT(token);
-      if (decoded) {
-        setUserInfo({
-          userName: "임시이름",
-          userId: decoded.userStuNum,
-          userEmail: decoded.email,
-        });
+    const fetchUserInfo = async () => {
+      try {
+        const res = await apiFetch(`/user/me`, {method: "GET"})
+        setUserInfo(res.data)
+      } catch(error) {
+        console.log(error);
       }
     }
+
+    fetchUserInfo();
   }, []); // 실제로는 토큰을 브라우저에 저장하지 않아서 이렇게 사용 X, 임시 기능
 
   if (!userInfo) return <p>로딩 중...</p>;
@@ -32,8 +33,8 @@ export default function PartyHistory() {
   return (
     <div className="mb-6 w-4/5">
       <div className="mt-10 mb-10 w-4/5 pl-2">
-        <div className="text-xl">{userInfo.userName} / {userInfo.userId}</div>
-        <div className="underline">{userInfo.userEmail}</div>
+        <div className="text-xl">{userInfo.name} / {userInfo.studentNumber}</div>
+        <div className="underline">{userInfo.email}</div>
       </div>
 
       <Link
@@ -51,15 +52,4 @@ export default function PartyHistory() {
       <PartyMenu />
     </div>
   )
-}
-
-// JWT 디코딩 함수
-function decodeJWT(token: string) {
-  try {
-    const payload = token.split('.')[1];
-    return JSON.parse(atob(payload));
-  } catch (error) {
-    console.error("JWT 디코딩 실패", error);
-    return;
-  }
 }
