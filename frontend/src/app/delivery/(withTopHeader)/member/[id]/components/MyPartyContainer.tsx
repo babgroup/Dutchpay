@@ -33,7 +33,12 @@ export default function MyPartyContainer() {
     return (
         <div className="flex flex-col p-4">
             <div className="text-black">
-                <MyCardDiv party={party} progress={progress} />
+                <MyCardDiv
+                    party={party}
+                    progress={progress}
+                    bankName={party.primaryBankAccount?.bankName || null}
+                    accountNumber={party.primaryBankAccount?.accountNumber || null}
+                />
             </div>
 
             <div className="flex w-full mt-8 justify-center items-center">

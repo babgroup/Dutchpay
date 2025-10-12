@@ -8,10 +8,11 @@ import { OrderItem } from "@/types/restaurant";
 interface MyMenuProps {
     deliveryFee: number;
     progress: number | null;
-    accountNumber?: string | null; // 나중에 API로 받아올 것
+    accountNumber?: string | null;
+    bankName?: string | null;
 }
 
-export default function MyMenu({ deliveryFee, progress, accountNumber }: MyMenuProps) {
+export default function MyMenu({ deliveryFee, progress, accountNumber, bankName }: MyMenuProps) {
     const apiFetch = useCustomFetch();
     const { id } = useParams();
     const [loading, setLoading] = useState(true);
@@ -76,7 +77,7 @@ export default function MyMenu({ deliveryFee, progress, accountNumber }: MyMenuP
             <div className={`rounded-xl flex items-center justify-center m-1 text-white p-3 text-xs ${progress === 0 ? 'bg-gray-300' : 'bg-amber-500'}`}>
                 {progress === 0
                     ? '주문시간 10분 전 이곳에 방장의 계좌번호가 표시됩니다.'
-                    : accountNumber || '임시번호 123-213'}
+                    : `${bankName} ${accountNumber}` || '임시번호 123-213'}
             </div>
         </div>
     )
