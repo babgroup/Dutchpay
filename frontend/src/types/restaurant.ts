@@ -54,10 +54,17 @@ export interface FoodItem {
   imageUrl: string;
 }
 
+export interface PrimaryBankAccount {
+	id: number;
+	bankName: string;
+	accountNumber: string;
+}
+
 export interface MyPartyData {
   restaurantName: string;
   minUser: number;
   deadline: string;
   deliveryFee: number;
   user: RoomMemberProps[];
+  primaryBankAccount: PrimaryBankAccount;
 }
