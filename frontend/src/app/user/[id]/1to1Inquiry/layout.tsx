@@ -1,4 +1,4 @@
-import TopHeader from "../delivery/components/TopHeader";
+import TopHeader from "@/app/delivery/components/TopHeader";
 
 export default function TopLayout({ children, pageTitle }: Readonly<{ children: React.ReactNode; pageTitle: string }>) {
   return (

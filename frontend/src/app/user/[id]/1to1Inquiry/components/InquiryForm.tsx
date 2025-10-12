@@ -4,7 +4,7 @@ import { useState } from "react";
 import Dropdown, { DropdownOption} from "@/app/delivery/(withTopHeader)/select-party-room/components/Dropdown";
 import InquiryInput from "./InquiryInput";
 import BasicButton from "@/app/components/BasicButton";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 
 export default function InquiryForm() {
     const inquiryOptions: DropdownOption[] = [
@@ -20,17 +20,23 @@ export default function InquiryForm() {
     const [inquiryText, setInquiryText] = useState<string>("");
 
     const router = useRouter();
+    const params = useParams();
+
+    const userId = Array.isArray(params.id) ? params.id[0] : params.id;
+
     const handleSubmit = () => {
         if (!selectedInquiry || !inquiryText.trim()) {
             alert("카테고리와 문의 내용을 모두 입력해주세요.");
             return;
         }
+
         console.log({
             category: selectedInquiry,
             content: inquiryText
-        }); // api 요청
+        });
         alert("제출되었습니다.");
-        router.back();
+
+        router.push(`/user/${userId}`);
     }
 
     return (
