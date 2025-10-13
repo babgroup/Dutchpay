@@ -1,12 +1,13 @@
 'use client'
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Dropdown, { DropdownOption} from "@/app/delivery/(withTopHeader)/select-party-room/components/Dropdown";
 import InquiryInput from "./InquiryInput";
 import BasicButton from "@/app/components/BasicButton";
 import { useParams, useRouter } from "next/navigation";
 import emailjs from "@emailjs/browser";
 import { toast } from "react-toastify";
+import useCustomFetch from "@/common/customFetch";
 
 export default function InquiryForm() {
     const inquiryOptions: DropdownOption[] = [
@@ -18,15 +19,44 @@ export default function InquiryForm() {
         { value: '6', label: '기타' },
     ]
 
+    const customFetch = useCustomFetch();
+
     const [selectedInquiry, setSelectedInquiry] = useState<string | null>(null);
     const [inquiryText, setInquiryText] = useState<string>("");
+    const [userName, setUserName] = useState("");
+    const [userEmail, setUserEmail] = useState("");
 
     const router = useRouter();
     const params = useParams();
 
     const userId = Array.isArray(params.id) ? params.id[0] : params.id;
-
+    
     const formRef = useRef<HTMLFormElement>(null);
+
+    useEffect(() => {
+        const fetchUserInfo = async () => {
+            try {
+                const jwtToken = localStorage.getItem("jwtToken");
+                if (!jwtToken) return;
+
+                const res = await customFetch('/user/me', {
+                    method: "GET",
+                    headers: {
+                        Authorization: `Bearer ${jwtToken}`,
+                    },
+                });
+
+                if (!res.ok) throw new Error("사용자의 정보를 불러오지 못했습니다.");
+
+                setUserName(res.data.name);
+                setUserEmail(res.data.email);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+
+        fetchUserInfo();
+    }, []);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -51,10 +81,7 @@ export default function InquiryForm() {
                 hideProgressBar: true,
                 theme: "colored",
             });
-            console.log("✅ toast 실행됨");
-
-            alert("💌 문의가 성공적으로 제출되었습니다");
-
+            
             // 2초 후 이동
             setTimeout(() => router.push(`/user/${userId}`), 2500);
         } catch (error) {
@@ -65,8 +92,6 @@ export default function InquiryForm() {
             });
             console.error(error);
         }
-
-        router.push(`/user/${userId}`);
     }
 
     return (
@@ -91,8 +116,8 @@ export default function InquiryForm() {
             </div>
 
             {/* EmailJS에 필요한 hidden input */}
-            <input type="hidden" name="user_name" value="사용자 이름" />
-            <input type="hidden" name="user_email" value="사용자 email" />
+            <input type="hidden" name="user_name" value={userName} />
+            <input type="hidden" name="user_email" value={userEmail} />
             <input type="hidden" name="inquiry_value" value={selectedInquiry || ''} />
             <input
                 type="hidden"
@@ -105,7 +130,7 @@ export default function InquiryForm() {
             <div className="w-full flex justify-center mt-30">
                 <BasicButton
                     text="제출하기"
-                    isDisable={!selectedInquiry || !inquiryText.trim()}
+                    isDisable={!selectedInquiry || !inquiryText.trim() || !userName || !userEmail}
                 />
             </div>
         </form>
