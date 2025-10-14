@@ -27,8 +27,8 @@ export default function MyPartyContainer() {
         fetchParty();
     }, [id]);
 
-    if(loading) return <p>로딩 중...</p>;
-    if (!party) return <p>파티 정보가 없습니다..</p>;
+    if(loading) return <p className="text-center">로딩 중...</p>;
+    if (!party) return <p className="text-center">파티 정보가 없습니다..</p>;
 
     return (
         <div className="flex flex-col p-4">
