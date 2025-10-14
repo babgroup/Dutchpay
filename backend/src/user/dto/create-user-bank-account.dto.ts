@@ -1,4 +1,3 @@
-// dto/create-user-bank-account.dto.ts
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString, Length } from 'class-validator';
 
