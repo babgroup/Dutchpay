@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import useCustomFetch from "@/common/customFetch";
 import MyCardDiv from "./MyCardDiv";
 import { MyPartyData } from "@/types/restaurant";
@@ -11,6 +11,7 @@ import ProgressButtonDiv from "./ProgressButtonDiv";
 export default function MyPartyContainer() {
     const { id } = useParams();
     const apiFetch = useCustomFetch();
+    const router = useRouter();
 
     const [party, setParty] = useState<MyPartyData | null>(null);
     const [loading, setLoading] = useState(true);
@@ -26,6 +27,12 @@ export default function MyPartyContainer() {
         };
         fetchParty();
     }, [id]);
+
+    const handleLeaveParty = () => {
+        localStorage.removeItem("currentRole");
+        localStorage.removeItem("currentRoomId");
+        router.push("/delivery");
+    }
 
     if(loading) return <p className="text-center">로딩 중...</p>;
     if (!party) return <p className="text-center">파티 정보가 없습니다..</p>;
@@ -46,9 +53,12 @@ export default function MyPartyContainer() {
             </div>
 
             {progress === 0 && !loading && (
-                <Link href={`/delivery`} className="text-gray-300 text-center text-sm mb-1 pt-2">
+                <button 
+                    onClick={handleLeaveParty}
+                    className="text-gray-300 text-center text-sm mb-1 pt-2"
+                >
                     파티 나가기
-                </Link>
+                </button>
             )}
         </div>
     )

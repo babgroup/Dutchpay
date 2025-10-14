@@ -61,6 +61,8 @@ export default function RoomListDiv() {
         router.push(`/delivery/member/${selectedRoom.id}`);
       } else if (res.status === 409) {
         alert("이미 이 파티에 가입되어 있습니다.");
+
+        router.push(`/delivery/member/${selectedRoom.id}`);
       } else if (res.status === 404) {
         alert("해당 사용자의 주계좌가 설정되어 있지 않습니다.");
       } else {
