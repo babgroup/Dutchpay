@@ -56,6 +56,8 @@ export default function RoomListDiv() {
 
       if (res.ok) {
         alert("파티에 가입되었습니다!");
+        localStorage.setItem("currentRoomId", String(selectedRoom.id));
+        localStorage.setItem("currentRole", "member");
         router.push(`/delivery/member/${selectedRoom.id}`);
       } else if (res.status === 409) {
         alert("이미 이 파티에 가입되어 있습니다.");
