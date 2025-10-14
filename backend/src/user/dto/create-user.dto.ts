@@ -1,7 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsEmail, IsInt, IsNotEmpty, IsString, Length, Matches, MinLength, ValidateNested } from "class-validator";
-import { CreateUserBankAccountDto } from "./create-user-banc-account.dto";
-import { Type } from "class-transformer";
+import { IsEmail, IsInt, IsNotEmpty, IsString, Length, Matches, MinLength } from "class-validator";
 
 export class CreateUserDto {
   @ApiProperty({ type: String, description: '이메일 형식', required: true, example: 'aswq@example.com' })
@@ -22,13 +20,4 @@ export class CreateUserDto {
   @IsString()
   @MinLength(8)
   password: string;
-
-  @ApiProperty({
-    type: CreateUserBankAccountDto,
-    description: '사용자 계좌정보 (기본계좌 true 자동 설정)',
-    example: { bankName: 'Kookmin Bank', accountNumber: '123-4567-8901' },
-  })
-  @ValidateNested()
-  @Type(() => CreateUserBankAccountDto)
-  bankAccount: CreateUserBankAccountDto;
 }

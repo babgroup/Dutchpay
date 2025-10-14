@@ -145,7 +145,7 @@ CREATE TABLE IF NOT EXISTS user_bank_account (
   user_id         INT NOT NULL,
   bank_name       VARCHAR(50) NOT NULL,
   account_number  VARCHAR(100) NOT NULL,
-  is_primary      BOOLEAN NOT NULL DEFAULT true,
+  is_primary      BOOLEAN NOT NULL DEFAULT false,
   created_at      DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   INDEX idx_bank_user_id (user_id),
   UNIQUE KEY uq_user_primary (user_id, is_primary),
