@@ -10,7 +10,7 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post('signup')
-  @ApiOperation({ summary: '회원가입' })
+  @ApiOperation({ summary: '회원가입 (기본계좌 1개 포함 등록)' })
   @ApiCreatedResponse({
     description: '유저 회원가입 성공',
     schema: {
@@ -20,8 +20,13 @@ export class UserController {
           id: 4,
           email: 'aswq@example.com',
           name: 'aswq',
-          studentNumber: 2225446,
+          studentNumber: '2225446',
           totalDiscount: 0,
+          bankAccount: {
+            bankName: 'Kookmin Bank',
+            accountNumber: '123-4567-8901',
+            isPrimary: true,
+          },
         },
       },
     },
