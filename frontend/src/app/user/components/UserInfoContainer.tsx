@@ -12,7 +12,7 @@ interface UserInfo {
   bankAccounts: {
     bankName: string;
     accountNumber: string;
-  };
+  }[];
 }
 
 export default function UserInfoContainer() {
@@ -57,10 +57,10 @@ export default function UserInfoContainer() {
 
       <div className="block bg-gray-100 rounded-xl px-4 py-3 mt-4">
         <p className="font-medium">내 계좌</p>
-        {userInfo.bankAccounts && userInfo.bankAccounts ? (
+        {userInfo.bankAccounts && userInfo.bankAccounts.length > 0 ? (
           <>
-            <span className="text-orange-400 font-semibold">{userInfo.bankAccounts.bankName}은행 </span>
-            <span className="text-orange-400 font-semibold"> {userInfo.bankAccounts.accountNumber}</span>
+            <span className="text-orange-400 font-semibold">{userInfo.bankAccounts[0].bankName}은행 </span>
+            <span className="text-orange-400 font-semibold"> {userInfo.bankAccounts[0].accountNumber}</span>
           </>
         ) : (
           <span className="text-gray-400">등록된 계좌가 없습니다.</span>
