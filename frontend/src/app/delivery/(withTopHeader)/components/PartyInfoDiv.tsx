@@ -14,7 +14,7 @@ export default function PartyInfoDiv({ party } : PartyInfoDivProps ) {
       </p>
 
       {/* 카드 리스트 영역만 스크롤 가능 */}
-      <div className="w-full flex flex-col items-center gap-2">
+      <div className="w-full flex flex-col items-center gap-2 overflow-scroll h-94">
         {(!party.user || party.user.length === 0) ? (
           <p className="text-center text-gray-400 mt-2">
             아직 파티에 참가한 사람이 없어요. 😳
