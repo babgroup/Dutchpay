@@ -15,6 +15,6 @@ export class UserBankAccount {
   @Column({ type: 'varchar', length: 100 })
   accountNumber: string;
 
-  @Column({ type: 'boolean', default: false })
+  @Column({ type: 'boolean', default: true })
   isPrimary: boolean;
 }
