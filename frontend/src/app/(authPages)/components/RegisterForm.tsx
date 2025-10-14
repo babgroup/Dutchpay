@@ -15,7 +15,7 @@ type RegisterFormInputs = {
   bankAccount: {
     bankName: string;
     accountNumber: string;
-  }[];
+  };
 };
 
 export default function RegisterForm() {
@@ -25,7 +25,7 @@ export default function RegisterForm() {
   const [serverError, setServerError] = useState(false);
 
   const { register, handleSubmit, formState: { errors } } = useForm<RegisterFormInputs>({
-    defaultValues: { bankAccount: [{ bankName: "", accountNumber: "" }] } // 배열 초기값 필수
+    defaultValues: { bankAccount: { bankName: "", accountNumber: "" } }
   });
 
   const onSubmit = async (data: RegisterFormInputs) => {
@@ -94,18 +94,18 @@ export default function RegisterForm() {
       <AuthInput
         type="text"
         placeholder=" 은행명 - '은행'을 제외하고 입력"
-        register={register("bankAccount.0.bankName", { required: "은행명은 필수입니다." })}
-        error={errors.bankAccount?.[0]?.bankName}
+        register={register("bankAccount.bankName", { required: "은행명은 필수입니다." })}
+        error={errors.bankAccount?.bankName}
         serverError={serverError}
       />
       <AuthInput
         type="text"
         placeholder=" 계좌번호"
-        register={register("bankAccount.0.accountNumber", { 
+        register={register("bankAccount.accountNumber", { 
           required: "계좌번호는 필수입니다.", 
           minLength: { value: 10, message: "유효한 계좌번호를 입력해주세요." },
         })}
-        error={errors.bankAccount?.[0]?.accountNumber}
+        error={errors.bankAccount?.accountNumber}
         serverError={serverError}
       />
       
