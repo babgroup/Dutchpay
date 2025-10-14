@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsEmail, IsInt, IsNotEmpty, IsString, Length, Matches, MinLength, ValidateNested } from "class-validator";
-import { CreateUserBankAccountDto } from "./create-user-banc-account.dto";
+import { CreateUserBankAccountDto } from "./create-user-bank-account.dto";
 import { Type } from "class-transformer";
 
 export class CreateUserDto {
