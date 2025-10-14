@@ -46,11 +46,32 @@ export default function RoomListDiv() {
     setIsPopupOpen(true);
   };
   const closePopup = () => setIsPopupOpen(false);
-  const joinParty = () => {
-    if (selectedRoom) {
-      router.push(`/delivery/member/${selectedRoom.id}`); //임시로 /member/[roomid]
+  const joinParty = async () => {
+    if (!selectedRoom) return;
+
+    try {
+      const res = await Fetch(`/restaurant/member/${selectedRoom.id}`, {
+        method: "POST",
+      });
+
+      if (res.ok) {
+        alert("파티에 가입되었습니다!");
+        localStorage.setItem("currentRoomId", String(selectedRoom.id));
+        localStorage.setItem("currentRole", "member");
+        router.push(`/delivery/member/${selectedRoom.id}`);
+      } else if (res.status === 409) {
+        alert("이미 이 파티에 가입되어 있습니다.");
+      } else if (res.status === 404) {
+        alert("해당 사용자의 주계좌가 설정되어 있지 않습니다.");
+      } else {
+        alert("파티 가입 중 오류가 발생했습니다.");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("서버 요청 중 오류가 발생했습니다.");
+    } finally {
+      closePopup();
     }
-    closePopup();
   };
 
   // 검색어 필터
