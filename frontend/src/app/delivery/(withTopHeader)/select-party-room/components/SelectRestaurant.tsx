@@ -55,7 +55,7 @@ export default function SelectRestaurant({
                 />
             </div>
             
-            <div className="flex flex-col m-10 items-center">
+            <div className="flex flex-col m-13 items-center">
                 <BasicButton 
                     text="다음 단계로 이동" 
                     isDisable={isButtonDisabled}
