@@ -53,7 +53,7 @@ export default function SelectTime({
                 <p>✱ 확정된 파티는 취소 할 수 없어요.</p>
             </div>
             
-            <div className="flex flex-col m-5 items-center">
+            <div className="flex flex-col m-6 items-center">
                 <BasicButton
                     text="파티 만들기"
                     onClick={handleClick}
