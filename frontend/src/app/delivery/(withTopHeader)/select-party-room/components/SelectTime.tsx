@@ -1,14 +1,12 @@
 'use client'
 
-import { useRouter } from "next/navigation";
 import BasicButton from "@/app/components/BasicButton";
 import Dropdown, { DropdownOption } from "./Dropdown";
 
 interface SelectTimeProps {
     selectedTime: string | null;
     onSelectTime: (time: string) => void;
-    onSubmit: () => Promise<{ success: boolean; id?: string}>;
-    id: string | null;
+    onSubmit: () => Promise<{ success: boolean; id?: string }>;
 }
 
 export default function SelectTime({
@@ -17,15 +15,10 @@ export default function SelectTime({
     onSubmit
 }: SelectTimeProps) {
     const isButtonDisabled = !selectedTime;
-    const router = useRouter();
 
     const handleClick = async () => {
         if (isButtonDisabled) return;
-
-        const result = await onSubmit();
-        if (result.success) {
-            router.push(`/delivery/leader/${result.id}`);
-        }
+        await onSubmit();
     };
 
     const generateTimeOptions = () : DropdownOption[] => {
