@@ -6,7 +6,7 @@ import SelectRestaurant from './SelectRestaurant';
 import SelectTime from './SelectTime';
 import type { DropdownOption } from './Dropdown';
 import type { RestaurantList } from '@/types/restaurant';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import useCustomFetch from '@/common/customFetch';
 
 type PartySelection = { type: 'A'; partySize: number } | { type: 'B' };
@@ -16,9 +16,9 @@ export default function OrderFlow() {
     const [selectedRestaurant, setSelectRestaurant] = useState<RestaurantList | null>(null);
     const [selectedTime, setSelectedTime] = useState<string | null>(null);
     const [step, setStep] = useState(1);
-    const [roomId, setRoomId] = useState<string | null>(null);
 
     const Fetch = useCustomFetch();
+    const router = useRouter();
 
     const partySizeOptions: DropdownOption[] = [
         { value: '2', label: '2명' },
@@ -35,7 +35,7 @@ export default function OrderFlow() {
 
     const goNextStep = () => {setStep((prev) => prev + 1)};
 
-    const handleSubmit = async () => {
+    const handleSubmit = async (): Promise<{ success: boolean; id?: string }> => {
         if (!selectedRestaurant || !selectedTime) {
             return { success: false };
         }
@@ -66,6 +66,12 @@ export default function OrderFlow() {
             if (!response.ok) return { success: false };
 
             const data = response.data;
+
+            localStorage.setItem("currentRoomId", String(data.id));
+            localStorage.setItem("currentRole", "leader");
+            
+            router.push(`/delivery/leader/${data.id}`);
+            
             return { success: true, id: data.id };
         } catch (error) {
             console.error(error);
@@ -99,7 +105,6 @@ export default function OrderFlow() {
                     selectedTime={selectedTime}
                     onSelectTime={setSelectedTime}
                     onSubmit={handleSubmit}
-                    id={roomId}
                 />
             )}
         </div>
