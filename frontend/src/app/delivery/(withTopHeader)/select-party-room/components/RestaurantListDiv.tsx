@@ -22,15 +22,14 @@ export default function RestaurantListDiv({ selectedRestaurant, onSelect }: Rest
             setMessage('로딩 중...');
             try {
                 const response = await apiFetch("/restaurant/list", { method: "GET" })
-                console.log(response);
                 if (response && Array.isArray(response.data)) {
                     setList(response.data);
                 } else {
                     setList([]);
-                    setMessage('데이터를 불러오는 데 실패했습니다');
+                    console.error('오류', response);
                 }
-            } catch (e: any) {
-                setMessage(e.message || '오류가 발생했습니다');
+            } catch (error: unknown) {
+                console.error('API 요청 오류', error);
                 setList([]);
             } finally {
                 setLoading(false);
