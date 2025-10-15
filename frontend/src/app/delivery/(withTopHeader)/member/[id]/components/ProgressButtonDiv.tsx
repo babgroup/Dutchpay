@@ -41,7 +41,6 @@ export default function ProgressButtonDiv({ onProgressUpdate }: ProgressButtonDi
             try {
                 const res = await apiFetch(`/restaurant/progress/${id}`);
                 if (res.ok && res.data.data !== undefined) {
-                    console.log("progress:", res.data.data);
                     setProgress(res.data.data);
 
                     if (onProgressUpdate) {
@@ -65,11 +64,7 @@ export default function ProgressButtonDiv({ onProgressUpdate }: ProgressButtonDi
     const deliveryFee = party?.deliveryFee ?? 0;
     const perPersonFee = Math.ceil(deliveryFee / participants);
     const savedFee = deliveryFee - perPersonFee;
-
-    console.log("participants:", participants);
-    console.log("per person fee:", perPersonFee);
-    console.log("saved fee", savedFee);
-
+    
     const handleClick = () => {
         if (progress === 2) {
             router.push("/delivery");

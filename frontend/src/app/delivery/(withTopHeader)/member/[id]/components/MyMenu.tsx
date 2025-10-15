@@ -40,9 +40,6 @@ export default function MyMenu({ deliveryFee, progress, accountNumber, bankName 
 
     const totalPrice = myOrderItems.reduce((sum, item) => sum + item.price, 0) + deliveryFee;
 
-    console.log("progress:", progress);
-    console.log("accountNumber", accountNumber);
-
     return (
         <div className="flex flex-col gap-2 bg-white px-6 py-6 rounded-2xl m-1 border border-gray-300">
             <p>내 메뉴</p>
