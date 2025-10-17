@@ -136,7 +136,15 @@ export default function MenuSelectDiv() {
 
       setSelectedFoods(updatedFoods);
       alert("메뉴 선택 완료!");
-      router.push(`/delivery/member/${id}`);
+      
+      const currentRole = localStorage.getItem("currentRole");
+
+      if (currentRole === "leader") {
+        router.push(`/delivery/leader/${id}`)
+      } else {
+        router.push(`/delivery/member/${id}`)
+      }
+
     } catch (err) {
       alert("주문 중 오류 발생");
       if (err instanceof Error) console.log(err.message);
