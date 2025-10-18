@@ -15,16 +15,23 @@ export default function ProgressRedirect() {
     const fetchProgress = async () => {
       try {
         const res = await apiFetch(`/restaurant/progress/${roomId}`);
-        const progress = res.data; 
+        const progress = res.data.data; 
         console.log(progress)
-        if (progress !== 3 && progress !== 2) {
+
+        // 끝난 상태(완료, 해산)일 때 로컬 스토리지에서 값 지우기
+        if (progress === 2 || progress === 3) {
+          localStorage.removeItem("currentRoomId");
+          localStorage.removeItem("currentRole");
+        }
+
+        // 파티 끝나지 않았으면 해당 페이지로 이동
+        if (progress !== 2 && progress !== 3) {
           router.replace(`/delivery/${role}/${roomId}`);
         }
       } catch(error) {
-        console.log(error);
+        if (error instanceof Error) console.log(error.message)
       }
-    }
-
+    };
     fetchProgress();
   }, [apiFetch, router]);
 
