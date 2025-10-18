@@ -15,7 +15,7 @@ export default function ProgressRedirect() {
     const fetchProgress = async () => {
       try {
         const res = await apiFetch(`/restaurant/progress/${roomId}`);
-        const progress = res.data; 
+        const progress = res.data.data; 
         console.log(progress)
 
         // 끝난 상태(완료, 해산)일 때 로컬 스토리지에서 값 지우기
