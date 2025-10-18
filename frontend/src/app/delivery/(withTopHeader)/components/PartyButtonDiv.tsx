@@ -22,7 +22,6 @@ export default function PartyButtonDiv({ startTime, roomId, minUser = 0, current
       try {
         const res = await apiFetch(`/restaurant/progress/${roomId}`);
         if (res.ok && res.data.data !== undefined) {
-          console.log("프로그레스:",res.data.data)
           setProgress(res.data.data); // 상태가 업데이트 되면 값 날아가지만 리랜더링 위해 값 할당
         } else {
           console.error("progress fetch failed:", res?.message ?? "Unknown error");
@@ -67,7 +66,11 @@ export default function PartyButtonDiv({ startTime, roomId, minUser = 0, current
         <BasicButton
           text="배달 도착 알려주기"
           isDisable={progress !== 1}
-          onClick={() => patchProgress(2)}
+          onClick={async () => {
+            await patchProgress(2);
+            localStorage.removeItem("currentRoomId");
+            localStorage.removeItem("currentRole");
+          }}
         />
       ) : (
         // 2단계 이상: 배달 완료 안내 -> 종료는 member 측에서 다 받았다고 해줘야 함
