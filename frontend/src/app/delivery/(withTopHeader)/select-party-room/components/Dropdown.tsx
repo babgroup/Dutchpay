@@ -5,6 +5,7 @@ import { useState, useEffect, useRef } from 'react';
 export interface DropdownOption {
   value: string; // 내부적으로 사용
   label: string; // 사용자에게 보여주는 값
+  disabled?: boolean;
 }
 
 interface SelectDropdownProps {

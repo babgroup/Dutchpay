@@ -23,10 +23,18 @@ export default function SelectTime({
 
     const generateTimeOptions = () : DropdownOption[] => {
         const times: DropdownOption[] = [];
+        const now = new Date();
+
         for (let hour = 9; hour < 23; hour++) {
             for (let min = 0; min < 60; min += 30) {
                 const value = `${hour.toString().padStart(2, '0')}:${min.toString().padStart(2, '0')}`;
-                times.push({ value, label: value });
+
+                const optionTime = new Date();
+                optionTime.setHours(hour, min, 0, 0);
+
+                const isPast = optionTime < now;
+
+                times.push({ value, label: value, disabled: isPast, });
             }
         }
         return times;
