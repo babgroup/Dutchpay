@@ -100,11 +100,12 @@ export default function OrderFlow() {
                 />
             )}
 
-            {step === 3 && (
+            {step === 3 && selectedRestaurant && (
                 <SelectTime
                     selectedTime={selectedTime}
                     onSelectTime={setSelectedTime}
                     onSubmit={handleSubmit}
+                    selectedRestaurant={selectedRestaurant}
                 />
             )}
         </div>

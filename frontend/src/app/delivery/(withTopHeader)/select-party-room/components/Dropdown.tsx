@@ -46,8 +46,9 @@ export default function Dropdown({
   // 현재 선택된 값에 해당하는 라벨
   const selectedLabel = options.find((option) => option.value === selectedValue)?.label || placeholder;
 
-  const handleSelectOption = (value: string) => {
-    onSelect(value);
+  const handleSelectOption = (option: DropdownOption) => {
+    if (option.disabled) return;
+    onSelect(option.value);
     setIsOpen(false);
   };
 
@@ -59,7 +60,11 @@ export default function Dropdown({
       <button
         type="button"
         onClick={() => !disabled && setIsOpen(!isOpen)}
-        className="flex items-center justify-between w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-left text-sm hover:bg-gray-50 focus:outline-none focus:ring-1 focus:ring-orange-100 focus:border-orange-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+        className={`flex items-center justify-between w-full rounded-md border border-gray-300 px-4 py-2 text-left text-sm focus:outline-none ${
+          disabled
+            ? "bg-gray-100 cursor-not-allowed text-gray-400"
+            : "bg-white hover:bg-gray-50 focus:ring-1 focus:ring-orange-100 focus:border-orange-500"
+        }`}
       >
         <span className={`truncate ${selectedValue ? 'text-gray-900' : 'text-gray-500'} ${disabled ? 'text-gray-400' : ''}`}>
           {selectedLabel}
@@ -81,8 +86,11 @@ export default function Dropdown({
             {options.map((option) => (
               <li
                 key={option.value}
-                onClick={() => handleSelectOption(option.value)}
-                className="cursor-pointer select-none relative py-2 pl-3 pr-9 text-gray-900 hover:bg-orange-100"
+                onClick={() => handleSelectOption(option)}
+                className={`cursor-pointer select-none relative py-2 pl-3 pr-9 ${option.disabled
+                  ? "text-gray-400 bg-gray-50 cursor-not-allowed"
+                  : "text-gray-900 hover:bg-orange-100"
+                }`}
               >
                 <span className="block truncate">{option.label}</span>
               </li>
