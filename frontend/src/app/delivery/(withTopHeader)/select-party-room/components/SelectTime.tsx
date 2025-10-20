@@ -7,32 +7,56 @@ interface SelectTimeProps {
     selectedTime: string | null;
     onSelectTime: (time: string) => void;
     onSubmit: () => Promise<{ success: boolean; id?: string }>;
+    selectedRestaurant: { businessHours: string };
 }
 
 export default function SelectTime({
     selectedTime,
     onSelectTime,
-    onSubmit
+    onSubmit,
+    selectedRestaurant,
 }: SelectTimeProps) {
-    const isButtonDisabled = !selectedTime;
+    const now = new Date();
 
-    const handleClick = async () => {
-        if (isButtonDisabled) return;
-        await onSubmit();
-    };
+    const [openTime, closeTime] = selectedRestaurant.businessHours.split("-");
+    const [openHour, openMinute] = openTime.split(":").map(Number);
+    const [closeHour, closeMinute] = closeTime.split(":").map(Number);
+    
+    const openDate = new Date();
+    openDate.setHours(openHour, openMinute, 0, 0);
+
+    const closeDate = new Date();
+    closeDate.setHours(closeHour, closeMinute, 0, 0);
+
+    const lastAvailable = new Date(closeDate.getTime()-30*60*1000);
 
     const generateTimeOptions = () : DropdownOption[] => {
         const times: DropdownOption[] = [];
+
         for (let hour = 9; hour < 23; hour++) {
             for (let min = 0; min < 60; min += 30) {
-                const value = `${hour.toString().padStart(2, '0')}:${min.toString().padStart(2, '0')}`;
-                times.push({ value, label: value });
+                const value = `${hour.toString().padStart(2, "0")}:${min.toString().padStart(2, "0")}`;
+
+                const optionTime = new Date();
+                optionTime.setHours(hour, min, 0, 0);
+
+                const isDisabled = optionTime <= now || optionTime < openDate || optionTime > lastAvailable;
+
+                times.push({ value, label: value, disabled: isDisabled });
             }
         }
         return times;
     };
 
     const timeOptions = generateTimeOptions();
+
+    const selectedOption = timeOptions.find((t) => t.value === selectedTime);
+    const isButtonDisabled = !selectedTime || selectedOption?.disabled;
+
+    const handleClick = async () => {
+        if (isButtonDisabled) return;
+        await onSubmit();
+    };
 
     return (
         <div className="flex flex-col h-full p-6 justify-between">
@@ -43,7 +67,12 @@ export default function SelectTime({
                     placeholder="시간을 선택해주세요"
                     options={timeOptions}
                     selectedValue={selectedTime}
-                    onSelect={onSelectTime}
+                    onSelect={(time) => {
+                        const option = timeOptions.find((t) => t.value === time);
+                        if (option?.disabled) return;
+                            onSelectTime(time);
+                    }}
+                    disabled={false}
                 />
             </div>
 
