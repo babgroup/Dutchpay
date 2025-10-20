@@ -21,6 +21,9 @@ export default function BreakPartyContainer() {
         return;
       }
       alert("성공적으로 파티가 해산 되었습니다. 메인 페이지로 이동합니다.");
+      localStorage.removeItem("currentRole")
+      localStorage.removeItem("currentRoomId")
+
       router.push('/');
     } catch (error) {
       if(error instanceof Error) setMessage(`오류 발생 : ${error.message}`)
