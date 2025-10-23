@@ -52,10 +52,6 @@ export default function PartyButtonDiv({ startTime, roomId, minUser = 0, current
         // 0단계: 메뉴 선택/계좌번호 공개
         <>
           <BasicButton
-            text="메뉴 변경 요청하기"
-            isDisable={progress !== 0}
-          />
-          <BasicButton
             text="계좌번호 공개하기"
             isDisable={!deadlinePassed || currentUserCount < minUser} // 배달 시작 시간과 최소 인원 모두 만족 할 경우 활성화
             onClick={() => patchProgress(1)}
