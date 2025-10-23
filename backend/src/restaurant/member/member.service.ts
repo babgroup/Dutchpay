@@ -93,4 +93,20 @@ export class MemberService {
 
       await this.foodJoinUserRepo.save(foodJoinUser)
     }
+
+    async leaveFoodFareRoom(roomId: number, userId: number): Promise<void> {
+      const exists = await this.foodFareRoomRepo.exists({ 
+        where: { id: roomId } 
+      });
+      if (!exists) throw new NotFoundException(`roomId=${roomId} 방이 없습니다.`);
+
+      const result = await this.foodJoinUserRepo.delete({
+        foodFareRoom: { id: roomId },
+        user: { id: userId },
+      });
+
+      if (!result.affected || result.affected === 0) {
+        throw new NotFoundException(`해당 방에 참여 기록이 없습니다. userId=${userId}, roomId=${roomId}`);
+      }
+    }
 }
