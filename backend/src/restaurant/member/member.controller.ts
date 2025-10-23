@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Patch, Post, Req, UseGuards } from '@nestjs/common';
+import { Controller, Delete, Get, HttpCode, Param, Patch, Post, Req, UseGuards } from '@nestjs/common';
 import { MemberService } from './member.service';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam } from '@nestjs/swagger';
@@ -91,5 +91,18 @@ export class MemberController {
     return {
       message: `foodJoinUser ${id}번 방에서 delivery_confirmation 1로 변경`,
     };
+  }
+
+  @Delete('foodFareRoom/:id')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: '해당 방 나가기', description: 'jwt토큰 인증 후 자신이 참여한 방에서 나가기' })
+  @ApiParam({ name: 'id', type: Number, description: '방 ID', example: 2 })
+  @ApiOkResponse({
+    description: '삭제 성공 시 204 반환',
+  })
+  @HttpCode(204)
+  async leaveFoodFareRoom(@Param('id') roomId: string, @Req() req: Request): Promise<void> {
+    await this.memberService.leaveFoodFareRoom(+roomId, req.user.id);
   }
 }
