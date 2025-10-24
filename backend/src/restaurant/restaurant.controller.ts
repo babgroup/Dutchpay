@@ -209,6 +209,34 @@ export class RestaurantController {
 
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth('access-token')
+  @ApiOperation({
+    summary: '내가 소속된 방 조회',
+    description:
+      '현재 내가 참여 중인 방이 있으면 방 ID와 역할(CREATOR/MEMBER)을 반환. 진행 중(progress=0)인 방만 조회.',
+  })
+  @ApiOkResponse({
+    description: '내가 참여 중인 방 정보 (없으면 inRoom=false)',
+    content: {
+      'application/json': {
+        example: {
+          message: '현재 내가 참여 중인 방',
+          data: {
+            inRoom: true,
+            roomId: 3,
+            role: 'MEMBER',
+          },
+        },
+      },
+    },
+  })
+  @Get('my-room')
+  async getMyRoom(@Req() req: Request) {
+    const result = await this.restaurantService.getMyRoom(req.user.id);
+    return { message: '현재 내가 참여 중인 방', data: result };
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('access-token')
   @Delete('food-order/:roomId/:foodOrderId')
   async deleteFoodOrder(@Param('roomId') roomId: string, @Param('foodOrderId') orderId: string, @Req() req:Request) {
     const result = await this.restaurantService.deleteFoodOrder(+roomId, +orderId, req.user.id);

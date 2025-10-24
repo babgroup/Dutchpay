@@ -206,6 +206,32 @@ export class RestaurantService {
     return currentProgress.progress
   }
 
+  async getMyRoom(userId: number) {
+  const join = await this.foodJoinUserRepo.findOne({
+    where: { user: { id: userId } },
+    relations: ['foodFareRoom', 'foodFareRoom.creatorUser', 'foodFareRoom.foodResults'],
+  });
+
+  if (!join) {
+    return { inRoom: false };
+  }
+
+  const isProgressing = join.foodFareRoom.foodResults.some(result => result.progress === 0);
+  if (!isProgressing) {
+    return { inRoom: false };
+  }
+
+  const role: 'CREATOR' | 'MEMBER' =
+    join.foodFareRoom.creatorUser.id === userId ? 'CREATOR' : 'MEMBER';
+
+  return {
+    inRoom: true,
+    roomId: join.foodFareRoom.id,
+    role,
+  };
+}
+
+
   async deleteFoodOrder(roomId: number, orderId: number, userId: number) {
     const room = await this.foodFareRoomRepo.findOne({ where: { id: roomId } });
     if (!room) throw new NotFoundException('방을 찾을 수 없습니다.');
