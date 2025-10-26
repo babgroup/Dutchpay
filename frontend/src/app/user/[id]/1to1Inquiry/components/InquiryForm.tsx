@@ -75,12 +75,19 @@ export default function InquiryForm() {
                 formRef.current,
                 process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!
             );
-            toast.success("💌 문의가 성공적으로 제출되었습니다", {
+            toast.success(
+                <div>
+                    💌 문의가 성공적으로 제출되었습니다
+                    <br />
+                    잠시 후 이동합니다
+                </div>,
+                {
                 position: "top-center",
                 autoClose: 2500,
                 hideProgressBar: true,
                 theme: "colored",
-            });
+                }
+            );
             
             // 2초 후 이동
             setTimeout(() => router.push(`/user/${userId}`), 2500);
