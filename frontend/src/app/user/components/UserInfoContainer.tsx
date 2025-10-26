@@ -24,7 +24,6 @@ export default function UserInfoContainer() {
       try {
         const res = await apiFetch('/user/me', {method: "GET"});
         setUserInfo(res.data);
-        console.log(res.data)
       } catch (error) {
         if (error instanceof Error) console.log(error.message);
       }

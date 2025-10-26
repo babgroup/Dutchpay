@@ -33,7 +33,7 @@ export default function PartyContainer() {
     fetchParty();
   }, [id]);
 
-  if (loading) return <p>로딩 중...</p>;
+  if (loading) return <p className="text-center p-10">로딩 중...</p>;
   if (error) return <p className="text-red-500">에러 발생: {error}</p>;
   if (!party) return <p>파티 정보를 불러올 수 없습니다.</p>;
 
