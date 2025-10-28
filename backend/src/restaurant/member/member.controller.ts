@@ -101,7 +101,10 @@ export class MemberController {
   @ApiOkResponse({
     description: '삭제 성공 시 200 반환',
   })
-  async leaveFoodFareRoom(@Param('id') roomId: string, @Req() req: Request): Promise<void> {
+  async leaveFoodFareRoom(@Param('id') roomId: string, @Req() req: Request) {
     await this.memberService.leaveFoodFareRoom(+roomId, req.user.id);
+    return {
+      message: `${roomId}번 방에서 삭제 완료`,
+    };
   }
 }
