@@ -99,9 +99,8 @@ export class MemberController {
   @ApiOperation({ summary: '해당 방 나가기', description: 'jwt토큰 인증 후 자신이 참여한 방에서 나가기' })
   @ApiParam({ name: 'id', type: Number, description: '방 ID', example: 2 })
   @ApiOkResponse({
-    description: '삭제 성공 시 204 반환',
+    description: '삭제 성공 시 200 반환',
   })
-  @HttpCode(204)
   async leaveFoodFareRoom(@Param('id') roomId: string, @Req() req: Request): Promise<void> {
     await this.memberService.leaveFoodFareRoom(+roomId, req.user.id);
   }
