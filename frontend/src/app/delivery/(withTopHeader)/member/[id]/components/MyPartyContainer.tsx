@@ -5,7 +5,6 @@ import { useParams, useRouter } from "next/navigation";
 import useCustomFetch from "@/common/customFetch";
 import MyCardDiv from "./MyCardDiv";
 import { MyPartyData } from "@/types/restaurant";
-import Link from "next/link";
 import ProgressButtonDiv from "./ProgressButtonDiv";
 
 export default function MyPartyContainer() {
@@ -19,7 +18,13 @@ export default function MyPartyContainer() {
 
     useEffect(() => {
         const fetchParty = async () => {
-            const res = await apiFetch(`/restaurant/member/${id}`);
+            const token = localStorage.getItem("access-token");
+            const res = await apiFetch(`/restaurant/member/${id}`, {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                }
+            });
             if (res.ok) {
                 setParty(res.data);
             }
@@ -28,10 +33,31 @@ export default function MyPartyContainer() {
         fetchParty();
     }, [id]);
 
-    const handleLeaveParty = () => {
-        localStorage.removeItem("currentRole");
-        localStorage.removeItem("currentRoomId");
-        router.push("/delivery");
+    const handleLeaveParty = async () => {
+        if (!party) return;
+
+        try {
+            const token = localStorage.getItem("access-token");
+            const res = await apiFetch(`/restaurant/member/foodFareRoom/${id}`, {
+                method: "DELETE",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                }
+            });
+            console.log(res.status)
+            if (!(res.status === 204)) {
+                alert("파티 나가기에 실패했습니다. 다시 시도해주세요.");
+                return;
+            }
+
+            localStorage.removeItem("currentRole");
+            localStorage.removeItem("currentRoomId");
+
+            alert("파티를 나갔습니다.");
+            router.push("/delivery");
+        } catch (error) {
+            console.error("Error leaving party:", error);
+        }
     }
 
     if(loading) return <p className="text-center">로딩 중...</p>;
