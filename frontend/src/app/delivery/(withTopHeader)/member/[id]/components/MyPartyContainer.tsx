@@ -44,7 +44,7 @@ export default function MyPartyContainer() {
                     Authorization: `Bearer ${token}`,
                 }
             });
-            console.log(res.status)
+
             if (!res.ok) {
                 alert("파티 나가기에 실패했습니다. 다시 시도해주세요.");
                 return;
