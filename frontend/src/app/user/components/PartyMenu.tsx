@@ -9,9 +9,6 @@ export default function PartyMenu() {
       <Link href={`/user/1to1Inquiry`} className="text-black py-3 border-b border-gray-200">
         1 : 1 문의
       </Link>
-      <Link href="/" className="text-black py-3 border-b border-gray-200">
-        유저 신고
-      </Link>
       <p
         className="block text-black py-3 border-b border-gray-200 cursor-pointer"
         onClick={() => {
