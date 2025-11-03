@@ -38,7 +38,7 @@ export default function MyMenu({ deliveryFee, progress, accountNumber, bankName 
         fetchMyMenu();
     }, [id]);
 
-    const totalPrice = myOrderItems.reduce((sum, item) => sum + item.price, 0) + deliveryFee;
+    const totalPrice = myOrderItems.reduce((sum, item) => sum + item.price * item.quantity, 0) + (deliveryFee || 0);
 
     return (
         <div className="flex flex-col gap-2 bg-white px-6 py-6 rounded-2xl m-1 border border-gray-300">
