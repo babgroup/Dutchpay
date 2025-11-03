@@ -36,15 +36,12 @@ export default function UserInfoContainer() {
 
   return (
     <div className="mb-6 w-4/5">
-      <div className="mt-10 mb-10 w-4/5 pl-2">
+      <div className="mt-10 mb-6 w-4/5 pl-2">
         <div className="text-xl">{userInfo.name} / {userInfo.studentNumber}</div>
         <div className="underline">{userInfo.email}</div>
       </div>
 
-      <Link
-        href="/파티이용내역"
-        className="block bg-gray-100 rounded-xl px-4 py-3"
-      >
+      {/* <div className="block bg-gray-100 rounded-xl px-4 py-3">
         <div className="flex justify-between items-center">
           <span className="font-medium">내 파티 / 이용 내역</span>
           <span className="text-lg text-gray-300">&gt;</span>
@@ -52,7 +49,7 @@ export default function UserInfoContainer() {
         <div className="mt-2 text-base rounded-xl bg-gray-200 m-2 p-2 pl-4">
           현재까지 <span className="text-orange-400 font-semibold">0000원</span> 아꼈어요!
         </div>
-      </Link>
+      </div> */}
 
       <div className="block bg-gray-100 rounded-xl px-4 py-3 mt-4">
         <p className="font-medium">내 계좌</p>
