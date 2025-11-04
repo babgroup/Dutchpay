@@ -48,14 +48,14 @@ export default function SelectRestaurant({
                 <p className="text-xs text-gray-400 m-4">* 해당 목록은 영업시간에 따른 배달 가능 매장 목록입니다. 가게 사정 등으로 현재 배달이 불가능 한 곳이 있을 수 있으니 직접 확인 해주세요.</p>
             </div>
 
-            <div>
+            <div className="flex-1 overflow-y-auto max-h-[350px] px-2 mb-4">
                 <RestaurantListDiv
                 selectedRestaurant={selectedRestaurant}
                 onSelect={onSelectRestaurant}
                 />
             </div>
             
-            <div className="flex flex-col m-13 items-center">
+            <div className="flex flex-col m-8 items-center">
                 <BasicButton 
                     text="다음 단계로 이동" 
                     isDisable={isButtonDisabled}
