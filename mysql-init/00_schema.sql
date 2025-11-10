@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS restaurant (
   phone_number     VARCHAR(30)  NOT NULL,
   business_hours   VARCHAR(50)  NOT NULL,
   delivery_fee     INT          NOT NULL DEFAULT 0,
-  image_url        VARCHAR(512),
+  image_url        VARCHAR(1024),
   created_at       DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
   UNIQUE KEY uq_restaurant_name_phone (restaurant_name, phone_number)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS food_item (
   restaurant_id    INT NOT NULL,
   item_name        VARCHAR(200) NOT NULL,
   price            INT NOT NULL DEFAULT 0,
-  image_url        VARCHAR(512),
+  image_url        VARCHAR(1024),
   created_at       DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   INDEX idx_food_item_restaurant_id (restaurant_id),
   UNIQUE KEY uq_food_item_restaurant_name (restaurant_id, item_name),
